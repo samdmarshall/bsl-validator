@@ -83,16 +83,33 @@ def ParseToken(char_list, index):
     token = ''.join(char_list[:token_length]);
     token_offset = index + token_length;
     return (token_offset, token_length, token);
+def ParseVariable(char_list):
+    return (len(char_list), len(char_list)+1, ''.join(char_list));
+def ParseParameter(char_list):
+    return (1);
+def ParseFunction(char_list):
+    token_offset = 0;
+    func_decl_token = ParseToken(char_list[token_offset:], token_offset);
+    token_offset = func_decl_token[0] + 1;
+    func_type_token = ParseToken(char_list[token_offset:], token_offset);
+    token_offset = func_type_token[0] + 1;
+    func_name_token = ParseToken(char_list[token_offset:], token_offset);
+    token_offset = func_name_token[0];
+    func_parameters = [];
+    while (token_offset < len(char_list)):
+        func_parameter_token = ParseParameter(char_list[token_offset:]);
+        func_parameters.append(func_parameter_token);
+        token_offset += func_parameter_token;
+    return (func_decl_token, func_type_token, func_name_token, func_parameters);
 def ParseLine(line):
     global INDENT_LEVEL
     global PARSED_LINES
     line_list = list(line);
-    if len(line_list) == 0:
+    if len(line_list) == 0: # this is an empty line
         return True;
-    if line_list[0] in bsl_comment:
-        # this line is a comment, ignore
+    if line_list[0] in bsl_comment: # this line is a comment, ignore
         return True;
-    else:
+    else: # this line (potentially) has tokens
         line_tokens = [];
         token_offset = 0;
         line_start = True;
@@ -100,24 +117,33 @@ def ParseLine(line):
             bsl_token_tuple = ParseToken(line_list[token_offset:], token_offset);
             token_offset = bsl_token_tuple[0];
             bsl_token = BSLToken(bsl_token_tuple[2], bsl_token_tuple[1]);
-            if bsl_token.token_is_reserved == True:
-                if bsl_token.token_string == 'var':
-                    if line_start == False:
-                        print 'Invalid Placement of \"var\"!';
-                        return False;
-                if bsl_token.token_string == 'func':
-                    if line_start == False:
-                        print 'Invalid Placement of \"func\"!';
-                        return False;
-            if token_offset != 0:
-                line_start = False;
-            if bsl_token.token_string == ';':
-                line_start = True;
             if bsl_token.token_string == '{':
                 INDENT_LEVEL += 1;
             elif bsl_token.token_string == '}':
                 INDENT_LEVEL -= 1;
-            line_tokens.append(bsl_token);
+            if bsl_token.token_string == '#' and len(line_tokens) == 0: # incase the comment isn't on the start of the line
+                return True;
+            if bsl_token.token_is_reserved == True:
+                if bsl_token.token_string == 'var':
+                    if line_start == False:
+                        print 'Invalid Placement of \"var\"!';
+                    else:
+                        bsl_var_tuple = ParseVariable(line_list);
+                        print bsl_var_tuple;
+                    return line_start;
+                if bsl_token.token_string == 'func':
+                    if line_start == False:
+                        print 'Invalid Placement of \"func\"!';
+                    else:
+                        bsl_func_tuple = ParseFunction(line_list);
+                        print bsl_func_tuple;
+                    return line_start;
+            else:
+                line_tokens.append(bsl_token);
+            if token_offset != 0:
+                line_start = False;
+            if bsl_token.token_string == ';':
+                line_start = True;
         PARSED_LINES.append(line_tokens);
 # Main
 def main(argv):
