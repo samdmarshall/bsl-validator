@@ -1,5 +1,7 @@
 import sys
 import string
+import bsl_functions
+import bsl_variables
 # Globals
 PARSED_LINES = [];
 INDENT_LEVEL = 0;
@@ -7,83 +9,33 @@ PARSE_AS_NEW_LINE = False;
 PAREN_SCOPE = 0;
 
 GLOBAL_FUNCTIONS = {
-    'ai2_allpassive': {
-        'args': [['int']]
-    },
-    'ai2_kill': {
-        'args': [['string'], ['string']];
-    },
-    'ai2_spawnall': {
-        'args': [['void']]
-    },
-    'ai2_stopignoring_count': {
-        'args': [['int']]
-    },
-    'ai2_stopignoring_time': {
-        'args': [['int']]
-    }
-    'ai2_takecontrol': {
-        'args': [['int']]
-    },
-    'ai2_active': {
-        'args': [['string', 'int']]
-    },
-    'ai2_attack': {
-        'args': [['string', 'int'], ['string', 'int']]
-    },
-    'ai2_barabbas_retrievegun': {
-        'args': [['string', 'int']]
-    },
-    'ai2_chump': {
-        'args': [['void']]
-    },
-    'ai2_comehere': {
-        'args': [['string', 'int', 'void']]
-    },
-    'ai2_doalarm': {
-        'args': [['string', 'int'], ['int', 'void']]
-    },
-    'ai2_dopath': {
-        'args': [['string', 'int'], ['string']]
-    },
-    'ai2_followme': {
-        'args': [['string', 'int', 'void']]
-    },
-    'ai2_forget': {
-        'args': [['string', 'int', 'void'], ['string', 'void']]
-    },
-    'ai2_idle': {
-        'args': [['string', 'int']]
-    },
-    'ai2_inactive': {
-        'args': [['string', 'int']]
-    },
-    'ai2_kill': {
-        'args': [['string', 'void'], ['string', 'void']]
-    },
-    'ai2_lookatchar': {
-        'args': [['string', 'int'], ['string', 'int']]
-    },
+    'ai2_allpassive': bsl_functions.ai2_allpassive,
+    'ai2_kill': bsl_functions.ai2_kill,
+    'ai2_spawnall': bsl_functions.ai2_spawnall,
+    'ai2_stopignoring_count': bsl_functions.ai2_stopignoring_count,
+    'ai2_stopignoring_time': bsl_functions.ai2_stopignoring_time,
+    'ai2_takecontrol': bsl_functions.ai2_takecontrol,
+    'ai2_active': bsl_functions.ai2_active,
+    'ai2_attack': bsl_functions.ai2_attack,
+    'ai2_barabbas_retrievegun': bsl_functions.ai2_barabbas_retrievegun,
+    'ai2_chump': bsl_functions.ai2_chump,
+    'ai2_comehere': bsl_functions.ai2_comehere,
+    'ai2_doalarm': bsl_functions.ai2_doalarm,
+    'ai2_dopath': bsl_functions.ai2_dopath,
+    'ai2_followme': bsl_functions.ai2_followme,
+    'ai2_forget': bsl_functions.ai2_forget,
+    'ai2_idle': bsl_functions.ai2_idle,
+    'ai2_inactive': bsl_functions.ai2_inactive,
+    'ai2_kill': bsl_functions.ai2_kill,
+    'ai2_lookatchar': bsl_functions.ai2_lookatchar,
 };
 GLOBAL_VARIABLES = {
-    'ai2_blind': {
-        'type': 'bool'
-    },
-    'ai2_boss_battle': {
-        'type': 'bool'
-    },
-    'ai2_deaf': {
-        'type': 'bool'
-    },
-    'ai2_ignore_player': {
-        'type': 'bool'
-    },
-    'ai2_barabbas_run': {
-        'type': 'bool'
-    },
-    'ai2_chump_stop': {
-        'type': 'bool'
-    },
+    'ai2_blind': bsl_variables.ai2_blind,
+    'ai2_boss_battle': bsl_variables.ai2_boss_battle,
+    'ai2_deaf': bsl_variables.ai2_deaf,
+    'ai2_ignore_player': bsl_variables.ai2_ignore_player,
+    'ai2_barabbas_run': bsl_variables.ai2_barabbas_run,
+    'ai2_chump_stop': bsl_variables.ai2_chump_stop,
 };
 # Objects
 class BSLScriptLine(object):
@@ -486,7 +438,7 @@ def ValidateToken(token, char_list, index, initial_token):
         is_reserved_word = bsl_reserved_word[str(token_length)](token_string);
         if is_reserved_word == True:
             # this word is reserved, check context
-            return ParseReservedWord(token_string, char_list, index, initial_token);;
+            return ParseReservedWord(token_string, char_list, index, initial_token);
         else:
             # this word is not reserved, validate context
             if token_string in bsl_known_tokens:
