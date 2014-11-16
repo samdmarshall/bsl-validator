@@ -4,7 +4,87 @@ import string
 PARSED_LINES = [];
 INDENT_LEVEL = 0;
 PARSE_AS_NEW_LINE = False;
-PAREN_SCOPE = 0; 
+PAREN_SCOPE = 0;
+
+GLOBAL_FUNCTIONS = {
+    'ai2_allpassive': {
+        'args': [['int']]
+    },
+    'ai2_kill': {
+        'args': [['string'], ['string']];
+    },
+    'ai2_spawnall': {
+        'args': [['void']]
+    },
+    'ai2_stopignoring_count': {
+        'args': [['int']]
+    },
+    'ai2_stopignoring_time': {
+        'args': [['int']]
+    }
+    'ai2_takecontrol': {
+        'args': [['int']]
+    },
+    'ai2_active': {
+        'args': [['string', 'int']]
+    },
+    'ai2_attack': {
+        'args': [['string', 'int'], ['string', 'int']]
+    },
+    'ai2_barabbas_retrievegun': {
+        'args': [['string', 'int']]
+    },
+    'ai2_chump': {
+        'args': [['void']]
+    },
+    'ai2_comehere': {
+        'args': [['string', 'int', 'void']]
+    },
+    'ai2_doalarm': {
+        'args': [['string', 'int'], ['int', 'void']]
+    },
+    'ai2_dopath': {
+        'args': [['string', 'int'], ['string']]
+    },
+    'ai2_followme': {
+        'args': [['string', 'int', 'void']]
+    },
+    'ai2_forget': {
+        'args': [['string', 'int', 'void'], ['string', 'void']]
+    },
+    'ai2_idle': {
+        'args': [['string', 'int']]
+    },
+    'ai2_inactive': {
+        'args': [['string', 'int']]
+    },
+    'ai2_kill': {
+        'args': [['string', 'void'], ['string', 'void']]
+    },
+    'ai2_lookatchar': {
+        'args': [['string', 'int'], ['string', 'int']]
+    },
+};
+GLOBAL_VARIABLES = {
+    'ai2_blind': {
+        'type': 'bool'
+    },
+    'ai2_boss_battle': {
+        'type': 'bool'
+    },
+    'ai2_deaf': {
+        'type': 'bool'
+    },
+    'ai2_ignore_player': {
+        'type': 'bool'
+    },
+    'ai2_barabbas_run': {
+        'type': 'bool'
+    },
+    'ai2_chump_stop': {
+        'type': 'bool'
+    },
+};
 # Objects
 class BSLScriptLine(object):
     ltokens = [];
