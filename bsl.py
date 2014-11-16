@@ -238,7 +238,7 @@ def ParseIf(char_list, index):
         return MakeTokenReturnTuple(token_array, new_index, False);
     else:
         eval_statement = char_list[new_index:new_index+close_paren];
-        
+        # validate eval statement
     
     return MakeTokenReturnTuple(token_array, index, True);
 def ParseElse(char_list, index):
@@ -247,7 +247,9 @@ def ParseElse(char_list, index):
     token_array.append(else_token);
     if else_token[2] != 'else':
         return MakeTokenReturnTuple(token_array, index, False);
-        
+    
+    # check to see if encapsulated and if it is followed by another if statement
+    
     return MakeTokenReturnTuple(token_array, index, True);
 def ParseSleep(char_list, index):
     token_array = [];
@@ -259,6 +261,7 @@ def ParseSleep(char_list, index):
     statement_end = IndexOfNextCharInList(char_list[sleep_token[0]:], ';');
     sleep_statement = char_list[sleep_token[0]:sleep_token[0]+statement_end];
     statement_token = MakeToken(sleep_statement, sleep_token[0], False);
+    # validate sleep statement
     if statement_token[3] == True:
         token_array.append(statement_token);
     
@@ -273,10 +276,31 @@ def ParseFork(char_list, index):
     statement_end = IndexOfNextCharInList(char_list[fork_token[0]:], ';');
     fork_statement = char_list[fork_token[0]:fork_token[0]+statement_end];
     statement_token = MakeToken(fork_statement, fork_token[0], False);
+    # validate fork statement
     if statement_token[3] == True:
         token_array.append(statement_token);
     
     return MakeTokenReturnTuple(token_array, index, True);
+def IncreaseParenScope(token_string):
+    global PAREN_SCOPE;
+    if token_string == '(':
+        PAREN_SCOPE += 1;
+def DecreaseParenScope(token_string):
+    global PAREN_SCOPE;
+    if token_string == ')':
+        PAREN_SCOPE -= 1;
+def IncreaseEncapsulateScope(token_string):
+    global INDENT_LEVEL;
+    if token_string == '{':
+        INDENT_LEVEL += 1;
+def DecreaseEncapsulateScope(token_string):
+    global INDENT_LEVEL;
+    if token_string == '}':
+        INDENT_LEVEL -= 1;
+def MarkNewLine(token_string):
+    global PARSE_AS_NEW_LINE;
+    if token_string == ';':
+        PARSE_AS_NEW_LINE = True;
 # Lookup
 bsl_reserved_word = {
     '2': IsReservedWord_2,
@@ -303,6 +327,13 @@ bsl_types_variable_resolve = {
     'bool': ValidateBoolVar,
     'void': ValidateVoidVar
 };
+bsl_special_case_resolve = {
+    '(': IncreaseParenScope,
+    ')': DecreaseParenScope,
+    '{': IncreaseEncapsulateScope,
+    '}': DecreaseEncapsulateScope,
+    ';': MarkNewLine,
+}
 # Tokens
 bsl_known_tokens = {
     '!': 'Logical Not',
@@ -367,9 +398,7 @@ def MakeToken(char_list, index, initial_token): # returns (new index, token leng
         token_string = ''.join(char_list[token_length[0]:token_length[0]+token_length[1]]);
     return (new_index, token_length[1], token_string, valid_token);
 def ValidateToken(token, char_list, index, initial_token):
-    global PARSE_AS_NEW_LINE;
     global PAREN_SCOPE;
-    global INDENT_LEVEL;
     
     token_length = token[1];
     token_string = token[2];
@@ -377,27 +406,17 @@ def ValidateToken(token, char_list, index, initial_token):
         is_reserved_word = bsl_reserved_word[str(token_length)](token_string);
         if is_reserved_word == True:
             # this word is reserved, check context
-            return_token = ParseReservedWord(token_string, char_list, index, initial_token);
-            #print return_token;
-            return return_token;
+            return ParseReservedWord(token_string, char_list, index, initial_token);;
         else:
             # this word is not reserved, validate context
             if token_string in bsl_known_tokens:
                 print 'TODO: parse known tokens';
             else:
                 print 'TODO: parse identifier -- '+token_string;
-    elif token_string == ';':
-        PARSE_AS_NEW_LINE = True;
+    elif token_string in bsl_special_case_resolve:
+        bsl_special_case_resolve[token_string](token_string);
     elif token_string in bsl_op:
         print 'TODO: handle operators';
-    elif token_string == '(':
-        PAREN_SCOPE += 1;
-    elif token_string == ')':
-        PAREN_SCOPE -= 1;
-    elif token_string == '{':
-        INDENT_LEVEL += 1;
-    elif token_string == '}':
-        INDENT_LEVEL -= 1;
     return token;
 def ParseLine(line_text, offset):
     global PARSED_LINES;
