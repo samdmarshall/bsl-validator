@@ -3,6 +3,58 @@ import string
 # Globals
 PARSED_LINES = [];
 INDENT_LEVEL = 0;
+PARSE_AS_NEW_LINE = False;
+# Objects
+class BSLScriptLine(object):
+    ltokens = [];
+class BSLToken(object):
+    ttype = '';
+    tchildren = [];
+# Token Types
+bsl_token_delimiter = [' ', '=', '(', ')', ';', ',', '#'];
+bsl_types = ['void', 'string', 'bool', 'int', 'float'];
+bsl_op = ['+', '-', '=', '!', 'and', 'or', 'eq', 'ne', '<', '>', '<=', '>='];
+bsl_comment = ['#'];
+bsl_parameter_encapsulate = ['(', ')'];
+bsl_scope_encapsulate = ['{', '}'];
+bsl_encapsulate = bsl_parameter_encapsulate + bsl_scope_encapsulate + ['"'];
+bsl_separator = [';', ','];
+
+numbers_array = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+bsl_valid_floats = numbers_array + [ '.', 'f'];
+bsl_valid_ints = numbers_array + ['f'];
+bsl_valid_strings = list(string.ascii_lowercase) + list(string.ascii_uppercase) + ['_']
+bsl_valid_bools = ['t', 'r', 'u', 'e', 'f', 'a', 'l', 's', '0', '1'];
+bsl_valid_names = bsl_valid_strings + ['.'] + numbers_array;
+# Helpers
+def SumIndexTuple(sum_tuple):
+    return sum_tuple[0] + sum_tuple[1];
+def ExtractTokenStringFromArray(token_array):
+    token_strings = [];
+    for token in token_array:
+        token_strings.append(token[2]);
+    return token_strings;
+def MakeTokenReturnTuple(token_array, index, is_valid):
+    new_index = index + token_array[-1][0] + token_array[-1][1];
+    token_length = token_array[-1][0] - index;
+    token_string = ' '.join(ExtractTokenStringFromArray(token_array));
+    return (new_index, token_length, token_string, is_valid);
+def IndexOfNextCharInList(char_list, char):
+    index = 0;
+    current_char = char_list[index]
+    while current_char != char:
+        index += 1;
+        if index >= len(char_list):
+            break;
+        current_char = char_list[index];
+    return index;
+def IndexOfNextNonSpace(char_list):
+    skip_length = 0;
+    current_char = char_list[skip_length];
+    while current_char == ' ':
+        skip_length += 1;
+        current_char = char_list[skip_length];
+    return skip_length;
 # Functions
 def IsReservedWord_2(word):
     return word in ['at', 'eq', 'if', 'ne', 'or'];
@@ -24,6 +76,147 @@ def IsReservedWord(word):
         if word_length_key in bsl_reserved_word:
             return bsl_reserved_word[word_length_key](word);
     return False;
+# Validate Func Signature Arguments
+def CreateArgumentValidationTuple(arg_type, var_name, index):
+    argument_string = arg_type + var_name;
+    return (index, len(argument_string), argument_string, True);
+def ValidateArg(arg_type, arg_str, index, name_optional):
+    param_name = '';
+    valid_syntax = False;
+    if len(arg_str) == 0:
+        return (name_optional, CreateArgumentValidationTuple(arg_type, '', index));
+    else:
+        name_start = IndexOfNextNonSpace(arg_str[0:]);
+        name_end = IndexOfNextCharInList(arg_str[name_start:], ' ')+1
+        variable_name = ''.join(arg_str[:name_end]);
+    valid_syntax = False;
+    if name_optional == True:
+        valid_syntax = True;
+    else:
+        valid_syntax = len(variable_name) != 0;
+    argument_tuple = CreateArgumentValidationTuple(arg_type,variable_name,index);
+    return (valid_syntax, argument_tuple);
+# Validate Variable Values
+def ValidateVoidVar(char):
+    return False;
+def ValidateStringVar(char):
+    return char in bsl_valid_strings;
+def ValidateIntVar(char):
+    return char in bsl_valid_ints;
+def ValidateBoolVar(char):
+    return char in bsl_valid_bools;
+def ValidateFloatVar(char):
+    return char in bsl_valid_floats;
+def ParseAssign(char_list, index, var_type):
+    global PARSE_AS_NEW_LINE;
+    skip_length = 0;
+    token_length = 0;
+    current_char = char_list[skip_length];
+    string_encapsulation = False;
+    valid_token = True;
+    while current_char == ' ':
+        skip_length += 1;
+        current_char = char_list[skip_length];
+    for char in char_list[skip_length:]:
+        if string_encapsulation == True:
+            token_length += 1;
+        if char == '"':
+            token_length += 1;
+            string_encapsulation = not string_encapsulation;
+            continue;
+        if char == ';':
+            PARSE_AS_NEW_LINE = True;
+            break;
+        if char not in bsl_valid_names and string_encapsulation == False:
+            print 'Invalid name string';
+            valid_token = False;
+            break;
+        elif string_encapsulation == False:
+            valid_token = bsl_types_variable_resolve[var_type](char);
+            if valid_token == False:
+                break;
+            else:
+                token_length += 1;
+    if string_encapsulation == True:
+        valid_token = False;
+    token_string = ''.join(char_list[skip_length:skip_length+token_length]);
+    return (index+skip_length, token_length, token_string, valid_token);
+def ParseVar(char_list, index):
+    token_array = [];
+    var_token = MakeToken(char_list, index, False);
+    token_array.append(var_token);
+    if var_token[2] != 'var':
+        return MakeTokenReturnTuple(token_array, index, False);
+    
+    type_token = MakeToken(char_list[var_token[0]:], var_token[0], False);
+    token_array.append(type_token);
+    if type_token[2] not in bsl_types:
+        return MakeTokenReturnTuple(token_array, index, False);
+        
+    name_token = MakeToken(char_list[type_token[0]:], type_token[0], False);
+    token_array.append(name_token);
+    
+    assign_token = MakeToken(char_list[name_token[0]:], name_token[0], False);
+    token_array.append(assign_token);
+    if assign_token[2] == '=':
+        value_token = ParseAssign(char_list[assign_token[0]:], assign_token[0], type_token[2]);
+        token_array.append(value_token);
+    elif assign_token[2] != ';':
+        return MakeTokenReturnTuple(token_array, index, False);
+    
+    return MakeTokenReturnTuple(token_array, index, True);
+def ParseComment(char_list, index):
+    token_length = len(char_list)
+    new_index = index + token_length;
+    token_string = ''.join(char_list);
+    return (new_index, token_length, token_string, True);
+def ParseParameters(char_list, index):
+    parameters = [];
+    open_paren = IndexOfNextCharInList(char_list, '(')+1;
+    new_index = index + open_paren;
+    close_paren = IndexOfNextCharInList(char_list, ')');
+    valid_parameters = True;
+    
+    parameter_string = ''.join(char_list[open_paren:close_paren]);
+    parameter_args = parameter_string.split(',');
+    for arg in parameter_args:
+        arg_list = list(arg);
+        type_token = MakeToken(arg_list, 0, False);
+        new_index += type_token[0] - type_token[1];
+        valid_parameters = type_token[2] in bsl_types
+        if valid_parameters == True:
+            name_optional = type_token[2] == 'void';
+            new_index += len(arg_list);
+            verify_result = ValidateArg(type_token[2], arg_list[type_token[0]:], new_index, name_optional);
+            valid_parameters = verify_result[0];
+            if valid_parameters == True:
+                parameters.append(verify_result[1]);
+        if valid_parameters == False:
+            print 'Invalid parameter declaration -> '+arg;
+    
+    return (parameters, valid_parameters);
+def ParseFunc(char_list, index):
+    token_array = [];
+    func_token = MakeToken(char_list, index, False);
+    token_array.append(func_token);
+    if func_token[2] != 'func':
+        return MakeTokenReturnTuple(token_array, index, False);
+    
+    peek_token = MakeToken(char_list[func_token[0]:], func_token[0], False);
+    if peek_token[2] in bsl_types:
+        token_array.append(peek_token);
+        name_token = MakeToken(char_list[peek_token[0]:], peek_token[0], False);
+        token_array.append(name_token);
+    else:
+        token_array.append((peek_token[0], 4, 'void', True));
+        token_array.append(peek_token);
+    
+    parameter_result = ParseParameters(char_list[peek_token[0]:],peek_token[0]);
+    if parameter_result[1] == True:
+        for parameter in parameter_result[0]:
+            token_array.append(parameter);
+    
+    return MakeTokenReturnTuple(token_array, index, parameter_result[1]);
 # Lookup
 bsl_reserved_word = {
     '2': IsReservedWord_2,
@@ -34,118 +227,155 @@ bsl_reserved_word = {
     '7': IsReservedWord_7,
     '8': IsReservedWord_8
 };
-# Objects
-class BSLToken():
-    token_string = '';
-    token_length = 0;
-    token_is_reserved = False;
-    
-    def __init__(self, string='', length=0):
-        self.token_string = string;
-        self.token_length = length;
-        self.token_is_reserved = IsReservedWord(self.token_string);
-class BSLFunction():
-    func_return_type = '';
-    func_name = '';
-    func_parameters = [];
-class BSLVariable():
-    variable_type = '';
-    variable_name = '';
-    variable_value = BSLToken();
-    
-    def __init__(self, token_type, token_name, token_value):
-        self.variable_type = token_type;
-        self.variable_name = token_name;
-        self.variable_value = token_value;
+bsl_reserved_parse = {
+    'var': ParseVar,
+    '#': ParseComment,
+    'func': ParseFunc
+};
+bsl_types_variable_resolve = {
+    'string': ValidateStringVar,
+    'float': ValidateFloatVar,
+    'int': ValidateIntVar,
+    'bool': ValidateBoolVar,
+    'void': ValidateVoidVar
+};
 # Tokens
-bsl_token_delimiter = [' ', '=', '(', ')', ';', ','];
-bsl_types = ['void', 'string', 'bool', 'int', 'float'];
-bsl_op = ['+', '-', '=', '!', 'and', 'or', 'eq', 'ne', '<', '>', '<=', '>='];
-bsl_comment = ['#'];
-bsl_encapsulate = ['{', '}', '(', ')', '"'];
-bsl_separator = [';', ','];
+bsl_known_tokens = {
+    '!': 'Logical Not',
+    '"': 'String Encapsulator',
+    '(': 'Left Paren',
+    ')': 'Right Paren',
+    '[': 'Left Bracket',
+    ']': 'Right Bracket',
+    '+': 'Plus',
+    ',': 'Comma',
+    '-': 'Minus',
+    ';': 'SemiColon',
+    ':': 'Colon',
+    '=': 'Assign',
+    '{': 'Left Curley',
+    '}': 'Right Curley',
+    '|': 'Bar',
+    '<': 'Less Than',
+    '<=': 'Less Than or Equal',
+    '>': 'Greater Than',
+    '>=': 'Greater Than or Equal',
+    '#': 'Comment'
+}
 # Special Cases
 bsl_two_reserved_words = ['var', 'func'];
 # Functions
-def TokenLength(char_list):
+def ParseReservedWord(token_string, char_list, index, initial_token):
+    known_word = token_string in bsl_reserved_parse;
+    valid_token = False;
+    new_index = index + len(token_string);
+    if known_word == True:
+        if initial_token == False:
+            print 'Invalid placement of \"'+token_string+'\"!';
+        else:
+            #print 'TODO: Parse \"'+token_string+'\"';
+            token = bsl_reserved_parse[token_string](char_list, index);
+            #valid_token = True;
+            return token;
+    return (new_index, len(token_string), token_string, valid_token);
+def GetTokenLength(char_list): # returns length of a parsed token
+    skip_length = 0;
     token_length = 0;
-    for char in char_list:
+    current_char = char_list[skip_length];
+    while current_char == ' ':
+        skip_length += 1;
+        current_char = char_list[skip_length];
+    for char in char_list[skip_length:]:
         if char in bsl_token_delimiter:
             break;
         else:
             token_length += 1;
     if token_length == 0:
-        if char_list[0] in bsl_encapsulate or bsl_separator:
+        if char_list[skip_length] in bsl_encapsulate or bsl_separator:
             token_length += 1;
-    return token_length;
-def ParseToken(char_list, index):
-    token_length = TokenLength(char_list);
-    token = ''.join(char_list[:token_length]);
-    token_offset = index + token_length;
-    return (token_offset, token_length, token);
-def ParseVariable(char_list):
-    return (len(char_list), len(char_list)+1, ''.join(char_list));
-def ParseParameter(char_list):
-    return (1);
-def ParseFunction(char_list):
-    token_offset = 0;
-    func_decl_token = ParseToken(char_list[token_offset:], token_offset);
-    token_offset = func_decl_token[0] + 1;
-    func_type_token = ParseToken(char_list[token_offset:], token_offset);
-    token_offset = func_type_token[0] + 1;
-    func_name_token = ParseToken(char_list[token_offset:], token_offset);
-    token_offset = func_name_token[0];
-    func_parameters = [];
-    while (token_offset < len(char_list)):
-        func_parameter_token = ParseParameter(char_list[token_offset:]);
-        func_parameters.append(func_parameter_token);
-        token_offset += func_parameter_token;
-    return (func_decl_token, func_type_token, func_name_token, func_parameters);
-def ParseLine(line):
-    global INDENT_LEVEL
-    global PARSED_LINES
-    line_list = list(line);
-    if len(line_list) == 0: # this is an empty line
-        return True;
-    if line_list[0] in bsl_comment: # this line is a comment, ignore
-        return True;
-    else: # this line (potentially) has tokens
-        line_tokens = [];
-        token_offset = 0;
-        line_start = True;
-        while (token_offset < len(line_list)):
-            bsl_token_tuple = ParseToken(line_list[token_offset:], token_offset);
-            token_offset = bsl_token_tuple[0];
-            bsl_token = BSLToken(bsl_token_tuple[2], bsl_token_tuple[1]);
-            if bsl_token.token_string == '{':
-                INDENT_LEVEL += 1;
-            elif bsl_token.token_string == '}':
-                INDENT_LEVEL -= 1;
-            if bsl_token.token_string == '#' and len(line_tokens) == 0: # incase the comment isn't on the start of the line
-                return True;
-            if bsl_token.token_is_reserved == True:
-                if bsl_token.token_string == 'var':
-                    if line_start == False:
-                        print 'Invalid Placement of \"var\"!';
-                    else:
-                        bsl_var_tuple = ParseVariable(line_list);
-                        print bsl_var_tuple;
-                    return line_start;
-                if bsl_token.token_string == 'func':
-                    if line_start == False:
-                        print 'Invalid Placement of \"func\"!';
-                    else:
-                        bsl_func_tuple = ParseFunction(line_list);
-                        print bsl_func_tuple;
-                    return line_start;
+    return (skip_length, token_length);
+def MakeToken(char_list, index, initial_token): # returns (new index, token length, token string, token validity)
+    new_index = index + 1;
+    token_length = 1;
+    token_string = '';
+    valid_token = True;
+    if char_list[0] == '#': # is this a comment
+        return ParseComment(char_list, index);
+    else:
+        token_length = GetTokenLength(char_list);
+        new_index = index + token_length[0] + token_length[1];
+        token_string = ''.join(char_list[token_length[0]:token_length[0]+token_length[1]]);
+    return (new_index, token_length[1], token_string, valid_token);
+def ValidateToken(token, char_list, index, initial_token):
+    global PARSE_AS_NEW_LINE;
+    
+    token_length = token[1];
+    token_string = token[2];
+    if str(token_length) in bsl_reserved_word:
+        is_reserved_word = bsl_reserved_word[str(token_length)](token_string);
+        if is_reserved_word == True:
+            # this word is reserved, check context
+            return_token = ParseReservedWord(token_string, char_list, index, initial_token);
+            #print return_token;
+            return return_token;
+        else:
+            # this word is not reserved, validate context
+            if token_string in bsl_known_tokens:
+                print 'TODO: parse known tokens';
             else:
-                line_tokens.append(bsl_token);
-            if token_offset != 0:
-                line_start = False;
-            if bsl_token.token_string == ';':
-                line_start = True;
-        PARSED_LINES.append(line_tokens);
+                print 'TODO: parse identifier -- '+token_string;
+    elif token_string == ';':
+        PARSE_AS_NEW_LINE = True;
+    #elif token_string in bsl_op:
+        # this is an assignment operator
+    return token;
+def ParseLine(line_text, offset):
+    global PARSED_LINES;
+    global PARSE_AS_NEW_LINE;
+    
+    char_list = list(line_text[offset:]);
+    
+    parse_another_line = False;
+    
+    if len(char_list) == 0:
+        return (True, parse_another_line, offset);
+    
+    line_tokens = [];
+    line_index = 0;
+    valid_line = False;
+    
+    while line_index < len(char_list):
+        token = MakeToken(char_list[line_index:], line_index, len(line_tokens) == 0);
+        token = ValidateToken(token, char_list[line_index:], line_index, len(line_tokens) == 0);
+        line_index = token[0];
+        if token[3] == True:
+            line_tokens.append(token);
+            valid_line = True;
+        else:
+            print 'Invalid Token parsed after index ' + str(line_index+offset) + '!';
+            valid_line = False;
+            break;
+        if PARSE_AS_NEW_LINE == True:
+            if line_index+1 < len(char_list):
+                parse_another_line = True;
+            offset = line_index+1;
+            PARSE_AS_NEW_LINE = False;
+            break;
+    
+    PARSED_LINES.append(line_tokens);
+    
+    return (valid_line, parse_another_line, offset);
 # Main
+def RecursiveParse(line, offset, line_index):
+    print 'line: '+str(line_index)+' offset: '+str(offset);
+    line_result = ParseLine(line, offset);
+    offset += line_result[2];
+    if line_result[0] == False:
+        print 'Error at line ' +  str(line_index) + '!';
+        sys.exit();
+    if line_result[1] == True:
+        return RecursiveParse(line, offset, line_index);
+    return offset;
 def main(argv):
     if len(argv) != 1:
         print 'Please supply one bsl file to validate.';
@@ -153,14 +383,12 @@ def main(argv):
     else:
         lines = [line.strip() for line in open(argv[0])];
         line_counter = 0;
+        offset = 0;
         for line in lines:
             line_counter += 1;
-            if ParseLine(line) == False:
-                print 'Error at line ' +  str(line_counter) + '!';
-                sys.exit();
+            RecursiveParse(line, offset, line_counter);
         for line in PARSED_LINES:
-            for token in line:
-                print token.token_string;
+            print line;
     
 if __name__ == "__main__":
     main(sys.argv[1:]);
