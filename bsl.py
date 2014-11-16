@@ -4,6 +4,7 @@ import string
 PARSED_LINES = [];
 INDENT_LEVEL = 0;
 PARSE_AS_NEW_LINE = False;
+PAREN_SCOPE = 0; 
 # Objects
 class BSLScriptLine(object):
     ltokens = [];
@@ -256,8 +257,10 @@ def ParseSleep(char_list, index):
         return MakeTokenReturnTuple(token_array, index, False);
         
     statement_end = IndexOfNextCharInList(char_list[sleep_token[0]:], ';');
-    sleep_statement = char_list[sleep_token[0]:statement_end];
+    sleep_statement = char_list[sleep_token[0]:sleep_token[0]+statement_end];
     statement_token = MakeToken(sleep_statement, sleep_token[0], False);
+    if statement_token[3] == True:
+        token_array.append(statement_token);
     
     return MakeTokenReturnTuple(token_array, index, True);
 def ParseFork(char_list, index):
@@ -268,8 +271,10 @@ def ParseFork(char_list, index):
         return MakeTokenReturnTuple(token_array, index, False);
         
     statement_end = IndexOfNextCharInList(char_list[fork_token[0]:], ';');
-    fork_statement = char_list[fork_token[0]:statement_end];
+    fork_statement = char_list[fork_token[0]:fork_token[0]+statement_end];
     statement_token = MakeToken(fork_statement, fork_token[0], False);
+    if statement_token[3] == True:
+        token_array.append(statement_token);
     
     return MakeTokenReturnTuple(token_array, index, True);
 # Lookup
@@ -338,12 +343,8 @@ def ParseReservedWord(token_string, char_list, index, initial_token):
             return token;
     return (new_index, len(token_string), token_string, valid_token);
 def GetTokenLength(char_list): # returns length of a parsed token
-    skip_length = 0;
+    skip_length = IndexOfNextNonSpace(char_list);
     token_length = 0;
-    current_char = char_list[skip_length];
-    while current_char == ' ':
-        skip_length += 1;
-        current_char = char_list[skip_length];
     for char in char_list[skip_length:]:
         if char in bsl_token_delimiter:
             break;
@@ -367,10 +368,12 @@ def MakeToken(char_list, index, initial_token): # returns (new index, token leng
     return (new_index, token_length[1], token_string, valid_token);
 def ValidateToken(token, char_list, index, initial_token):
     global PARSE_AS_NEW_LINE;
+    global PAREN_SCOPE;
+    global INDENT_LEVEL;
     
     token_length = token[1];
     token_string = token[2];
-    if str(token_length) in bsl_reserved_word:
+    if str(token_length) in bsl_reserved_word and PAREN_SCOPE == 0:
         is_reserved_word = bsl_reserved_word[str(token_length)](token_string);
         if is_reserved_word == True:
             # this word is reserved, check context
@@ -385,8 +388,16 @@ def ValidateToken(token, char_list, index, initial_token):
                 print 'TODO: parse identifier -- '+token_string;
     elif token_string == ';':
         PARSE_AS_NEW_LINE = True;
-    #elif token_string in bsl_op:
-        # this is an assignment operator
+    elif token_string in bsl_op:
+        print 'TODO: handle operators';
+    elif token_string == '(':
+        PAREN_SCOPE += 1;
+    elif token_string == ')':
+        PAREN_SCOPE -= 1;
+    elif token_string == '{':
+        INDENT_LEVEL += 1;
+    elif token_string == '}':
+        INDENT_LEVEL -= 1;
     return token;
 def ParseLine(line_text, offset):
     global PARSED_LINES;
