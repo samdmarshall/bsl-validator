@@ -172,27 +172,31 @@ def ParseComment(char_list, index):
     return (new_index, token_length, token_string, True);
 def ParseParameters(char_list, index):
     parameters = [];
-    open_paren = IndexOfNextCharInList(char_list, '(')+1;
+    open_paren = IndexOfNextCharInList(char_list, '(') + 1;
     new_index = index + open_paren;
     close_paren = IndexOfNextCharInList(char_list, ')');
-    valid_parameters = True;
     
-    parameter_string = ''.join(char_list[open_paren:close_paren]);
-    parameter_args = parameter_string.split(',');
-    for arg in parameter_args:
-        arg_list = list(arg);
-        type_token = MakeToken(arg_list, 0, False);
-        new_index += type_token[0] - type_token[1];
-        valid_parameters = type_token[2] in bsl_types
-        if valid_parameters == True:
-            name_optional = type_token[2] == 'void';
-            new_index += len(arg_list);
-            verify_result = ValidateArg(type_token[2], arg_list[type_token[0]:], new_index, name_optional);
-            valid_parameters = verify_result[0];
+    valid_parameters = True;
+    if open_paren > close_paren:
+        # there are no parameters defined, just add void
+        parameters.append((index+4, 4, 'void', True));
+    else:
+        parameter_string = ''.join(char_list[open_paren:close_paren]);
+        parameter_args = parameter_string.split(',');
+        for arg in parameter_args:
+            arg_list = list(arg);
+            type_token = MakeToken(arg_list, 0, False);
+            new_index += type_token[0] - type_token[1];
+            valid_parameters = type_token[2] in bsl_types
             if valid_parameters == True:
-                parameters.append(verify_result[1]);
-        if valid_parameters == False:
-            print 'Invalid parameter declaration -> '+arg;
+                name_optional = type_token[2] == 'void';
+                new_index += len(arg_list);
+                verify_result = ValidateArg(type_token[2], arg_list[type_token[0]:], new_index, name_optional);
+                valid_parameters = verify_result[0];
+                if valid_parameters == True:
+                    parameters.append(verify_result[1]);
+            if valid_parameters == False:
+                print 'Invalid parameter declaration -> '+arg;
     
     return (parameters, valid_parameters);
 def ParseFunc(char_list, index):
@@ -217,6 +221,57 @@ def ParseFunc(char_list, index):
             token_array.append(parameter);
     
     return MakeTokenReturnTuple(token_array, index, parameter_result[1]);
+def ParseIf(char_list, index):
+    token_array = [];
+    if_token = MakeToken(char_list, index, False);
+    token_array.append(if_token);
+    if if_token[2] != 'if':
+        return MakeTokenReturnTuple(token_array, index, False);
+        
+    parameters = [];
+    open_paren = IndexOfNextCharInList(char_list[if_token[0]:], '(') + 1;
+    new_index = if_token[0] + open_paren;
+    close_paren = IndexOfNextCharInList(char_list[new_index:], ')');
+    
+    if open_paren > close_paren:
+        return MakeTokenReturnTuple(token_array, new_index, False);
+    else:
+        eval_statement = char_list[new_index:new_index+close_paren];
+        
+    
+    return MakeTokenReturnTuple(token_array, index, True);
+def ParseElse(char_list, index):
+    token_array = [];
+    else_token = MakeToken(char_list, index, False);
+    token_array.append(else_token);
+    if else_token[2] != 'else':
+        return MakeTokenReturnTuple(token_array, index, False);
+        
+    return MakeTokenReturnTuple(token_array, index, True);
+def ParseSleep(char_list, index):
+    token_array = [];
+    sleep_token = MakeToken(char_list, index, False);
+    token_array.append(sleep_token);
+    if sleep_token[2] != 'sleep':
+        return MakeTokenReturnTuple(token_array, index, False);
+        
+    statement_end = IndexOfNextCharInList(char_list[sleep_token[0]:], ';');
+    sleep_statement = char_list[sleep_token[0]:statement_end];
+    statement_token = MakeToken(sleep_statement, sleep_token[0], False);
+    
+    return MakeTokenReturnTuple(token_array, index, True);
+def ParseFork(char_list, index):
+    token_array = [];
+    fork_token = MakeToken(char_list, index, False);
+    token_array.append(fork_token);
+    if fork_token[2] != 'fork':
+        return MakeTokenReturnTuple(token_array, index, False);
+        
+    statement_end = IndexOfNextCharInList(char_list[fork_token[0]:], ';');
+    fork_statement = char_list[fork_token[0]:statement_end];
+    statement_token = MakeToken(fork_statement, fork_token[0], False);
+    
+    return MakeTokenReturnTuple(token_array, index, True);
 # Lookup
 bsl_reserved_word = {
     '2': IsReservedWord_2,
@@ -230,7 +285,11 @@ bsl_reserved_word = {
 bsl_reserved_parse = {
     'var': ParseVar,
     '#': ParseComment,
-    'func': ParseFunc
+    'func': ParseFunc,
+    'if': ParseIf,
+    'else': ParseElse,
+    'sleep': ParseSleep,
+    'fork': ParseFork
 };
 bsl_types_variable_resolve = {
     'string': ValidateStringVar,
