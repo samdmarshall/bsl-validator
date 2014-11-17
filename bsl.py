@@ -38,11 +38,7 @@ GLOBAL_VARIABLES = {
     'ai2_chump_stop': bsl_variables.ai2_chump_stop,
 };
 # Objects
-class BSLScriptLine(object):
-    ltokens = [];
-class BSLToken(object):
-    ttype = '';
-    tchildren = [];
+
 # Token Types
 bsl_token_delimiter = [' ', '=', '(', ')', ';', ',', '#'];
 bsl_types = ['void', 'string', 'bool', 'int', 'float'];
