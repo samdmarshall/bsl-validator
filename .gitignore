@@ -1,0 +1,4 @@
+*.pyc
+*.bsl
+.DS_Store
+*.txt
