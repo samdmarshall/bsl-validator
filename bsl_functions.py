@@ -90,17 +90,17 @@ chr_envanim_stop = {
 };
 chr_wait_animation = {
     'desc': "waits for a character to play a specific animation",
-    'args': 'null',
+    'args': 'void',
     'rtype': ''
 };
 chr_wait_animtype = {
     'desc': "waits for a character to play a specific animation type",
-    'args': 'null',
+    'args': 'void',
     'rtype': ''
 };
 chr_wait_animstate = {
     'desc': "waits for a character to reach a specific animation state",
-    'args': 'null',
+    'args': 'void',
     'rtype': ''
 };
 chr_boss_shield = {
@@ -358,9 +358,9 @@ ai2_set_logerror = {
     'args': '"error_level:string [subsystem:string | ]"',
     'rtype': ''
 };
-ai2_set_handlesilenterror,NULL = {
-    'desc': "handle_silent:bool [subsystem:string | ]",
-    'args': 'ai2iscript_set_handlesilenterror',
+ai2_set_handlesilenterror = {
+    'desc': "sets whether handled errors are silent",
+    'args': "handle_silent:bool [subsystem:string | ]",
     'rtype': ''
 };
 ai2_barabbas_retrievegun = {
@@ -662,14 +662,349 @@ did_kill_griffen = {
     'desc': "returns if we did kill griffen",
     'args': 'void',
     'rtype': 'int'
-}
+};
 trigvolume_count = {
     'desc': "counts the number of people in a trigger volume",
     'args': "trig_id:int",
     'rtype': 'int'
-}
+};
 difficulty = {
     'desc': "returns the difficulty level",
     'args': 'void',
     'rtype': 'int'
-}
+};
+chr_focus = {
+    'desc': "Selects what character to control",
+    'args': '"chr_index:int"',
+    'rtype': 'void'
+};
+chr_health = {
+    'desc': "Sets character's health",
+    'args': '"chr_index:int [hit_points:int | ]"',
+    'rtype': 'void'
+};
+chr_disarm = {
+    'desc': "Disarms a character or everyone",
+    'args': '"chr_index:int"',
+    'rtype': 'void'
+};
+goto = {
+    'desc': "Sets the location of the player character",
+    'args': '"[[loc_x:float loc_y:float loc_z:float] | ]"',
+    'rtype': 'void'
+};
+chr_location = {
+    'desc': "Sets the location of any character",
+    'args': '"[ai_name:string | chr_index:int] [[loc_x:float loc_y:float loc_z:float] | ]"',
+    'rtype': 'void'
+};
+chr_location_settocamera = {
+    'desc': "Sets the location of any character to the camera location",
+    'args': '"chr_index:int"',
+    'rtype': 'void'
+};
+chr_main_class = {
+    'desc': "Sets the main characters class",
+    'args': '"[class_name:string | class_index:int]"',
+    'rtype': 'void'
+};
+chr_display_combat_stats = {
+    'desc': "Displays the characters combat stats",
+    'args': '"chr_index:int"',
+    'rtype': 'void'
+};
+chr_set_class = {
+    'desc': "Sets the character class of a specific character",
+    'args': '"chr_index:int [class_name:string | class_index:int]"',
+    'rtype': 'void'
+};
+chr_weapon = {
+    'desc': "Sets the weapon for a give character",
+    'args': '"chr_index:int [weapon_name:string | weapon_num:int]"',
+    'rtype': 'void'
+};
+chr_draw_dot = {
+    'desc': "draws a dot at a specified location",
+    'args': 'void',
+    'rtype': 'void'
+};
+chr_kill_all_ai = {
+    'desc': "kills all the AI",
+    'args': 'void',
+    'rtype': 'void'
+};
+fall_front = {
+    'desc': "makes the player character fall front",
+    'args': 'void',
+    'rtype': 'void'
+};
+fall_back = {
+    'desc': "makes the player character fall front",
+    'args': 'void',
+    'rtype': 'void'
+};
+make_corpse = {
+    'desc': "makes a corpse",
+    'args': '"corpse_name:string"',
+    'rtype': 'void'
+};
+corpse_reset = {
+    'desc': "resets corpses to their initial state",
+    'args': '""',
+    'rtype': 'void'
+};
+chr_who = {
+    'desc': "lists all the players",
+    'args': 'void',
+    'rtype': 'void'
+};
+print_type = {
+    'desc': "prints an anim type ",
+    'args': '"type:int"',
+    'rtype': 'void'
+};
+print_state = {
+    'desc': "prints an anim state",
+    'args': '"state:int"',
+    'rtype': 'void'
+};
+crash = {
+    'desc': "crashes the game (used for testing error handling)",
+    'args': '"when:string{\"now\"}"',
+    'rtype': 'void'
+};
+hang = {
+    'desc': "hangs the game (used for testing error handling)",
+    'args': '"when:string{\"now\"}"',
+    'rtype': 'void'
+};
+perf_prefix = {
+    'desc': "sets the perf prefix",
+    'args': 'void',
+    'rtype': 'void'
+};
+gs_fov_set = {
+    'desc': "sets the field of view",
+    'args': '"fov_degrees:float"',
+    'rtype': 'void'
+};
+debug_env_anim = {
+    'desc': "draws a line for an environment animation",
+    'args': '"name:string"',
+    'rtype': 'void'
+};
+gs_farclipplane_set = {
+    'desc': "sets the far clipping plane",
+    'args': '"plane:float"',
+    'rtype': 'void'
+};
+cm_anim = {
+    'desc': "initiates a camera animation",
+    'args': '"cam_spec:string{\"move\" | \"look\" | \"both\"} anim_name:string"',
+    'rtype': 'void'
+};
+cm_anim_block = {
+    'desc': "initiates a camera animation",
+    'args': '"cam_spec:string{\"move\" | \"look\" | \"both\"} anim_name:string"',
+    'rtype': 'void'
+};
+cm_interpolate = {
+    'desc': "initiates a camera interpolation",
+    'args': '"anim_name:string num_frames:int"',
+    'rtype': 'void'
+};
+cm_interpolate_block = {
+    'desc': "initiates a camera interpolation",
+    'args': '"anim_name:string num_frames:int"',
+    'rtype': 'void'
+};
+cm_orbit = {
+    'desc': "puts the camera in orbit mode",
+    'args': '"speed:float [stopangle:float | ]"',
+    'rtype': 'void'
+};
+cm_orbit_block = {
+    'desc': "puts the camera in orbit mode",
+    'args': '"speed:float [stopangle:float| ]"',
+    'rtype': 'void'
+};
+cm_detach = {
+    'desc': "detaches the camera",
+    'args': '""',
+    'rtype': 'void'
+};
+cm_wait = {
+    'desc': "makes the camera wait until it is no longer busy",
+    'args': '""',
+    'rtype': 'void'
+};
+cm_reset = {
+    'desc': "resets the camera",
+    'args': '"[maxspeed:float | ] [maxfocalaccel:float | ]"',
+    'rtype': 'void'
+};
+obj_hide = {
+    'desc': "turns display of an object on or off",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+obj_show = {
+    'desc': "turns display of an object on or off",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+obj_force_draw = {
+    'desc': "locks an object as visible",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+obj_shade = {
+    'desc': "turns display of an object on or off",
+    'args': '"obj_id:int obj_id:int r:float g:float b:float"',
+    'rtype': 'void'
+};
+obj_kill = {
+    'desc': "kills a range of object",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+obj_create = {
+    'desc': "creates a range of objects",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+env_anim = {
+    'desc': "initiates a environment animation: blocks until completed",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+env_anim_block = {
+    'desc': "initiates a environment animation: blocks until completed",
+    'args': '"obj_id:int [ obj_id:int | ]"',
+    'rtype': 'void'
+};
+env_setanim = {
+    'desc': "sets up an animation for an object",
+    'args': '"obj_id:int object_name:string"',
+    'rtype': 'void'
+};
+env_setanim_block = {
+    'desc': "sets up an animation for an object",
+    'args': '"obj_id:int object_name:string"',
+    'rtype': 'void'
+};
+letterbox = {
+    'desc': "starts or stops letterboxing",
+    'args': '"start_stop:int{0 | 1}",	aiiscript_letterbox },',
+    'rtype': 'void'
+};
+input = {
+    'desc': "turns input on or off",
+    'args': '"on_off:int{0 | 1}"',
+    'rtype': 'void'
+};
+fade_in = {
+    'desc': "fades the screen in",
+    'args': '"ticks:int"',
+    'rtype': 'void'
+};
+fade_out = {
+    'desc': "fades the screen out",
+    'args': '"[r:float | r:int] [g:float | g:int] [b:float | b:int] ticks:int"',
+    'rtype': 'void'
+};
+env_texswap = {
+    'desc': "swaps an environment texture",
+    'args': '"gq_start:int tex_name:string"',
+    'rtype': 'void'
+};
+env_show = {
+    'desc': "turns on or off specified parts of the environment",
+    'args': '"gq_ref:int on_off:int{0 | 1}"',
+    'rtype': 'void'
+};
+env_shade = {
+    'desc': "sets the shade of a block of objects",
+    'args': '"gq_ref:int gq_ref:int r:float g:float b:float"',
+    'rtype': 'void'
+};
+begin_cutscene = {
+    'desc': "begins a cutscene",
+    'args': 'void',
+    'rtype': 'void'
+};
+end_cutscene = {
+    'desc': "ends a cutscene",
+    'args': '""',
+    'rtype': 'void'
+};
+cutscene_sync = {
+    'desc': "marks a point in a cutscene",
+    'args': 'void',
+    'rtype': 'void'
+};
+dprint = {
+    'desc': "debugging print",
+    'args': '"astring:string"',
+    'rtype': 'void'
+};
+dmsg = {
+    'desc': "debugging message",
+    'args': '"astring:string"',
+    'rtype': 'void'
+};
+win = {
+    'desc': "win this level",
+    'args': 'void',
+    'rtype': 'void'
+};
+lose = {
+    'desc': "lose this level",
+    'args': 'void',
+    'rtype': 'void'
+};
+slowmo = {
+    'desc': "starts the slowmotion timer",
+    'args': '"duration:int"',
+    'rtype': 'void'
+};
+timer_start = {
+    'desc': "starts the countdown timer",
+    'args': '"duration:float script:string"',
+    'rtype': 'void'
+};
+timer_stop = {
+    'desc': "starts the countdown timer",
+    'args': '""',
+    'rtype': 'void'
+};
+save_game = {
+    'desc': "saves the game",
+    'args': '"save_point:int [type:string{\"autosave\"} | ]"',
+    'rtype': 'void'
+};
+restore_game = {
+    'desc': "restores the game",
+    'args': '""',
+    'rtype': 'void'
+};
+message = {
+    'desc': "sends a message from the subtitle file",
+    'args': '"message:string [timer:int]"',
+    'rtype': 'void'
+};
+message_remove = {
+    'desc': "removes a currently displayed message",
+    'args': '"[message:string | ]"',
+    'rtype': 'void'
+};
+splash_screen = {
+    'desc': "displays a splash screen",
+    'args': '"texture:string"',
+    'rtype': 'void'
+};
+lock_keys = {
+    'desc': "locks keys out",
+    'args': 'void',
+    'rtype': 'void'
+};

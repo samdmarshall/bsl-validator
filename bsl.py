@@ -8,12 +8,8 @@ INDENT_LEVEL = 0;
 PARSE_AS_NEW_LINE = False;
 PAREN_SCOPE = 0;
 
-GLOBAL_FUNCTIONS = {
-
-};
-GLOBAL_VARIABLES = {
-
-};
+GLOBAL_FUNCTIONS = {};
+GLOBAL_VARIABLES = {};
 # Objects
 
 # Token Types
@@ -33,6 +29,18 @@ bsl_valid_strings = list(string.ascii_lowercase) + list(string.ascii_uppercase) 
 bsl_valid_bools = ['t', 'r', 'u', 'e', 'f', 'a', 'l', 's', '0', '1'];
 bsl_valid_names = bsl_valid_strings + ['.'] + numbers_array;
 # Helpers
+def LoadGlobals():
+    global GLOBAL_FUNCTIONS;
+    global GLOBAL_VARIABLES;
+    
+    for item in dir(bsl_functions):
+        if item[0] != '_' and item[1] != '_':
+            GLOBAL_FUNCTIONS[str(item)] = getattr(__import__('bsl_functions'), item);
+    
+    for item in dir(bsl_variables):
+        if item[0] != '_' and item[1] != '_':
+            GLOBAL_VARIABLES[str(item)] = getattr(__import__('bsl_variables'), item);
+    
 def SumIndexTuple(sum_tuple):
     return sum_tuple[0] + sum_tuple[1];
 def ExtractTokenStringFromArray(token_array):
@@ -404,6 +412,8 @@ def MakeToken(char_list, index, initial_token): # returns (new index, token leng
     return (new_index, token_length[1], token_string, valid_token);
 def ValidateToken(token, char_list, index, initial_token):
     global PAREN_SCOPE;
+    global GLOBAL_FUNCTIONS;
+    global GLOBAL_VARIABLES;
     
     token_length = token[1];
     token_string = token[2];
@@ -417,7 +427,12 @@ def ValidateToken(token, char_list, index, initial_token):
             if token_string in bsl_known_tokens:
                 print 'TODO: parse known tokens';
             else:
-                print 'TODO: parse identifier -- '+token_string;
+                if token_string in GLOBAL_FUNCTIONS:
+                    print 'TODO: parse function defintion';
+                elif token_string in GLOBAL_VARIABLES:
+                    print 'TODO: parse variable defintion';
+                else:
+                    print 'TODO: parse identifier -- '+token_string;
     elif token_string in bsl_special_case_resolve:
         bsl_special_case_resolve[token_string](token_string);
     elif token_string in bsl_op:
@@ -475,7 +490,13 @@ def main(argv):
         print 'Please supply one bsl file to validate.';
         sys.exit();
     else:
+        print 'Loading scripting library...';
+        LoadGlobals();
+        print 'Loading script...';
         lines = [line.strip() for line in open(argv[0])];
+        if len(lines) == 0:
+            print 'Empty script file, or error in loading!';
+            sys.exit();
         line_counter = 0;
         offset = 0;
         for line in lines:
