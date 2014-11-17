@@ -9,33 +9,10 @@ PARSE_AS_NEW_LINE = False;
 PAREN_SCOPE = 0;
 
 GLOBAL_FUNCTIONS = {
-    'ai2_allpassive': bsl_functions.ai2_allpassive,
-    'ai2_kill': bsl_functions.ai2_kill,
-    'ai2_spawnall': bsl_functions.ai2_spawnall,
-    'ai2_stopignoring_count': bsl_functions.ai2_stopignoring_count,
-    'ai2_stopignoring_time': bsl_functions.ai2_stopignoring_time,
-    'ai2_takecontrol': bsl_functions.ai2_takecontrol,
-    'ai2_active': bsl_functions.ai2_active,
-    'ai2_attack': bsl_functions.ai2_attack,
-    'ai2_barabbas_retrievegun': bsl_functions.ai2_barabbas_retrievegun,
-    'ai2_chump': bsl_functions.ai2_chump,
-    'ai2_comehere': bsl_functions.ai2_comehere,
-    'ai2_doalarm': bsl_functions.ai2_doalarm,
-    'ai2_dopath': bsl_functions.ai2_dopath,
-    'ai2_followme': bsl_functions.ai2_followme,
-    'ai2_forget': bsl_functions.ai2_forget,
-    'ai2_idle': bsl_functions.ai2_idle,
-    'ai2_inactive': bsl_functions.ai2_inactive,
-    'ai2_kill': bsl_functions.ai2_kill,
-    'ai2_lookatchar': bsl_functions.ai2_lookatchar,
+
 };
 GLOBAL_VARIABLES = {
-    'ai2_blind': bsl_variables.ai2_blind,
-    'ai2_boss_battle': bsl_variables.ai2_boss_battle,
-    'ai2_deaf': bsl_variables.ai2_deaf,
-    'ai2_ignore_player': bsl_variables.ai2_ignore_player,
-    'ai2_barabbas_run': bsl_variables.ai2_barabbas_run,
-    'ai2_chump_stop': bsl_variables.ai2_chump_stop,
+
 };
 # Objects
 
