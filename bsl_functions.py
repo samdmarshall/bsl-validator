@@ -1344,7 +1344,7 @@ unbind = {
     'rtype': 'void'
 };
 unbindall = {
-    'desc': "removes all bindings",,
+    'desc': "removes all bindings",
     'args': 'void',
     'rtype': 'void'
 };

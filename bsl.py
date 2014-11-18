@@ -7,13 +7,15 @@ PARSED_LINES = [];
 INDENT_LEVEL = 0;
 PARSE_AS_NEW_LINE = False;
 PAREN_SCOPE = 0;
+STATEMENT_SCOPE_START = -1;
+STATEMENT_SCOPE = False;
 
 GLOBAL_FUNCTIONS = {};
 GLOBAL_VARIABLES = {};
 # Objects
 
 # Token Types
-bsl_token_delimiter = [' ', '=', '(', ')', ';', ',', '#'];
+bsl_token_delimiter = [' ', '=', '(', ')', ';', ',', '#', '\t'];
 bsl_types = ['void', 'string', 'bool', 'int', 'float'];
 bsl_op = ['+', '-', '=', '!', 'and', 'or', 'eq', 'ne', '<', '>', '<=', '>='];
 bsl_comment = ['#'];
@@ -65,7 +67,7 @@ def IndexOfNextCharInList(char_list, char):
 def IndexOfNextNonSpace(char_list):
     skip_length = 0;
     current_char = char_list[skip_length];
-    while current_char == ' ':
+    while current_char == ' ' or current_char == '\t':
         skip_length += 1;
         current_char = char_list[skip_length];
     return skip_length;
@@ -214,10 +216,18 @@ def ParseParameters(char_list, index):
     
     return (parameters, valid_parameters);
 def ParseFunc(char_list, index):
+    global INDENT_LEVEL;
+    
     token_array = [];
     func_token = MakeToken(char_list, index, False);
     token_array.append(func_token);
+    
+    if INDENT_LEVEL != 0:
+        print 'Invalid scope, missing '+str(INDENT_LEVEL)+' \"}\"s';
+        MakeTokenReturnTuple(token_array, index, False);
+    
     if func_token[2] != 'func':
+        print 'Error, assumed to parse function declaration but starting token is not \"func\"';
         return MakeTokenReturnTuple(token_array, index, False);
     
     peek_token = MakeToken(char_list[func_token[0]:], func_token[0], False);
@@ -236,15 +246,25 @@ def ParseFunc(char_list, index):
     
     return MakeTokenReturnTuple(token_array, index, parameter_result[1]);
 def ParseIf(char_list, index):
+    global STATEMENT_SCOPE;
+    global STATEMENT_SCOPE_START;
+    global PAREN_SCOPE;
+    
     token_array = [];
     if_token = MakeToken(char_list, index, False);
     token_array.append(if_token);
     if if_token[2] != 'if':
         return MakeTokenReturnTuple(token_array, index, False);
-        
+    
+    STATEMENT_SCOPE = True;
+    STATEMENT_SCOPE_START = PAREN_SCOPE;
+    
     parameters = [];
-    open_paren = IndexOfNextCharInList(char_list[if_token[0]:], '(') + 1;
+    open_paren = IndexOfNextCharInList(char_list[if_token[0]:], '(');
     new_index = if_token[0] + open_paren;
+    open_paren_token = MakeToken(char_list[new_index:], new_index, False);
+    if open_paren_token[2] == '(':
+        PAREN_SCOPE += 1;
     close_paren = IndexOfNextCharInList(char_list[new_index:], ')');
     
     if open_paren > close_paren:
@@ -300,8 +320,13 @@ def IncreaseParenScope(token_string):
         PAREN_SCOPE += 1;
 def DecreaseParenScope(token_string):
     global PAREN_SCOPE;
+    global STATEMENT_SCOPE;
+    global STATEMENT_SCOPE_START;
     if token_string == ')':
         PAREN_SCOPE -= 1;
+    if PAREN_SCOPE == STATEMENT_SCOPE_START and STATEMENT_SCOPE == True:
+        STATEMENT_SCOPE = False;
+        STATEMENT_SCOPE_START = -1;
 def IncreaseEncapsulateScope(token_string):
     global INDENT_LEVEL;
     if token_string == '{':
@@ -315,6 +340,14 @@ def MarkNewLine(token_string):
     if token_string == ';':
         PARSE_AS_NEW_LINE = True;
 # Lookup
+bsl_expr_statement_resolve = {
+    'eq': 'eq',
+    'ne': 'ne',
+    '>=': 'gte',
+    '<=': 'lte',
+    '<': 'lt',
+    '>': 'gt'
+}
 bsl_reserved_word = {
     '2': IsReservedWord_2,
     '3': IsReservedWord_3,
@@ -374,6 +407,8 @@ bsl_known_tokens = {
 bsl_two_reserved_words = ['var', 'func'];
 # Functions
 def ParseReservedWord(token_string, char_list, index, initial_token):
+    global STATEMENT_SCOPE;
+    
     known_word = token_string in bsl_reserved_parse;
     valid_token = False;
     new_index = index + len(token_string);
@@ -385,6 +420,9 @@ def ParseReservedWord(token_string, char_list, index, initial_token):
             token = bsl_reserved_parse[token_string](char_list, index);
             #valid_token = True;
             return token;
+    if valid_token == False and STATEMENT_SCOPE == True:
+        if token_string in bsl_expr_statement_resolve:
+            valid_token = True;
     return (new_index, len(token_string), token_string, valid_token);
 def GetTokenLength(char_list): # returns length of a parsed token
     skip_length = IndexOfNextNonSpace(char_list);
@@ -486,6 +524,7 @@ def RecursiveParse(line, offset, line_index):
         return RecursiveParse(line, offset, line_index);
     return offset;
 def main(argv):
+    global PAREN_SCOPE;
     if len(argv) != 1:
         print 'Please supply one bsl file to validate.';
         sys.exit();
@@ -502,6 +541,10 @@ def main(argv):
         for line in lines:
             line_counter += 1;
             RecursiveParse(line, offset, line_counter);
+            if PAREN_SCOPE != 0:
+                print 'Missing closing \")\" on line '+str(line_counter);
+                sys.exit();
+        
         for line in PARSED_LINES:
             print line;
     
