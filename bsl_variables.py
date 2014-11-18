@@ -534,3 +534,403 @@ save_point = {
     'desc': "which save point we are on",
     'type': 'int'
 };
+am_hit_everything = {
+    'desc': "makes the laser pointer hit all objects",
+    'type': 'bool'
+};
+am_invert = {
+    'desc': "inverts the aiming",
+    'type': 'bool'
+};
+am_show_axes = {
+    'desc': "shows world axes",
+    'type': 'bool'
+};
+am_show_closest = {
+    'desc': "dumps the closest GQ index to console",
+    'type': 'bool'
+};
+am_show_filenames = {
+    'desc': "dumps the closest GQ index file/obj name to console",
+    'type': 'bool'
+};
+am_show_texturename = {
+    'desc': "Shows Texture name",
+    'type': 'bool'
+};
+character_name_distance = {
+    'desc': "Specifies the distance from the camera that character names no longer draw.",
+    'type': 'float'
+};
+show_characters = {
+    'desc': "Enables the display of character starting positions",
+    'type': 'bool'
+};
+chr_show_bnv = {
+    'desc': "shows the bnv of the main character",
+    'type': 'bool'
+};
+chr_show_lod = {
+    'desc': "shows the current lod of the main character",
+    'type': 'bool'
+};
+cinematic_xoffset = {
+    'desc': "Offset from the vertical edge of the screen for the cinematic insert.",
+    'type': 'float'
+};
+cinematic_yoffset = {
+    'desc': "Offset from the horizontal edge of the screen for the cinematic insert.",
+    'type': 'float'
+};
+cm_canter_unarmed = {
+    'desc': "camera canter",
+    'type': 'float'
+};
+cm_canter_weapon = {
+    'desc': "camera canter",
+    'type': 'float'
+};
+cm_distance = {
+    'desc': "camera distance",
+    'type': 'float'
+};
+cm_height = {
+    'desc': "camera height",
+    'type': 'float'
+};
+cm_jello_radius = {
+    'desc': "bla bla",
+    'type': 'float'
+};
+cm_jello_amt = {
+    'desc': "bla bla",
+    'type': 'float'
+};
+cm_plane_test = {
+    'desc': "jello camera plane test",
+    'type': 'bool'
+};
+co_display = {
+    'desc': "enables console display",
+    'type': 'bool'
+};
+co_message_display = {
+    'desc': "enables text message display",
+    'type': 'bool'
+};
+co_fade_time = {
+    'desc': "The fade time of the console",
+    'type': 'int'
+};
+co_priority = {
+    'desc': "changes the priority of messages to display on the console",
+    'type': 'int'
+};
+debug_weapons = {
+    'desc': "prints debugging info about weapon particle events",
+    'type': 'bool'
+};
+wp_kickable = {
+    'desc': "lets the player kick weapons",
+    'type': 'bool'
+};
+recoil_edit = {
+    'desc': "enables editable recoil",
+    'type': 'bool'
+};
+recoil_base = {
+    'desc': 'base',
+    'type': 'float'
+};
+recoil_max = {
+    'desc': 'max',
+    'type': 'float'
+};
+recoil_factor = {
+    'desc': 'factor',
+    'type': 'float'
+};
+recoil_return_speed = {
+    'desc': 'return speed',
+    'type': 'float'
+};
+wp_hypostrength = {
+    'desc': "Sets strength of hypo spray",
+    'type': 'int'
+};
+wp_fadetime = {
+    'desc': "Sets free time for powerups",
+    'type': 'int'
+};
+wp_disable_fade = {
+    'desc': "Disables weapon fading",
+    'type': 'bool'
+};
+target_max_distance = {
+    'desc': "Sets the distance at which the radar will start to change from its minimum.",
+    'type': 'float'
+};
+ui_suppress_prompt = {
+    'desc': "Suppresses UI prompting about new objectives or moves.",
+    'type': 'bool'
+};
+door_show_debug = {
+    'desc': "Shows debug geometry",
+    'type': 'bool'
+};
+door_ignore_locks = {
+    'desc': "Disables all door locks",
+    'type': 'bool'
+};
+door_show_activation = {
+    'desc': "Draws a circle where door activates",
+    'type': 'bool'
+};
+door_pop_lighting = {
+    'desc': "uses bad door lighting",
+    'type': 'bool'
+};
+env_show_stairflagged = {
+    'desc': "Show specially flagged noncollision quads",
+    'type': 'bool'
+};
+env_show_rays = {
+    'desc': "Draw the rays",
+    'type': 'bool'
+};
+env_drawallgqs = {
+    'desc': "Draw all the GQs",
+    'type': 'bool'
+};
+env_drawvisonly = {
+    'desc': "Draw only the GQs used for visibility",
+    'type': 'bool'
+};
+env_collision = {
+    'desc': "Enables environment collision",
+    'type': 'bool'
+};
+env_drawfrustum = {
+    'desc': "Draw the frustum around the environment camera",
+    'type': 'bool'
+};
+env_show_octtree = {
+    'desc': "Enables display of environment octtree traversal",
+    'type': 'bool'
+};
+env_show_leafnodes = {
+    'desc': "Enables display of environment octtree leaf nodes",
+    'type': 'bool'
+};
+env_show_octnode_gqs = {
+    'desc': "When true the environment only renders triangles in the octnode that contains the manual camera",
+    'type': 'bool'
+};
+env_show_ghostgqs = {
+    'desc': "When true show ghost GQs",
+    'type': 'bool'
+};
+env_highlight_gq = {
+    'desc': "highlights a particular gq",
+    'type': 'int'
+};
+env_ray_number = {
+    'desc': "sets the number of rays to cast",
+    'type': 'int'
+};
+flag_name_distance = {
+    'desc': "Specifies the distance from the camera that flag names no longer draw.",
+    'type': 'float'
+};
+flag_new_id = {
+    'desc': "Specifies the id for a new flag",
+    'type': 'int'
+};
+show_flags = {
+    'desc': "Enables the display of flags",
+    'type': 'bool'
+};
+fx_laser_width = {
+    'desc': "",
+    'type': 'float'
+};
+gl_fog_end = {
+    'desc': "fog end",
+    'type': 'float'
+};
+gl_fog_start = {
+    'desc': "fog start",
+    'type': 'float'
+};
+gl_fog_red = {
+    'desc': "fog red",
+    'type': 'float'
+};
+gl_fog_green = {
+    'desc': "fog green",
+    'type': 'float'
+};
+gl_fog_blue = {
+    'desc': "fog blue",
+    'type': 'float'
+};
+gl_disable_depth_reads = {
+    'desc': "disable_depth_reads",
+    'type': 'bool'
+};
+gl_disable_packed_pixels = {
+    'desc': "lets you disable packed-pixels support",
+    'type': 'bool'
+};
+gl_disable_dxt1 = {
+    'desc': "lets you disable use of DXT1",
+    'type': 'bool'
+};
+gl_mipmap_offset = {
+    'desc': "lets you disable miplevels (-ve = disable big, +ve = disable small)",
+    'type': 'int'
+};
+gl_fog_disabled = {
+    'desc': 'fog disabled',
+    'type': 'bool'
+};
+laser_alpha = {
+    'desc': "Enables the display of triggers",
+    'type': 'bool'
+};
+show_triggers = {
+    'desc': "Enables the display of triggers",
+    'type': 'bool'
+};
+li_center_cursor = {
+    'desc': "Should we center the cursor",
+    'type': 'bool'
+};
+m3_clear_color = {
+    'desc': "color to clear the back buffer to",
+    'type': 'int'
+};
+m3_shade_vertex = {
+    'desc': "Enables vertex interpolation for the triangle",
+    'type': 'bool'
+};
+m3_fill_solid = {
+    'desc': "Toggles wireframe vs filled triangles",
+    'type': 'bool'
+};
+m3_texture = {
+    'desc': "Toggles texture mapping or gouraud",
+    'type': 'bool'
+};
+m3_zcompareon = {
+    'desc': "true if zcompare is on",
+    'type': 'bool'
+};
+m3_double_buffer = {
+    'desc': "Toggles double buffer mode",
+    'type': 'bool'
+};
+m3_buffer_clear = {
+    'desc': "Toggles buffer clear",
+    'type': 'bool'
+};
+p3_show_env_collision = {
+    'desc': "Draws particle / environment collisions.",
+    'type': 'bool'
+};
+p3_glass_breakable = {
+    'desc': "Enables breakable glass.",
+    'type': 'bool'
+};
+p3_everything_breakable = {
+    'desc': "Makes every quad breakable.",
+    'type': 'bool'
+};
+p3_furniture_breakable = {
+    'desc': "Makes all furniture breakable.",
+    'type': 'bool'
+};
+p3_debug_collision = {
+    'desc': "Enables collision debugging display",
+    'type': 'int'
+};
+patrolpath_name_distance = {
+    'desc': "Specifies the distance from the camera that patrol point names no longer draw.",
+    'type': 'float'
+};
+ph_debug_keyforces = {
+    'desc': "Toggle keyboard applied forces",
+    'type': 'bool'
+};
+ph_active = {
+    'desc': "enable physics",
+    'type': 'bool'
+};
+ph_show_collisions = {
+    'desc': "toggle display of colliding quads",
+    'type': 'bool'
+};
+sc_bind_f2 = {
+    'desc': "binds f2 to a specific animation",
+    'type': 'string'
+};
+sc_bind_f3 = {
+    'desc': "binds f3 to a specific animation",
+    'type': 'string'
+};
+show_sound_all = {
+    'desc': "Sound rings will always be drawn, not just when a sound is selected.",
+    'type': 'bool'
+};
+show_sound_spheres = {
+    'desc': "Sound spheres will always be drawn, not just when a sound sphere is selected.",
+    'type': 'bool'
+};
+show_sound_rectangles = {
+    'desc': "Sound rectangles will always be drawn, not just when a sound Rectangle is selected.",
+    'type': 'bool'
+};
+show_patrolpaths = {
+    'desc': "Enables the display of AI patrol path objects",
+    'type': 'bool'
+};
+show_turrets = {
+    'desc': "Enables the display of turrets",
+    'type': 'bool'
+};
+turret_show_debug = {
+    'desc': "Enables the display of turret debug lines",
+    'type': 'bool'
+};
+sky_show_sky = {
+    'desc': "Toggles display of the sky",
+    'type': 'bool'
+};
+sky_show_clouds = {
+    'desc': "Toggles display of the clouds",
+    'type': 'bool'
+};
+sky_show_skybox = {
+    'desc': "Toggles display of the skybox",
+    'type': 'bool'
+};
+sky_show_stars = {
+    'desc': "Toggles display of the stars",
+    'type': 'bool'
+};
+sky_show_planet = {
+    'desc': "Toggles display of the planet (sun/moon)",
+    'type': 'bool'
+};
+sky_height = {
+    'desc': 'sky height',
+    'type': 'float'
+};
+sound_show_occlusions = {
+    'desc': "enables debugging display of sound occlusions",
+    'type': 'bool'
+};
+sound_show_debug = {
+    'desc': "Displays sound debugging info",
+    'type': 'bool'
+};

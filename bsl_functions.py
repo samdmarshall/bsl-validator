@@ -1008,3 +1008,348 @@ lock_keys = {
     'args': 'void',
     'rtype': 'void'
 };
+cinematic_start = {
+    'desc': "start the display of a cinematic insert",
+    'args': "bitmap_name:string draw_width:int draw_height:int start:int end:int velocity:float mirror:bool",
+    'rtype': 'void'
+};
+cinematic_stop = {
+    'desc': "stop the display of a cinematic insert",
+    'args': "bitmap_name:string end:int velocity:float",
+    'rtype': 'void'
+};
+cm_jello = {
+    'desc': "toggles camera Jello(tm) mode",
+    'args': "mode:int{0 | 1 }",
+    'rtype': 'void'
+};
+console_print = {
+    'desc': "dumps all arguments",
+    'args': 'void',
+    'rtype': 'voud'
+};
+co_toggle_text = {
+    'desc': "cycles console text color",
+    'args': 'void',
+    'rtype': 'void'
+};
+give_powerup = {
+    'desc': "Gives a powerup to a character",
+    'args': "powerup_name:string [amount:int | ] [character:int | ]",
+    'rtype': 'void'
+};
+weapon_reset = {
+    'desc': "resets all unheld weapons to their starting state",
+    'args': 'void',
+    'rtype': 'void'
+};
+powerup_reset = {
+    'desc': "resets all placed powerups to their starting points",
+    'args': 'void',
+    'rtype': 'void'
+};
+diary_page_unlock = {
+    'desc': "Unlocks a specific diary page on the current level.",
+    'args': "page:int",
+    'rtype': 'void'
+};
+objective_complete = {
+    'desc': "Plays the objective-complete sound.",
+    'args': 'void',
+    'rtype': 'void'
+};
+ui_show_help = {
+    'desc': "debugging: enables the HUD help overlays",
+    'args': "enable:int",
+    'rtype': 'void'
+};
+ui_fill_element = {
+    'desc': "sets part of the HUD to completely filled",
+    'args': "element_name:string fill:int",
+    'rtype': 'void'
+};
+objective_set = {
+    'desc': "Sets the current objective page.",
+    'args': "page:int [make_silent:string{\"silent\"} | ]",
+    'rtype': 'void'
+};
+target_set = {
+    'desc': "Sets the target to the specified flag",
+    'args': "flag_id:int min_distance:float",
+    'rtype': 'void'
+};
+text_console = {
+    'desc': "Turns on the text console display",
+    'args': "name:string",
+    'rtype': 'void'
+};
+ui_show_element = {
+    'desc': "shows or hides part of the HUD",
+    'args': "element_name:string show:int",
+    'rtype': 'void'
+};
+ui_flash_element = {
+    'desc': "sets part of the HUD to flash or not flash",
+    'args': "element_name:string fill:int",
+    'rtype': 'void'
+};
+dump_docs = {
+    'desc': "Shows all registered variables and commands",
+    'args': 'void',
+    'rtype': 'void'
+};
+flag_view_prefix = {
+    'desc': "View flags with a specific prefix",
+    'args': "prefix:string",
+    'rtype': 'void'
+};
+gl_fog_start_changeto = {
+    'desc': "changes the fog start distance smoothly",
+    'args': "start_val:float [frames:int | ]",
+    'rtype': 'void'
+};
+gl_fog_end_changeto = {
+    'desc': "changes the fog end distance smoothly",
+    'args': "end_val:float [frames:int | ]",
+    'rtype': 'void'
+};
+m3_draw_engine_list = {
+    'desc': "lists all the engines",
+    'args': "void",
+    'rtype': 'void'
+};
+m3_geom_engine_list = {
+    'desc': "lists all the engines",
+    'args': "void",
+    'rtype': 'void'
+};
+m3_engine_set = {
+    'desc': "sets the active engine",
+    'args': "geom_engine:int draw_engine:int",
+    'rtype': 'void'
+};
+m3_display_list = {
+    'desc': "lists all the display modes",
+    'args': "void",
+    'rtype': 'void'
+};
+m3_display_set = {
+    'desc': "sets the active display mode",
+    'args': "device_index:int mode_index:int",
+    'rtype': 'void'
+};
+m3_quality_set = {
+    'desc': "sets the current graphics quality",
+    'args': "quality:string",
+    'rtype': 'void'
+};
+movie_play = {
+    'desc': "function to start a movie playing",
+    'args': "name:string",
+    'rtype': 'void'
+};
+p3_spawn = {
+    'desc': "Spawns a new P3 particle",
+    'args': "particle_class:string [velocity:float | ]",
+    'rtype': 'void'
+};
+p3_killall = {
+    'desc': "Kills all P3 particles",
+    'args': "void",
+    'rtype': 'void'
+};
+p3_killnearest = {
+    'desc': "Kills the nearest P3 particle",
+    'args': "[no_recreate:bool | ]",
+    'rtype': 'void'
+};
+p3_count = {
+    'desc': "Lists a count of P3 particles",
+    'args': "void",
+    'rtype': 'void'
+};
+p3_callevent = {
+    'desc': "Triggers an event on all P3 particles of a specified class",
+    'args': "particle_class:string event_index:int",
+    'rtype': 'void'
+};
+particle_temp_start = {
+    'desc': "Starts temporary-particle-creation mode",
+    'args': 'void',
+    'rtype': 'void'
+};
+particle_temp_stop = {
+    'desc': "Stops temporary-particle-creation mode",
+    'args': 'void',
+    'rtype': 'void'
+};
+particle_temp_kill = {
+    'desc': "Kills any temporary particles",
+    'args': 'void',
+    'rtype': 'void'
+};
+particle = {
+    'desc': "Sends a command to environmental particles with a given tag",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_printtags = {
+    'desc': "Prints out all environmental particles with tags",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_removedangerous = {
+    'desc': "Removes all 'dangerous projectile' particles by making their lifetime expire",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_dumpparticles = {
+    'desc': "Dump all particles to a text file",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_listcollision = {
+    'desc': "Dump all particle classes with collision to a text file",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_writeusedparticles = {
+    'desc': "Writes all particles used on this level to a text file",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_startall = {
+    'desc': "Creates and starts all environmental particles",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_stopall = {
+    'desc': "Stops all environmental particles",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_daodan_disable = {
+    'desc': "Disables parts of the daodan shield (for debugging)",
+    'args': 'void',
+    'rtype': 'void'
+};
+p3_perf = {
+    'desc': "Toggles particle performance display and sets event masks",
+    'args': 'void',
+    'rtype': 'void'
+};
+ph_status = {
+    'desc': 'xxx',
+    'args': 'void',
+    'rtype': 'void'
+};
+script_reload = {
+    'desc': "reload scripts for a level",
+    'args': 'void',
+    'rtype': 'void'
+};
+sc_focus = {
+    'desc': "sets which character we're authoring for a film",
+    'args': "chr_index:int",
+    'rtype': 'void'
+};
+sound_music_start = {
+    'desc': "function to start music playing",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_music_stop = {
+    'desc': "function to start music playing",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_dialog_play = {
+    'desc': "function to start character dialog playing",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_dialog_play_block = {
+    'desc': "function to start character dialog playing after the current dialog finishes",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_dialog_play_interrupt = {
+    'desc': "function to interrupt the current character dialog and play a new one",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_ambient_start = {
+    'desc': "function to start an ambient sound",
+    'args': "name:string [volume:float | ]",
+    'rtype': 'void'
+};
+sound_ambient_stop = {
+    'desc': "function to stop an ambient sound",
+    'args': "name:string",
+    'rtype': 'void'
+};
+sound_ambient_volume = {
+    'desc': "function to set the volume of a playing ambient sound",
+    'args': "name:string volume:float [time:float | ]",
+    'rtype': 'void'
+};
+sound_impulse_play = {
+    'desc': "function plays an impulse sound",
+    'args': "name:string [volume:float | ]",
+    'rtype': 'void'
+};
+sound_list_broken_links = {
+    'desc': "function writes a list of sounds which have broken links to a file",
+    'args': "void",
+    'rtype': 'void'
+};
+sound_objects_reset = {
+    'desc': "reloads the sounds objects",
+    'args': 'void',
+    'rtype': 'void'
+};
+sound_music_volume = {
+    'desc': "function to set the volume of playing music",
+    'args': "name:string volume:float [time:float | ]",
+    'rtype': 'void'
+};
+tr_write_animation = {
+    'desc': "bla bla bla",
+    'args': "anim_name:string file_name:string",
+    'rtype': 'void'
+};
+tr_write_collection = {
+    'desc': "bla bla bla",
+    'args': "collection_name:string file_name:string",
+    'rtype': 'void'
+};
+tr_write_lookup = {
+    'desc': "bla bla bla",
+    'args': "file_name:string",
+    'rtype': 'void'
+};
+tr_stop_lookup = {
+    'desc': "bla bla bla",
+    'args': 'void',
+    'rtype': 'void'
+};
+bind = {
+    'desc': "binds an input to a function",
+    'args': "input_name:string to:string{\"to\"} input_function:string",
+    'rtype': 'void'
+};
+unbind = {
+    'desc': "removes a binding from a input function",
+    'args': "input_name:string",
+    'rtype': 'void'
+};
+unbindall = {
+    'desc': "removes all bindings",,
+    'args': 'void',
+    'rtype': 'void'
+};
+mouse_acceleration = {
+    'desc': "sets the mouse acceleration value",
+    'args': "accel:float",
+    'rtype': 'void'
+};
