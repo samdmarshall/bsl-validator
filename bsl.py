@@ -125,14 +125,10 @@ def ValidateFloatVar(char):
     return char in bsl_valid_floats;
 def ParseAssign(char_list, index, var_type):
     global PARSE_AS_NEW_LINE;
-    skip_length = 0;
     token_length = 0;
-    current_char = char_list[skip_length];
     string_encapsulation = False;
     valid_token = True;
-    while current_char == ' ':
-        skip_length += 1;
-        current_char = char_list[skip_length];
+    skip_length = IndexOfNextNonSpace(char_list);
     for char in char_list[skip_length:]:
         if string_encapsulation == True:
             token_length += 1;
