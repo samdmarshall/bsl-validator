@@ -349,7 +349,9 @@ bsl_expr_statement_resolve = {
     '>=': 'gte',
     '<=': 'lte',
     '<': 'lt',
-    '>': 'gt'
+    '>': 'gt',
+    'and': 'and',
+    'or': 'or'
 }
 bsl_reserved_word = {
     '2': IsReservedWord_2,
@@ -508,7 +510,7 @@ def ParseLine(line_text, offset):
         if PARSE_AS_NEW_LINE == True:
             if line_index < len(char_list)-1:
                 parse_another_line = True;
-            offset = line_index+1;
+            offset = line_index;
             PARSE_AS_NEW_LINE = False;
             break;
     
