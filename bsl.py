@@ -154,6 +154,7 @@ def ParseAssign(char_list, index, var_type):
     token_string = ''.join(char_list[skip_length:skip_length+token_length]);
     return (index+skip_length, token_length, token_string, valid_token);
 def ParseVar(char_list, index):
+    global PARSE_AS_NEW_LINE;
     token_array = [];
     var_token = MakeToken(char_list, index, False);
     token_array.append(var_token);
@@ -175,6 +176,8 @@ def ParseVar(char_list, index):
         token_array.append(value_token);
     elif assign_token[2] != ';':
         return MakeTokenReturnTuple(token_array, index, False);
+    elif assign_token[2] == ';':
+        PARSE_AS_NEW_LINE = True;
     
     return MakeTokenReturnTuple(token_array, index, True);
 def ParseComment(char_list, index):
@@ -278,6 +281,10 @@ def ParseElse(char_list, index):
         return MakeTokenReturnTuple(token_array, index, False);
     
     # check to see if encapsulated and if it is followed by another if statement
+    peek_token = MakeToken(char_list[else_token[0]:], else_token[0], False);
+    if peek_token[2] == 'if':
+        if_token = MakeToken(char_list[else_token[0]:], else_token[0], False);
+        token_array.append(if_token);
     
     return MakeTokenReturnTuple(token_array, index, True);
 def ParseSleep(char_list, index):
@@ -499,7 +506,7 @@ def ParseLine(line_text, offset):
             valid_line = False;
             break;
         if PARSE_AS_NEW_LINE == True:
-            if line_index+1 < len(char_list):
+            if line_index < len(char_list)-1:
                 parse_another_line = True;
             offset = line_index+1;
             PARSE_AS_NEW_LINE = False;
