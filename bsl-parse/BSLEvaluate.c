@@ -44,6 +44,8 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 				}
 				else if (item_token->code == BSLTokenCode_id_func) {
 					bsl_function func = bsl_function_parse(&item, context);
+					
+					// this needs to be changed so it registers against the database in a non-hacky method
 					if (func.type == bsl_func_type_comp) {
 						func.u.comp.call = oni_call_noop;
 					}
