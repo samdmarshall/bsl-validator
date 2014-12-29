@@ -148,6 +148,8 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						// execute statements
 						bsl_symbol_interp_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
 					}
+					
+					free(parsed_args);
 				}
 				
 				if (symbol->type == bsl_symbol_type_variable) {
@@ -156,16 +158,18 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					// advance to the assignment operator
 					curr = curr->next;
 					
-					if (curr == NULL) {
+					if (curr == NULL || curr->token == NULL) {
 						// error in syntax
+						break;
 					}
 					
 					if (curr->token->code == BSLTokenCode_op_assign) {
 						// advance to variable;
 						curr = curr->next;
 						
-						if (curr == NULL) {
+						if (curr == NULL || curr->token == NULL) {
 							// error in syntax
+							break;
 						}
 						
 						bsl_variable *value = bsl_variable_create_from_token(curr->token, context);
