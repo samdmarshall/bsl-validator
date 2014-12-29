@@ -189,7 +189,7 @@ uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_a
 			bsl_variable_type var_type = var.type;
 			char *var_name = var.name;
 			
-			printf("%s:%s", bsl_variable_get_type_name(var_type), var_name);
+			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
 			
 			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
 				printf(" | ");

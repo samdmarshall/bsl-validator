@@ -215,13 +215,19 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						context->stack->active->next = bsl_stack_scope_create();
 						context->stack->active = context->stack->active->next;
 					}
-					else if (bsl_token_resolve_identifier(token) != BSLTokenCode_id_generic) {
-						// evaluate expression
-						printf("evaluate expression\n");
-					}
 					else {
-						context->error = bsl_error_token_invalid_syntax;
-						break;
+						bsl_token_code code = bsl_token_resolve_identifier(token);
+						
+						if (code != BSLTokenCode_id_generic) {
+							// evaluate expression
+							printf("evaluate expression\n");
+							
+							// this should be a new type of symbol?
+						}
+						else {
+							context->error = bsl_error_token_invalid_syntax;
+							break;
+						}
 					}
 				}
 			}
