@@ -22,6 +22,7 @@
 		2262FD341A51A6C400C9F47F /* BSLExecute.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328E41A508C7C00E01700 /* BSLExecute.c */; };
 		2262FD351A51A6C400C9F47F /* BSLScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CF1A4F3F1200E01700 /* BSLScript.c */; };
 		2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CC1A4F3A6D00E01700 /* OniScript.c */; };
+		2262FD3A1A51AF9500C9F47F /* BSLStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD381A51AF9500C9F47F /* BSLStack.c */; };
 		22E328A81A4F028F00E01700 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328A71A4F028F00E01700 /* main.c */; };
 		22E328B01A4F02AA00E01700 /* BSLToken.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328AE1A4F02AA00E01700 /* BSLToken.c */; };
 		22E328B31A4F02B600E01700 /* BSLParse.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B11A4F02B600E01700 /* BSLParse.c */; };
@@ -54,6 +55,8 @@
 
 /* Begin PBXFileReference section */
 		2262FD241A51A6AC00C9F47F /* libbsl.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libbsl.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		2262FD381A51AF9500C9F47F /* BSLStack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStack.c; sourceTree = "<group>"; };
+		2262FD391A51AF9500C9F47F /* BSLStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStack.h; sourceTree = "<group>"; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -108,6 +111,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2262FD371A51AF8500C9F47F /* Stack */ = {
+			isa = PBXGroup;
+			children = (
+				2262FD391A51AF9500C9F47F /* BSLStack.h */,
+				2262FD381A51AF9500C9F47F /* BSLStack.c */,
+			);
+			name = Stack;
+			sourceTree = "<group>";
+		};
 		22E3289B1A4F028F00E01700 = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +222,7 @@
 		22E328EA1A508CF500E01700 /* Context */ = {
 			isa = PBXGroup;
 			children = (
+				2262FD371A51AF8500C9F47F /* Stack */,
 				22E328B51A4F070600E01700 /* BSLDatabase.h */,
 				22E328B41A4F070600E01700 /* BSLDatabase.c */,
 				22E328BB1A4F0AB300E01700 /* BSLContext.h */,
@@ -350,6 +363,7 @@
 				22E328E61A508C7C00E01700 /* BSLExecute.c in Sources */,
 				22E328C51A4F0D7A00E01700 /* BSLExpression.c in Sources */,
 				22E328B61A4F070600E01700 /* BSLDatabase.c in Sources */,
+				2262FD3A1A51AF9500C9F47F /* BSLStack.c in Sources */,
 				22E328D11A4F3F1200E01700 /* BSLScript.c in Sources */,
 				22E328A81A4F028F00E01700 /* main.c in Sources */,
 				22E328B01A4F02AA00E01700 /* BSLToken.c in Sources */,

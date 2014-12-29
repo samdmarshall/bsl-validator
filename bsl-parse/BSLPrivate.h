@@ -102,13 +102,16 @@ typedef enum {
 } bsl_token_code;
 
 typedef enum {
-	BSLTokenReadError_None,
+	bsl_error_none,
 	
-	BSLTokenReadError_InvalidString,
-	BSLTokenReadError_InvalidSyntax,
+	bsl_error_token_invalid_string,
+	bsl_error_token_invalid_syntax,
 	
-	BSLTokenReadError_Count
-} BSLTokenReadError;
+	bsl_error_invalid_identifier,
+	bsl_error_reserved_word,
+	
+	bsl_error_count
+} bsl_error;
 
 typedef struct bsl_token bsl_token;
 
@@ -116,7 +119,7 @@ struct bsl_token {
 	uint16_t code;
 	bsl_script_offset offset;
 	char *contents; // not allocated, this points directly to the context's text, use offset
-	BSLTokenReadError error;
+	bsl_error error;
 } __attribute__((packed));
 
 #pragma mark -
@@ -162,6 +165,30 @@ struct bsl_database {
 };
 
 #pragma mark -
+#pragma mark BSLStack
+
+typedef struct bsl_stack_scope bsl_stack_scope;
+
+struct bsl_stack_scope {
+	bsl_scope_type scope_level;
+	int8_t scope_depth;
+	
+	cmap_str symtab;
+	
+	bsl_stack_scope *next;
+	bsl_stack_scope *prev;
+};
+
+typedef struct bsl_stack bsl_stack;
+
+struct bsl_stack {
+	
+	bsl_stack_scope *active;
+	
+	bsl_stack_scope *state;
+};
+
+#pragma mark -
 #pragma mark BSLContext
 
 typedef struct bsl_context bsl_context;
@@ -172,7 +199,9 @@ struct bsl_context {
 	
 	bsl_database *global;
 	
-	bsl_database *current;
+	bsl_stack *stack;
+	
+	bsl_error error;
 };
 
 #pragma mark -
@@ -226,17 +255,46 @@ typedef enum {
 	bsl_func_rtype_Count
 } bsl_func_rtype;
 
+typedef enum {
+	bsl_func_type_invalid,
+	
+	bsl_func_type_interp,
+	bsl_func_type_comp,
+	
+	bsl_func_type_Count
+} bsl_func_type;
+
+typedef struct bsl_function_interpreted bsl_function_interpreted;
+
+struct bsl_function_interpreted {
+	bsl_expression *expression;
+	uint32_t expression_count;
+};
+
+typedef uintptr_t* Pointer;
+typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+
+typedef struct bsl_function_compiled bsl_function_compiled;
+
+struct bsl_function_compiled {
+	FunctionPointer call;
+};
+
 typedef struct bsl_function bsl_function;
 
 struct bsl_function {
+	bsl_func_type type;
+	
 	char *name;
 	bsl_func_rtype rtype;
 	
 	bsl_func_arg *args;
 	uint32_t arg_count;
 	
-	bsl_expression *expression;
-	uint32_t expression_count;
+	union {
+		bsl_function_interpreted interp;
+		bsl_function_compiled comp;
+	} u;
 };
 
 #pragma mark -

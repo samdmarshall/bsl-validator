@@ -14,7 +14,7 @@ bsl_token * read_token(mem_buff *text) {
 		
 		bsl_token *token = calloc(1, sizeof(bsl_token));
 		
-		token->error = BSLTokenReadError_None;
+		token->error = bsl_error_none;
 		
 		if (token != NULL) {
 
@@ -129,7 +129,7 @@ loop_parse:
 								
 								if (curr_tmp == 0 || curr_tmp == '\n' || curr_tmp == '\r') {
 									// add check for syntax error
-									token->error = BSLTokenReadError_InvalidString;
+									token->error = bsl_error_token_invalid_string;
 									break;
 								}
 								
@@ -278,7 +278,7 @@ loop_parse:
 						}
 						default: {
 							// syntax error
-							token->error = BSLTokenReadError_InvalidSyntax;
+							token->error = bsl_error_token_invalid_syntax;
 							break;
 						}
 					}
@@ -296,14 +296,14 @@ loop_parse:
 int check_token_error(bsl_token *token) {
 	char message[1024] = {0};
 	switch (token->error) {
-		case BSLTokenReadError_None: {
+		case bsl_error_none: {
 			break;
 		}
-		case BSLTokenReadError_InvalidString: {
+		case bsl_error_token_invalid_string: {
 			sprintf(message, "Invalid string constant at %s:%i",token->offset.script->fd->name,token->offset.line);
 			break;
 		}
-		case BSLTokenReadError_InvalidSyntax: {
+		case bsl_error_token_invalid_syntax: {
 			sprintf(message, "Invalid Syntax at %s:%i",token->offset.script->fd->name,token->offset.line);
 			break;
 		}

@@ -20,8 +20,8 @@ int bsl_execute_symbol(char *name, bsl_context *context) {
 			
 			
 			// run expressions
-			for (uint32_t index = 0; index < symbol->u.func.expression_count; index++) {
-				bsl_expression expression = symbol->u.func.expression[index];
+			for (uint32_t index = 0; index < symbol->u.func.u.interp.expression_count; index++) {
+				bsl_expression expression = symbol->u.func.u.interp.expression[index];
 				bsl_evaluate_expression(&expression, context);
 			}
 			
