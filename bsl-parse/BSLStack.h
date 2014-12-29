@@ -11,6 +11,10 @@
 
 #include "BSLPrivate.h"
 
+bsl_stack_scope * bsl_stack_scope_create();
+
+void bsl_stack_scope_release(bsl_stack_scope *scope);
+
 bsl_stack * bsl_stack_create();
 
 void bsl_stack_release(bsl_stack *stack);

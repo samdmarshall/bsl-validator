@@ -13,17 +13,29 @@
 #include "cmap.h"
 #include <ctype.h>
 
+typedef struct bsl_script bsl_script;
+typedef struct bsl_script_offset bsl_script_offset;
+typedef struct bsl_token bsl_token;
+typedef struct bsl_tkn_ir bsl_tkn_ir;
+typedef struct bsl_expression bsl_expression;
+typedef struct bsl_database bsl_database;
+typedef struct bsl_variable bsl_variable;
+typedef struct bsl_func_arg bsl_func_arg;
+typedef struct bsl_function_interpreted bsl_function_interpreted;
+typedef struct bsl_function_compiled bsl_function_compiled;
+typedef struct bsl_function bsl_function;
+typedef struct bsl_symbol bsl_symbol;
+typedef struct bsl_stack_scope bsl_stack_scope;
+typedef struct bsl_stack bsl_stack;
+typedef struct bsl_context bsl_context;
+
 #pragma mark -
 #pragma mark BSLScript
-
-typedef struct bsl_script bsl_script;
 
 struct bsl_script {
 	file_ref *fd;
 	mem_buff *contents;
 };
-
-typedef struct bsl_script_offset bsl_script_offset;
 
 struct bsl_script_offset {
 	bsl_script *script;
@@ -109,11 +121,10 @@ typedef enum {
 	
 	bsl_error_invalid_identifier,
 	bsl_error_reserved_word,
+	bsl_error_invalid_scope,
 	
 	bsl_error_count
 } bsl_error;
-
-typedef struct bsl_token bsl_token;
 
 struct bsl_token {
 	uint16_t code;
@@ -124,8 +135,6 @@ struct bsl_token {
 
 #pragma mark -
 #pragma mark BSLParse
-
-typedef struct bsl_tkn_ir bsl_tkn_ir;
 
 struct bsl_tkn_ir {
 	bsl_token *token;
@@ -147,8 +156,6 @@ typedef enum {
 	BSLScope_Count
 } bsl_scope_type;
 
-typedef struct bsl_expression bsl_expression;
-
 struct bsl_expression {
 	bsl_scope_type scope_type;
 	int8_t scope_level;
@@ -158,50 +165,8 @@ struct bsl_expression {
 #pragma mark -
 #pragma mark BSLDatabase
 
-typedef struct bsl_database bsl_database;
-
 struct bsl_database {
 	cmap_str symtab;
-};
-
-#pragma mark -
-#pragma mark BSLStack
-
-typedef struct bsl_stack_scope bsl_stack_scope;
-
-struct bsl_stack_scope {
-	bsl_scope_type scope_level;
-	int8_t scope_depth;
-	
-	cmap_str symtab;
-	
-	bsl_stack_scope *next;
-	bsl_stack_scope *prev;
-};
-
-typedef struct bsl_stack bsl_stack;
-
-struct bsl_stack {
-	
-	bsl_stack_scope *active;
-	
-	bsl_stack_scope *state;
-};
-
-#pragma mark -
-#pragma mark BSLContext
-
-typedef struct bsl_context bsl_context;
-
-struct bsl_context {
-	bsl_scope_type curr_scope;
-	int8_t scope_depth;
-	
-	bsl_database *global;
-	
-	bsl_stack *stack;
-	
-	bsl_error error;
 };
 
 #pragma mark -
@@ -218,8 +183,6 @@ typedef enum {
 	bsl_variable_Count
 } bsl_variable_type;
 
-typedef struct bsl_variable bsl_variable;
-
 struct bsl_variable {
 	bsl_variable_type type;
 	char *name;
@@ -234,8 +197,6 @@ struct bsl_variable {
 
 #pragma mark -
 #pragma mark BSLFunction
-
-typedef struct bsl_func_arg bsl_func_arg;
 
 struct bsl_func_arg {
 	bsl_variable *args;
@@ -264,23 +225,17 @@ typedef enum {
 	bsl_func_type_Count
 } bsl_func_type;
 
-typedef struct bsl_function_interpreted bsl_function_interpreted;
+typedef uintptr_t* Pointer;
+typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 
 struct bsl_function_interpreted {
 	bsl_expression *expression;
 	uint32_t expression_count;
 };
 
-typedef uintptr_t* Pointer;
-typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
-
-typedef struct bsl_function_compiled bsl_function_compiled;
-
 struct bsl_function_compiled {
 	FunctionPointer call;
 };
-
-typedef struct bsl_function bsl_function;
 
 struct bsl_function {
 	bsl_func_type type;
@@ -309,8 +264,6 @@ typedef enum {
 	bsl_symbol_type_Count
 } bsl_symbol_type;
 
-typedef struct bsl_symbol bsl_symbol;
-
 struct bsl_symbol {
 	bsl_symbol_type type;
 	
@@ -323,6 +276,42 @@ struct bsl_symbol {
 	} u;
 	
 	
+};
+
+#pragma mark -
+#pragma mark BSLStack
+
+struct bsl_stack_scope {
+	bsl_scope_type scope_level;
+	int8_t scope_depth;
+	
+	cmap_str symtab;
+	
+	bsl_symbol *symbol;
+	
+	bsl_stack_scope *next;
+	bsl_stack_scope *prev;
+};
+
+struct bsl_stack {
+	
+	bsl_stack_scope *active;
+	
+	bsl_stack_scope *state;
+};
+
+#pragma mark -
+#pragma mark BSLContext
+
+struct bsl_context {
+	bsl_scope_type curr_scope;
+	int8_t scope_depth;
+	
+	bsl_database *global;
+	
+	bsl_stack *stack;
+	
+	bsl_error error;
 };
 
 #endif

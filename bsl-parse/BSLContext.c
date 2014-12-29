@@ -25,16 +25,34 @@ bsl_context * bsl_context_create() {
 
 int bsl_context_check_error(bsl_context *context) {
 	char message[1024] = {0};
+	
+	if (context->stack->active->symbol == NULL) {
+		printf("implementation not finished yet, skipping error check!\n");
+		return context->error;
+	}
+	
+	char *name = "";
+	if (context->stack->active->symbol->type == bsl_symbol_type_variable) {
+		name = context->stack->active->symbol->u.value.name;
+	}
+	if (context->stack->active->symbol->type == bsl_symbol_type_function) {
+		name = context->stack->active->symbol->u.func.name;
+	}
+	
 	switch (context->error) {
 		case bsl_error_none: {
 			break;
 		}
 		case bsl_error_invalid_identifier: {
-			sprintf(message, "Unknown Error Code <%i>",context->error);
+			sprintf(message, "Invalid use of identifier \"%s\" at %s:%i", name, context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
 			break;
 		}
 		case bsl_error_reserved_word: {
-			sprintf(message, "Unknown Error Code <%i>",context->error);
+			sprintf(message, "Use of reserved word at %s:%i",context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
+			break;
+		}
+		case bsl_error_invalid_scope: {
+			sprintf(message, "Scoping error at %s:%i\n",context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
 			break;
 		}
 		default: {
@@ -65,7 +83,7 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 	}
 	if (context->scope_depth < 0) {
 		// throw error
-		printf("scoping error!\n");
+		context->error = bsl_error_invalid_scope;
 	}
 	else {
 		switch (context->scope_depth) {

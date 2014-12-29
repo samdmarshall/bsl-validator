@@ -13,6 +13,6 @@
 
 void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context);
 
-void bsl_evaluate_expression(bsl_expression *expr, bsl_context *context);
+bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context);
 
 #endif /* defined(__bsl_parse__BSLEvaluate__) */

@@ -10,6 +10,7 @@
 #include "BSLVariable.h"
 #include "BSLFunction.h"
 #include "BSLSymbol.h"
+#include "BSLStack.h"
 
 void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	bsl_tkn_ir *curr = token_ir;
@@ -80,7 +81,7 @@ void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	}
 }
 
-void bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {
+bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {
 	
 	bsl_tkn_ir *curr = expr->tokens;
 	
@@ -94,7 +95,9 @@ void bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {
 			bsl_symbol *symbol = bsl_db_get_global(token_name, context);
 			if (symbol != NULL) {
 				// global symbol
-				
+				context->stack->active->symbol = symbol;
+				context->stack->active->next = bsl_stack_scope_create();
+				context->stack->active = context->stack->active->next;
 			}
 			else {
 				// check if in local state
@@ -125,4 +128,6 @@ void bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {
 		
 		curr = curr->next;
 	}
+	
+	return context;
 }
