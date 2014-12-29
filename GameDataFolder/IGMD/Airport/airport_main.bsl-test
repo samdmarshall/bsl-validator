@@ -1,0 +1,34 @@
+#
+# airport_main.bsl
+#
+
+var int my_save_point;
+
+func void main (void) {
+
+   env_show 2010 0
+   gl_fog_blue=.15
+   gl_fog_red=.15
+   gl_fog_green=.15
+   gl_fog_start=.99
+   gs_farclipplane_set 5000
+               
+       ui_suppress_prompt = 1
+       chr_invincible 0 1
+       gs_show_ui = 0
+           
+       chr_location 0 200 0 2220
+       chr_facetoflag 0 11            
+       ai2_ignore_player = 1
+       
+       
+       ai2_spawn BoothStriker01
+       chr_location BoothStriker01 223 0 2247 
+       chr_facetoflag BoothStriker01 1116
+   
+       
+       ai2_spawn kd_1
+       chr_location kd_1 216 0 2209 
+       chr_facetoflag kd_1 1116
+   
+}
