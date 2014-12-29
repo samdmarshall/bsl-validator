@@ -22,7 +22,9 @@ bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 		case BSLTokenCode_type_float: {
 			return bsl_variable_float;
 		}
-		case BSLTokenCode_id_generic:
+		case BSLTokenCode_id_generic: {
+			// there needs to be a way to identify variables by identifier
+		}
 		case BSLTokenCode_id_string:
 		case BSLTokenCode_type_string: {
 			return bsl_variable_string;
@@ -58,61 +60,72 @@ char * bsl_variable_get_type_name(bsl_variable_type type) {
 	}
 }
 
-bsl_variable * bsl_variable_create_from_token(bsl_token *token) {
+bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *context) {
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
 	
 	if (var != NULL) {
-		var->type = bsl_variable_get_type(token->code);
 		
 		int tmp_int = 0;
 		float tmp_float = 0.f;
 		int8_t tmp_bool = 0;
-		char *tmp_str = NULL;
+		char *tmp_str = calloc(token->offset.length + 1, sizeof(char));
+		strncpy(tmp_str, token->contents, token->offset.length);
 		
-		switch (var->type) {
-			case bsl_variable_int: {
-				tmp_int = atoi(token->contents);
-				break;
-			}
-			case bsl_variable_bool: {
-				tmp_bool = (token->code == BSLTokenCode_id_true ? 1 : 0);
-				break;
-			}
-			case bsl_variable_float: {
-				tmp_float = strtof(token->contents, NULL);
-				break;
-			}
-			case bsl_variable_string: {
-				tmp_str = calloc(token->offset.length + 1, sizeof(char));
-				strncpy(tmp_str, token->contents, token->offset.length);
-				break;
-			}
-			default: {
-				// error
-				break;
+		bsl_symbol *test_symbol = bsl_db_get_global(tmp_str, context);
+		if (test_symbol != NULL) {
+			// this is a symbol
+			if (test_symbol->type == bsl_symbol_type_variable) {
+				// this is a variable
+				memcpy(var, &(test_symbol->u.value), sizeof(bsl_variable));
 			}
 		}
-		
-		switch (var->type) {
-			case bsl_variable_int: {
-				var->u.i = tmp_int;
-				break;
+		else {
+			var->type = bsl_variable_get_type(token->code);
+			
+			switch (var->type) {
+				case bsl_variable_int: {
+					tmp_int = atoi(token->contents);
+					break;
+				}
+				case bsl_variable_bool: {
+					tmp_bool = (token->code == BSLTokenCode_id_true ? 1 : 0);
+					break;
+				}
+				case bsl_variable_float: {
+					tmp_float = strtof(token->contents, NULL);
+					break;
+				}
+				case bsl_variable_string: {
+					tmp_str = tmp_str;
+					break;
+				}
+				default: {
+					// error
+					break;
+				}
 			}
-			case bsl_variable_bool: {
-				var->u.b = tmp_bool;
-				break;
-			}
-			case bsl_variable_float: {
-				var->u.f = tmp_float;
-				break;
-			}
-			case bsl_variable_string: {
-				var->u.s = tmp_str;
-				break;
-			}
-			default: {
-				// error
-				break;
+			
+			switch (var->type) {
+				case bsl_variable_int: {
+					var->u.i = tmp_int;
+					break;
+				}
+				case bsl_variable_bool: {
+					var->u.b = tmp_bool;
+					break;
+				}
+				case bsl_variable_float: {
+					var->u.f = tmp_float;
+					break;
+				}
+				case bsl_variable_string: {
+					var->u.s = tmp_str;
+					break;
+				}
+				default: {
+					// error
+					break;
+				}
 			}
 		}
 	}
@@ -354,6 +367,48 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 	*item = curr;
 	
 	return var;
+}
+
+void bsl_variable_set(bsl_variable *variable, bsl_variable *value) {
+	if (variable->type == value->type) {
+		printf("assigning var [%s:",variable->name);
+		switch (variable->type) {
+			case bsl_variable_int: {
+				printf("int] [%i -> ",variable->u.i);
+				variable->u.i = value->u.i;
+				printf("%i]\n",variable->u.i);
+				break;
+			}
+			case bsl_variable_bool: {
+				printf("bool] [%i -> ",variable->u.b);
+				variable->u.b = value->u.b;
+				printf("%i]\n",variable->u.i);
+				break;
+			}
+			case bsl_variable_float: {
+				printf("float] [%f -> ",variable->u.f);
+				variable->u.f = value->u.f;
+				printf("%f]\n",variable->u.f);
+				break;
+			}
+			case bsl_variable_string: {
+				printf("string] [%s -> ",variable->u.s);
+				if (variable->u.s != NULL) {
+					free(variable->u.s);
+				}
+				variable->u.s = value->u.s;
+				printf("%s]\n",variable->u.s);
+				break;
+			}
+			default: {
+				// error
+				break;
+			}
+		}
+	}
+	else {
+		// error type mis-match
+	}
 }
 
 void bsl_variable_release(bsl_variable variable) {

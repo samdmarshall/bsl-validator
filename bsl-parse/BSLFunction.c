@@ -196,8 +196,26 @@ uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_a
 			}
 			
 			if (args[param_index].arg_type_count > 0) {
-				if (args[param_index].args[0].type == var_type) {
-					matched_type = 1;
+				switch (var_type) {
+					case bsl_variable_int: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_float: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_bool: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+						break;
+					}
+					case bsl_variable_string: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+						break;
+					}
+					default: {
+						break;
+					}
 				}
 			}
 			else {
@@ -211,7 +229,7 @@ uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_a
 		switch (matched_type) {
 			case 0: {
 				// not matched!
-				// throw error
+				printf("mis-matching argument type!\n");
 				break;
 			}
 			case 1: {

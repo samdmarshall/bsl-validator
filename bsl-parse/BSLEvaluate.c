@@ -131,7 +131,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					
 					while (curr != NULL) {
 						
-						parsed_args[arg_counter].args = bsl_variable_create_from_token(curr->token);
+						parsed_args[arg_counter].args = bsl_variable_create_from_token(curr->token, context);
 						parsed_args[arg_counter].arg_type_count = 1;
 						
 						curr = curr->next;
@@ -150,9 +150,31 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 				
 				if (symbol->type == bsl_symbol_type_variable) {
 					// variable assignment
-					printf("catch me!\n");
 					
-					//
+					// advance to the assignment operator
+					curr = curr->next;
+					
+					if (curr == NULL) {
+						// error in syntax
+					}
+					
+					if (curr->token->code == BSLTokenCode_op_assign) {
+						// advance to variable;
+						curr = curr->next;
+						
+						if (curr == NULL) {
+							// error in syntax
+						}
+						
+						bsl_variable *value = bsl_variable_create_from_token(curr->token, context);
+						if (value != NULL) {
+							bsl_variable_set(&(symbol->u.value), value);
+							
+							free(value);
+						}
+					
+					}
+					
 				}
 				
 				context->stack->active->next = bsl_stack_scope_create();

@@ -20,7 +20,9 @@ uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_ar
 
 bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context);
 
-bsl_variable * bsl_variable_create_from_token(bsl_token *token);
+bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *context);
+
+void bsl_variable_set(bsl_variable *variable, bsl_variable *value);
 
 void bsl_variable_release(bsl_variable variable);
 
