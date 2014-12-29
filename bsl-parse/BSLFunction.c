@@ -16,6 +16,11 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	// moving to the type identifier
 	bsl_tkn_ir *curr = (*item)->next;
 	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return func;
+	}
+	
 	// seems that there isn't support for return types
 	if (curr->token->code != BSLTokenCode_id_generic) {
 		// valid vunction definition
@@ -52,9 +57,19 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 		
 		// advancing to function name
 		curr = curr->next;
+		
+		if (curr == NULL || curr->token == NULL) {
+			context->error = bsl_error_token_invalid_syntax;
+			return func;
+		}
 	}
 	else {
 		func.rtype = bsl_func_rtype_void;
+	}
+	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return func;
 	}
 	
 	// moving to the function name
@@ -66,6 +81,11 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 		curr = curr->next;
 	}
 	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return func;
+	}
+	
 	// moving to the args
 	if (curr->token->code == BSLTokenCode_ctl_lparen) {
 		// found function args parens
@@ -75,7 +95,18 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 		
 		// advancing to next token
 		curr = curr->next;
+		
+		if (curr == NULL || curr->token == NULL) {
+			context->error = bsl_error_token_invalid_syntax;
+			return func;
+		}
+		
 		while (curr->token->code != BSLTokenCode_ctl_rparen) {
+			if (curr == NULL || curr->token == NULL) {
+				context->error = bsl_error_token_invalid_syntax;
+				return func;
+			}
+			
 			if (curr->token->code == BSLTokenCode_id_void) {
 				curr = curr->next;
 			}
@@ -92,6 +123,11 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	
 	while (curr->token->code != BSLTokenCode_ctl_lbrace) {
 		curr = curr->next;
+		
+		if (curr == NULL || curr->token == NULL) {
+			context->error = bsl_error_token_invalid_syntax;
+			return func;
+		}
 	}
 	
 	if (curr->token->code == BSLTokenCode_ctl_lbrace) {
@@ -102,6 +138,12 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 		
 		context = bsl_context_update(context, curr->token);
 		curr = curr->next;
+		
+		if (curr == NULL || curr->token == NULL) {
+			context->error = bsl_error_token_invalid_syntax;
+			return func;
+		}
+		
 		while (context->curr_scope != BSLScope_global) {
 			
 			// add expressions here

@@ -10,12 +10,15 @@
 
 bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 	switch (code) {
+		case BSLTokenCode_id_int:
 		case BSLTokenCode_type_int: {
 			return bsl_variable_int;
 		}
+		case BSLTokenCode_id_bool:
 		case BSLTokenCode_type_bool: {
 			return bsl_variable_bool;
 		}
+		case BSLTokenCode_id_float:
 		case BSLTokenCode_type_float: {
 			return bsl_variable_float;
 		}
@@ -107,12 +110,15 @@ start:
 			curr = curr->next;
 		}
 
-		args[count].args = calloc(tmp_arg->arg_type_count, sizeof(bsl_variable));
-		args[count].arg_type_count = tmp_arg->arg_type_count;
+		if (tmp_arg->arg_type_count > 0) {
+			args[count].args = calloc(tmp_arg->arg_type_count, sizeof(bsl_variable));
+			args[count].arg_type_count = tmp_arg->arg_type_count;
 		
-		for (uint32_t index = 0; index < tmp_arg->arg_type_count; index++) {
-			memcpy(&(args[count].args[index]), &(tmp_arg->args[index]), sizeof(bsl_variable));
+			for (uint32_t index = 0; index < tmp_arg->arg_type_count; index++) {
+				memcpy(&(args[count].args[index]), &(tmp_arg->args[index]), sizeof(bsl_variable));
+			}
 		}
+		
 		free(tmp_arg);
 		tmp_arg = NULL;
 		
@@ -142,28 +148,44 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 	// moving to the type identifier
 	bsl_tkn_ir *curr = (*item)->next;
 	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return var;
+	}
+	
 	// getting variable type
 	var.type = bsl_variable_get_type(curr->token->code);
 	
 	// moving to the name identifier
 	curr = curr->next;
 	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return var;
+	}
+	
 	// copying the name;
 	var.name = calloc(curr->token->offset.length + 1, sizeof(char));
 	strncpy(var.name, curr->token->contents, curr->token->offset.length);
 	
-	if (curr->next == NULL) {
-		printf("catch");
-	}
-	
 	// next identifier
 	curr = curr->next;
+	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return var;
+	}
 	
 	if (curr->token->code == BSLTokenCode_op_assign) {
 		// the identifier is an assignment, value should be stored.
 		
 		// going to value identifier
 		curr = curr->next;
+		
+		if (curr == NULL || curr->token == NULL) {
+			context->error = bsl_error_token_invalid_syntax;
+			return var;
+		}
 		
 		switch (var.type) {
 			case bsl_variable_int: {
@@ -172,6 +194,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 				}
 				else {
 					// error
+					context->error = bsl_error_var_invalid_type_assignment;
 				}
 				break;
 			}
@@ -181,6 +204,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 				}
 				else {
 					// error
+					context->error = bsl_error_var_invalid_type_assignment;
 				}
 				break;
 			}
@@ -190,6 +214,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 				}
 				else {
 					// error
+					context->error = bsl_error_var_invalid_type_assignment;
 				}
 				break;
 			}
@@ -200,11 +225,13 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 				}
 				else {
 					// error
+					context->error = bsl_error_var_invalid_type_assignment;
 				}
 				break;
 			}
 			default: {
 				// error
+				//context->error = bsl_error_var_invalid_type_assignment;
 				break;
 			}
 		}
@@ -231,6 +258,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 		}
 		default: {
 			// error
+			context->error = bsl_error_var_invalid_type_id;
 			break;
 		}
 	}

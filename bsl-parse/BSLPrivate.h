@@ -119,6 +119,9 @@ typedef enum {
 	bsl_error_token_invalid_string,
 	bsl_error_token_invalid_syntax,
 	
+	bsl_error_var_invalid_type_id,
+	bsl_error_var_invalid_type_assignment,
+	
 	bsl_error_invalid_identifier,
 	bsl_error_reserved_word,
 	bsl_error_invalid_scope,

@@ -134,11 +134,23 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					}
 				}
 				else {
-					// check if local variable, otherwise error
-					bsl_variable local_variable = {0};
 					
 					if (strncmp(token_name, "var", sizeof(char[3])) == 0) {
-						local_variable = bsl_variable_parse(&curr, context);
+						// check if local variable, otherwise error
+						bsl_variable local_variable = bsl_variable_parse(&curr, context);
+						
+						bsl_symbol *local_var = bsl_symbol_create(bsl_symbol_type_variable);
+						local_var->u.value = local_variable;
+						local_var->script = curr->token->offset.script;
+						local_var->line = curr->token->offset.line;
+						
+						context->stack->active->symbol = local_var;
+						context->stack->active->next = bsl_stack_scope_create();
+						context->stack->active = context->stack->active->next;
+					}
+					else {
+						context->error = bsl_error_token_invalid_syntax;
+						break;
 					}
 				}
 			}

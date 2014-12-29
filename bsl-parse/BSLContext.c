@@ -27,7 +27,11 @@ int bsl_context_check_error(bsl_context *context) {
 	char message[1024] = {0};
 	
 	if (context->stack->active->symbol == NULL) {
-		printf("implementation not finished yet, skipping error check!\n");
+		
+		if (context->error != bsl_error_none) {
+			printf("implementation not finished yet, skipping error check!\n");
+		}
+		
 		return context->error;
 	}
 	
