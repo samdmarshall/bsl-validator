@@ -13,6 +13,7 @@
 #include "BSLStack.h"
 #include "BSLTokenDefinitions.h"
 #include "BSLExecute.h"
+#include "BSLStatement.h"
 
 bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	bsl_tkn_ir *curr = token_ir;
@@ -200,6 +201,8 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 							
 							if (curr->next->token->code == BSLTokenCode_op_assign) {
 								// variable assignment
+								
+								
 							}
 						}
 					}
@@ -224,9 +227,16 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						
 						if (code != BSLTokenCode_id_generic) {
 							// evaluate expression
-							printf("evaluate expression\n");
+							bsl_statement statement = bsl_statement_parse(&curr, context);
 							
-							// this should be a new type of symbol?
+							bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
+							expr_statement->u.expr = statement;
+							expr_statement->script = curr->token->offset.script;
+							expr_statement->line = curr->token->offset.line;
+							
+							context->stack->active->symbol = expr_statement;
+							context->stack->active->next = bsl_stack_scope_create();
+							context->stack->active = context->stack->active->next;
 						}
 						else {
 							context->error = bsl_error_token_invalid_syntax;

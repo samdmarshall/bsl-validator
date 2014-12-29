@@ -28,6 +28,7 @@ typedef struct bsl_symbol bsl_symbol;
 typedef struct bsl_stack_scope bsl_stack_scope;
 typedef struct bsl_stack bsl_stack;
 typedef struct bsl_context bsl_context;
+typedef struct bsl_statement bsl_statement;
 
 #pragma mark -
 #pragma mark BSLScript
@@ -258,6 +259,26 @@ struct bsl_function {
 };
 
 #pragma mark -
+#pragma mark BSLStatement
+
+typedef enum {
+	bsl_statement_type_invalid,
+	
+	bsl_statement_type_conditional,
+	bsl_statement_type_sleep,
+	bsl_statement_type_fork,
+	bsl_statement_type_schedule,
+	bsl_statement_type_iterate,
+	bsl_statement_type_return,
+	
+	bsl_statement_type_count
+} bsl_statement_type;
+
+struct bsl_statement {
+	bsl_statement_type type;
+};
+
+#pragma mark -
 #pragma mark BSLSymbol
 
 typedef enum {
@@ -265,6 +286,7 @@ typedef enum {
 	
 	bsl_symbol_type_variable,
 	bsl_symbol_type_function,
+	bsl_symbol_type_statement,
 	
 	bsl_symbol_type_Count
 } bsl_symbol_type;
@@ -278,6 +300,7 @@ struct bsl_symbol {
 	union {
 		bsl_variable value;
 		bsl_function func;
+		bsl_statement expr;
 	} u;
 	
 	
