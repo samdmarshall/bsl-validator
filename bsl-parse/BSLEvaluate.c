@@ -11,6 +11,8 @@
 #include "BSLFunction.h"
 #include "BSLSymbol.h"
 #include "BSLStack.h"
+#include "BSLTokenDefinitions.h"
+#include "BSLExecute.h"
 
 bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	bsl_tkn_ir *curr = token_ir;
@@ -144,7 +146,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					
 					if (symbol->u.func.type == bsl_func_type_interp) {
 						// execute statements
-						printf("catch me!\n");
+						bsl_symbol_interp_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
 					}
 				}
 				
@@ -212,6 +214,10 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						context->stack->active->symbol = local_var;
 						context->stack->active->next = bsl_stack_scope_create();
 						context->stack->active = context->stack->active->next;
+					}
+					else if (bsl_token_resolve_identifier(token) != BSLTokenCode_id_generic) {
+						// evaluate expression
+						printf("evaluate expression\n");
 					}
 					else {
 						context->error = bsl_error_token_invalid_syntax;

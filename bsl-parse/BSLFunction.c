@@ -233,6 +233,8 @@ uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_a
 				break;
 			}
 			case 1: {
+				// add checks for compatible types and convert them before evaluating
+				
 				// matched!
 				if (param_index < arg_count) {
 					switch (args[param_index].args[0].type) {

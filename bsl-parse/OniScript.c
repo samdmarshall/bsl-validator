@@ -65,7 +65,7 @@ int EvaluateContext(OniScriptContext *context) {
 	}
 	
 	// eval `main`
-	result = bsl_execute_symbol("main", eval_context);
+	result = bsl_symbol_execute("main", eval_context);
 	
 	return result;
 }
