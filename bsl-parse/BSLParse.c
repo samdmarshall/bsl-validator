@@ -23,8 +23,8 @@ bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script) {
 		
 		if (token != NULL) {
 			
-			BSLTokenReadError error = check_token_error(token);
-			if (error != BSLTokenReadError_None) {
+			bsl_error error = check_token_error(token);
+			if (error != bsl_error_none) {
 				break;
 			}
 			

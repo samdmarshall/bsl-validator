@@ -12,7 +12,7 @@
 #include "BSLSymbol.h"
 #include "BSLStack.h"
 
-void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
+bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	bsl_tkn_ir *curr = token_ir;
 	
 	while (curr != NULL) {
@@ -38,6 +38,7 @@ void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					}
 					else {
 						// error, already registered symbol
+						context->error = bsl_error_registered_symbol;
 					}
 					
 				}
@@ -55,10 +56,25 @@ void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					}
 					else {
 						// error, already registered symbol
+						context->error = bsl_error_registered_symbol;
 					}
 				}
 				else {
-					// error in script
+					if (item_token->code == BSLTokenCode_id_comment) {
+						// skip comments
+						while (curr->token->code != BSLTokenCode_id_newline) {
+							curr = curr->next;
+						}
+					}
+					else if (item_token->code == BSLTokenCode_id_newline) {
+						// skip newlines
+					}
+					else {
+						if (item_token->offset.length > 0) {
+							// error in script
+							context->error = bsl_error_invalid_identifier;
+						}
+					}
 				}
 			}
 			case BSLScope_func: {
@@ -79,6 +95,8 @@ void bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 			break;
 		}
 	}
+	
+	return context;
 }
 
 bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {

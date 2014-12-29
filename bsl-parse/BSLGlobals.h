@@ -144,7 +144,7 @@ func void m3_display_list(void) {\n}\n \
 # resets all level mechanics (triggers, turrets, consoles, etc...) to initial state\n \
 func  reset_mechanics() {\n}\n \
 \n \
-# Removes all\n dangerous projectile particles by making their lifetime expire\n \
+# Removes all dangerous projectile particles by making their lifetime expire\n \
 func void p3_removedangerous(void) {\n}\n \
 \n \
 # stops all AIs from thinking for themselves\n \
@@ -207,8 +207,8 @@ func void env_show(int gq_ref, int on_off) { \n}\n \
 # lists all the engines\n \
 func void m3_draw_engine_list(void) {\n}\n \
 \n \
-# sets an AIs max delay between shots in frames\
-func  ai2_skill_delaymax(int maxdelay)\n { \n }\n \
+# sets an AIs max delay between shots in frames\n \
+func ai2_skill_delaymax(int maxdelay) {\n}\n \
 \n \
 # tells an AI to look at a character\n \
 func  ai2_lookatchar([ai_name:string | script_id:int], [ai_name:string | script_id:int]) {\n}\n \
@@ -258,7 +258,6 @@ func void gs_fov_set(float fov_degrees) {\n}\n \
 # turns display of an object on or off\n \
 func void obj_shade(int obj_id, int obj_id, float r, float g, float b) {\n}\n \
 \n \
-#TODO\n \
 # bla bla bla\n \
 func void tr_write_collection(string collection_name, string file_name) {\n}\n \
 \n \

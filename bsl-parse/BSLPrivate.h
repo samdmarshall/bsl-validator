@@ -123,6 +123,8 @@ typedef enum {
 	bsl_error_reserved_word,
 	bsl_error_invalid_scope,
 	
+	bsl_error_registered_symbol,
+	
 	bsl_error_count
 } bsl_error;
 

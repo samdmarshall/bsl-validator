@@ -57,7 +57,11 @@ int EvaluateContext(OniScriptContext *context) {
 		
 		bsl_tkn_ir *token_ir = bsl_token_ir_generate_from_script(script);
 		
-		bsl_evaluate_ir(token_ir, eval_context);
+		eval_context = bsl_evaluate_ir(token_ir, eval_context);
+		
+		if (bsl_context_check_error(eval_context) != bsl_error_none) {
+			break;
+		}
 	}
 	
 	// eval `main`
