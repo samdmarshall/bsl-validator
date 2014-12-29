@@ -16,6 +16,8 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	// moving to the type identifier
 	bsl_tkn_ir *curr = (*item)->next;
 	
+	func.type = (curr->token->offset.script->fd == NULL ? bsl_func_type_comp : bsl_func_type_interp);
+	
 	if (curr == NULL || curr->token == NULL) {
 		context->error = bsl_error_token_invalid_syntax;
 		return func;
@@ -171,6 +173,64 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	*item = curr;
 	
 	return func;
+}
+
+uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("calling into oni -> %s(",(*context)->stack->active->symbol->u.func.name);
+	
+	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+		printf("[");
+		
+		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+			printf("%s:%s", bsl_variable_get_type_name((*context)->stack->active->symbol->u.func.args[param_index].args[type_index].type), (*context)->stack->active->symbol->u.func.args[param_index].args[type_index].name);
+			
+			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+				printf(" | ");
+			}
+		}
+		
+		printf("] = ");
+		
+		if (param_index < arg_count) {
+			switch (args[param_index].args[0].type) {
+				case bsl_variable_int: {
+					printf("%i",args[param_index].args[0].u.i);
+					break;
+				}
+				case bsl_variable_bool: {
+					printf("%i",args[param_index].args[0].u.b);
+					break;
+				}
+				case bsl_variable_float: {
+					printf("%f",args[param_index].args[0].u.f);
+					break;
+				}
+				case bsl_variable_string: {
+					printf("%s",args[param_index].args[0].u.s);
+					break;
+				}
+				case bsl_variable_None: {
+					printf("void");
+					break;
+				}
+				default: {
+					// error
+					break;
+				}
+			}
+		}
+		else {
+			printf("NULL");
+		}
+		
+		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+			printf(", ");
+		}
+	}
+	
+	printf(")\n");
+	
+	return NULL;
 }
 
 void bsl_function_release(bsl_function func) {

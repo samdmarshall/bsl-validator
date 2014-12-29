@@ -44,6 +44,9 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 				}
 				else if (item_token->code == BSLTokenCode_id_func) {
 					bsl_function func = bsl_function_parse(&item, context);
+					if (func.type == bsl_func_type_comp) {
+						func.u.comp.call = oni_call_noop;
+					}
 					
 					bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_function);
 					var_symbol->u.func = func;
@@ -114,8 +117,46 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 			if (symbol != NULL) {
 				// global symbol
 				context->stack->active->symbol = symbol;
+				
+				if (symbol->type == bsl_symbol_type_function) {
+					
+					// parse function arguments
+					curr = curr->next;
+					
+					uint32_t arg_counter = 0;
+					
+					bsl_func_arg *parsed_args = calloc(symbol->u.func.arg_count, sizeof(bsl_func_arg));
+					
+					while (curr != NULL) {
+						
+						parsed_args[arg_counter].args = bsl_variable_create_from_token(curr->token);
+						parsed_args[arg_counter].arg_type_count = 1;
+						
+						curr = curr->next;
+						arg_counter++;
+					}
+					
+					if (symbol->u.func.type == bsl_func_type_comp) {
+						symbol->u.func.u.comp.call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
+					}
+					
+					if (symbol->u.func.type == bsl_func_type_interp) {
+						// execute statements
+						printf("catch me!\n");
+					}
+				}
+				
+				if (symbol->type == bsl_symbol_type_variable) {
+					// variable assignment
+					printf("catch me!\n");
+					
+					//
+				}
+				
 				context->stack->active->next = bsl_stack_scope_create();
 				context->stack->active = context->stack->active->next;
+				
+				break;
 			}
 			else {
 				// check if in local state

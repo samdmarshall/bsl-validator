@@ -22,6 +22,7 @@ bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 		case BSLTokenCode_type_float: {
 			return bsl_variable_float;
 		}
+		case BSLTokenCode_id_generic:
 		case BSLTokenCode_id_string:
 		case BSLTokenCode_type_string: {
 			return bsl_variable_string;
@@ -31,6 +32,92 @@ bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 			return bsl_variable_None;
 		}
 	}
+}
+
+char * bsl_variable_get_type_name(bsl_variable_type type) {
+	switch (type) {
+		case bsl_variable_int: {
+			return "int";
+		}
+		case bsl_variable_bool: {
+			return "bool";
+		}
+		case bsl_variable_float: {
+			return "float";
+		}
+		case bsl_variable_string: {
+			return "string";
+		}
+		case bsl_variable_None: {
+			return "void";
+		}
+		default: {
+			// error
+			return "invalid";
+		}
+	}
+}
+
+bsl_variable * bsl_variable_create_from_token(bsl_token *token) {
+	bsl_variable *var = calloc(1, sizeof(bsl_variable));
+	
+	if (var != NULL) {
+		var->type = bsl_variable_get_type(token->code);
+		
+		int tmp_int = 0;
+		float tmp_float = 0.f;
+		int8_t tmp_bool = 0;
+		char *tmp_str = NULL;
+		
+		switch (var->type) {
+			case bsl_variable_int: {
+				tmp_int = atoi(token->contents);
+				break;
+			}
+			case bsl_variable_bool: {
+				tmp_bool = (token->code == BSLTokenCode_id_true ? 1 : 0);
+				break;
+			}
+			case bsl_variable_float: {
+				tmp_float = strtof(token->contents, NULL);
+				break;
+			}
+			case bsl_variable_string: {
+				tmp_str = calloc(token->offset.length + 1, sizeof(char));
+				strncpy(tmp_str, token->contents, token->offset.length);
+				break;
+			}
+			default: {
+				// error
+				break;
+			}
+		}
+		
+		switch (var->type) {
+			case bsl_variable_int: {
+				var->u.i = tmp_int;
+				break;
+			}
+			case bsl_variable_bool: {
+				var->u.b = tmp_bool;
+				break;
+			}
+			case bsl_variable_float: {
+				var->u.f = tmp_float;
+				break;
+			}
+			case bsl_variable_string: {
+				var->u.s = tmp_str;
+				break;
+			}
+			default: {
+				// error
+				break;
+			}
+		}
+	}
+	
+	return var;
 }
 
 uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args) {

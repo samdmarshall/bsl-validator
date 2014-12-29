@@ -20,7 +20,6 @@ bsl_script * bsl_script_init() {
 	return globals;
 }
 
-
 void OpenScriptFromFileInDir(char *dir_path, struct dirent *ent, DIR *dir, bsl_script *script) {
 	script->fd = file_ref_create(ent, dir);
 	

@@ -14,9 +14,13 @@
 
 bsl_variable_type bsl_variable_get_type(bsl_token_code code);
 
+char * bsl_variable_get_type_name(bsl_variable_type type);
+
 uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args);
 
 bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context);
+
+bsl_variable * bsl_variable_create_from_token(bsl_token *token);
 
 void bsl_variable_release(bsl_variable variable);
 
