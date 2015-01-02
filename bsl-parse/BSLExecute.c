@@ -43,8 +43,10 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 	return result;
 }
 
-uintptr_t* bsl_symbol_interp_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	printf("calling into interp -> %s(",(*context)->stack->active->symbol->u.func.name);
+uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("%s(",(*context)->stack->active->symbol->u.func.name);
+	
+	int mismatch_arg = 0;
 	
 	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
 		int8_t matched_type = 0;
@@ -97,7 +99,7 @@ uintptr_t* bsl_symbol_interp_call(bsl_context **context, bsl_func_rtype rtype, b
 		switch (matched_type) {
 			case 0: {
 				// not matched!
-				printf("mis-matching argument type!\n");
+				mismatch_arg++;
 				break;
 			}
 			case 1: {
@@ -149,7 +151,16 @@ uintptr_t* bsl_symbol_interp_call(bsl_context **context, bsl_func_rtype rtype, b
 		}
 	}
 	
-	printf(")\n");
+	printf(")");
 	
-	return NULL;
+	FunctionPointer call = (*context)->stack->active->symbol->u.func.u.comp.call;
+	
+	if (call != NULL && mismatch_arg == 0) {
+		printf(" -> ");
+		return call(context, rtype, args, arg_count);
+	}
+	else {
+		printf("\n");
+		return NULL;
+	}
 }

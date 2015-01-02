@@ -142,7 +142,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					
 					if (symbol->u.func.type == bsl_func_type_interp) {
 						// execute statements
-						bsl_symbol_interp_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
+						bsl_symbol_parse_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
 					}
 					
 					free(parsed_args);

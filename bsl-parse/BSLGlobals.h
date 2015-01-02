@@ -14,550 +14,551 @@
 #include "BSL_stdlib.h"
 
 #include "BSLFunction.h"
+#include "BSLExecute.h"
 
 static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// Kills any temporary particles
-	{"particle_temp_kill", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"particle_temp_kill", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// returns if this character is the player
-	{"chr_is_player", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_is_player", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// returns if we did kill griffen
-	{"did_kill_griffen", bsl_db_register_type_int, "(void)", oni_call_noop, NULL},
+	{"did_kill_griffen", bsl_db_register_type_int, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// dumps stats for a playback film
-	{"chr_playback_debug", bsl_db_register_type_void, "(string film_name)", oni_call_noop, NULL},
+	{"chr_playback_debug", bsl_db_register_type_void, "(string film_name)", bsl_symbol_parse_call, oni_call_noop},
 	// locks keys out
-	{"lock_keys", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"lock_keys", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to move to a flag
-	{"ai2_movetoflag", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id, string setfacing)", oni_call_noop, NULL},
+	{"ai2_movetoflag", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id, string setfacing)", bsl_symbol_parse_call, oni_call_noop},
 	// lists all the engines
-	{"m3_geom_engine_list", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"m3_geom_engine_list", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a single AI blind
-	{"ai2_makeblind", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"ai2_makeblind", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// lists all the players
-	{"chr_who", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_who", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes the player character fall front
-	{"fall_front", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"fall_front", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the main characters class
-	{"chr_main_class", bsl_db_register_type_void, "([class_name:string | class_index:int])", oni_call_noop, NULL},
+	{"chr_main_class", bsl_db_register_type_void, "([class_name:string | class_index:int])", bsl_symbol_parse_call, oni_call_noop},
 	// sets a triggers speed
-	{"trig_speed", bsl_db_register_type_void, "(int trigger_id, float volume)", oni_call_noop, NULL},
+	{"trig_speed", bsl_db_register_type_void, "(int trigger_id, float volume)", bsl_symbol_parse_call, oni_call_noop},
 	// forces an AI into active mode
-	{"ai2_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a camera interpolation
-	{"cm_interpolate_block", bsl_db_register_type_void, "(string anim_name, int num_frames)", oni_call_noop, NULL},
+	{"cm_interpolate_block", bsl_db_register_type_void, "(string anim_name, int num_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// function to start character dialog playing
-	{"sound_dialog_play", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_dialog_play", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// kills all the AI
-	{"chr_kill_all_ai", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_kill_all_ai", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// begins a cutscene
-	{"begin_cutscene", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"begin_cutscene", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets up an AI's neutral-interaction
-	{"ai2_neutralbehavior", bsl_db_register_type_void, "([ai_name:string | script_id:int], string behavior)", oni_call_noop, NULL},
+	{"ai2_neutralbehavior", bsl_db_register_type_void, "([ai_name:string | script_id:int], string behavior)", bsl_symbol_parse_call, oni_call_noop},
 	// debugging message
-	{"dmsg", bsl_db_register_type_void, "(string astring)", oni_call_noop, NULL},
+	{"dmsg", bsl_db_register_type_void, "(string astring)", bsl_symbol_parse_call, oni_call_noop},
 	// shows or hides part of the HUD
-	{"ui_show_element", bsl_db_register_type_void, "(string element_name, int show)", oni_call_noop, NULL},
+	{"ui_show_element", bsl_db_register_type_void, "(string element_name, int show)", bsl_symbol_parse_call, oni_call_noop},
 	// swaps an environment texture
-	{"env_texswap", bsl_db_register_type_void, "(int gq_start, string tex_name)", oni_call_noop, NULL},
+	{"env_texswap", bsl_db_register_type_void, "(int gq_start, string tex_name)", bsl_symbol_parse_call, oni_call_noop},
 	// special camera for barabus
-	{"cm_barabus", bsl_db_register_type_void, "([ai_name:string | script_id:int], float away, float up, int time)", oni_call_noop, NULL},
+	{"cm_barabus", bsl_db_register_type_void, "([ai_name:string | script_id:int], float away, float up, int time)", bsl_symbol_parse_call, oni_call_noop},
 	// turns input on or off
-	{"input", bsl_db_register_type_void, "(int on_off)", oni_call_noop, NULL},
+	{"input", bsl_db_register_type_void, "(int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// finds all BNV connections from the player's location
-	{"ai2_findconnections", bsl_db_register_type_void, "(int distance)", oni_call_noop, NULL},
+	{"ai2_findconnections", bsl_db_register_type_void, "(int distance)", bsl_symbol_parse_call, oni_call_noop},
 	// forces a character to hold a key down for some frames
-	{"chr_holdkey", bsl_db_register_type_void, "([ai_name:string | script_id:int], string key_name, int num_frames)", oni_call_noop, NULL},
+	{"chr_holdkey", bsl_db_register_type_void, "([ai_name:string | script_id:int], string key_name, int num_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the character class of a specific character
-	{"chr_set_class", bsl_db_register_type_void, "(int chr_index, [class_name:string | class_index:int])", oni_call_noop, NULL},
+	{"chr_set_class", bsl_db_register_type_void, "(int chr_index, [class_name:string | class_index:int])", bsl_symbol_parse_call, oni_call_noop},
 	// prints all doors in the level to file
-	{"door_printall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"door_printall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to take its current state as its job
-	{"ai2_setjobstate", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_setjobstate", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// removes all bindings
-	{"unbindall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"unbindall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// puts the camera in orbit mode
-	{"cm_orbit", bsl_db_register_type_void, "(float speed, float stopangle)", oni_call_noop, NULL},
+	{"cm_orbit", bsl_db_register_type_void, "(float speed, float stopangle)", bsl_symbol_parse_call, oni_call_noop},
 	// crashes the game (used for testing error handling)
-	{"crash", bsl_db_register_type_void, "(string when)", oni_call_noop, NULL},
+	{"crash", bsl_db_register_type_void, "(string when)", bsl_symbol_parse_call, oni_call_noop},
 	// Creates and starts all environmental particles
-	{"p3_startall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_startall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// bla bla bla
-	{"tr_stop_lookup", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"tr_stop_lookup", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Prints out all environmental particles with tags
-	{"p3_printtags", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_printtags", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the location of any character
-	{"chr_location", bsl_db_register_type_void, "([ai_name:string | chr_index:int], float loc_x, float loc_y, float loc_z)", oni_call_noop, NULL},
+	{"chr_location", bsl_db_register_type_void, "([ai_name:string | chr_index:int], float loc_x, float loc_y, float loc_z)", bsl_symbol_parse_call, oni_call_noop},
 	// saves the shooting skill being edited out as a text file
-	{"ai2_skill_save", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_skill_save", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Dump all particles to a text file
-	{"p3_dumpparticles", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_dumpparticles", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the mouse acceleration value
-	{"mouse_acceleration", bsl_db_register_type_void, "(float accel)", oni_call_noop, NULL},
+	{"mouse_acceleration", bsl_db_register_type_void, "(float accel)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to run for an alarm
-	{"ai2_doalarm", bsl_db_register_type_void, "([ai_name:string | script_id:int], int console_id)", oni_call_noop, NULL},
+	{"ai2_doalarm", bsl_db_register_type_void, "([ai_name:string | script_id:int], int console_id)", bsl_symbol_parse_call, oni_call_noop},
 	// resets corpses to their initial state
-	{"corpse_reset", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"corpse_reset", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// prints an anim state
-	{"print_state", bsl_db_register_type_void, "(int state)", oni_call_noop, NULL},
+	{"print_state", bsl_db_register_type_void, "(int state)", bsl_symbol_parse_call, oni_call_noop},
 	// prints an anim type
-	{"print_type", bsl_db_register_type_void, "(int type)", oni_call_noop, NULL},
+	{"print_type", bsl_db_register_type_void, "(int type)", bsl_symbol_parse_call, oni_call_noop},
 	// Plays the objective-complete sound.
-	{"objective_complete", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"objective_complete", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// lists all the display modes
-	{"m3_display_list", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"m3_display_list", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// resets all level mechanics (triggers
-	{"reset_mechanics", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"reset_mechanics", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Removes all 'dangerous projectile' particles by making their lifetime expire
-	{"p3_removedangerous", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_removedangerous", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// stops all AIs from thinking for themselves
-	{"ai2_allpassive", bsl_db_register_type_void, "(int passive)", oni_call_noop, NULL},
+	{"ai2_allpassive", bsl_db_register_type_void, "(int passive)", bsl_symbol_parse_call, oni_call_noop},
 	// Writes all particles used on this level to a text file
-	{"p3_writeusedparticles", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_writeusedparticles", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sends a command to environmental particles with a given tag
-	{"particle", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"particle", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// disables collision for a character
-	{"chr_nocollision", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_nocollision", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// toggles camera Jello(tm) mode
-	{"cm_jello", bsl_db_register_type_void, "(int mode)", oni_call_noop, NULL},
+	{"cm_jello", bsl_db_register_type_void, "(int mode)", bsl_symbol_parse_call, oni_call_noop},
 	// kills all the characters inside a trigger volume
-	{"trigvolume_kill", bsl_db_register_type_void, "(int trig_id)", oni_call_noop, NULL},
+	{"trigvolume_kill", bsl_db_register_type_void, "(int trig_id)", bsl_symbol_parse_call, oni_call_noop},
 	// spawns all AI
-	{"ai2_spawnall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_spawnall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to become idle
-	{"ai2_idle", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_idle", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// forces a character to holster their weapon
-	{"chr_forceholster", bsl_db_register_type_void, "([ai_name:string | script_id:int], int holster, int force_draw)", oni_call_noop, NULL},
+	{"chr_forceholster", bsl_db_register_type_void, "([ai_name:string | script_id:int], int holster, int force_draw)", bsl_symbol_parse_call, oni_call_noop},
 	// lose this level
-	{"lose", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"lose", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// creates a character from a .txt file
-	{"chr_create", bsl_db_register_type_void, "(int script_id, string start_create)", oni_call_noop, NULL},
+	{"chr_create", bsl_db_register_type_void, "(int script_id, string start_create)", bsl_symbol_parse_call, oni_call_noop},
 	// fades the screen in
-	{"fade_in", bsl_db_register_type_void, "(int ticks)", oni_call_noop, NULL},
+	{"fade_in", bsl_db_register_type_void, "(int ticks)", bsl_symbol_parse_call, oni_call_noop},
 	// xxx
-	{"ph_status", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ph_status", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a camera animation
-	{"cm_anim_block", bsl_db_register_type_void, "(string cam_spec, string anim_name)", oni_call_noop, NULL},
+	{"cm_anim_block", bsl_db_register_type_void, "(string cam_spec, string anim_name)", bsl_symbol_parse_call, oni_call_noop},
 	// activates a console
-	{"console_activate", bsl_db_register_type_void, "(int console_id)", oni_call_noop, NULL},
+	{"console_activate", bsl_db_register_type_void, "(int console_id)", bsl_symbol_parse_call, oni_call_noop},
 	// makes the camera wait until it is no longer busy
-	{"cm_wait", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"cm_wait", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// unlocks a door
-	{"door_unlock", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_unlock", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// hides a trigger
-	{"trig_hide", bsl_db_register_type_void, "(int trigger_id)", oni_call_noop, NULL},
+	{"trig_hide", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call, oni_call_noop},
 	// turns on or off specified parts of the environment
-	{"env_show", bsl_db_register_type_void, "(int gq_ref, int on_off)", oni_call_noop, NULL},
+	{"env_show", bsl_db_register_type_void, "(int gq_ref, int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// lists all the engines
-	{"m3_draw_engine_list", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"m3_draw_engine_list", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's max delay between shots
-	{"ai2_skill_delaymax", bsl_db_register_type_void, "(int frames)", oni_call_noop, NULL},
+	{"ai2_skill_delaymax", bsl_db_register_type_void, "(int frames)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to look at a character
-	{"ai2_lookatchar", bsl_db_register_type_void, "([ai_name:string | script_id:int], [ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_lookatchar", bsl_db_register_type_void, "([ai_name:string | script_id:int], [ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// snaps a character's facing to a flag's facing
-	{"chr_facetoflag", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id)", oni_call_noop, NULL},
+	{"chr_facetoflag", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id)", bsl_symbol_parse_call, oni_call_noop},
 	// kills a range of object
-	{"obj_kill", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"obj_kill", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// set the script to call from a trigger volume
-	{"trigvolume_setscript", bsl_db_register_type_void, "(string name, string script, string type)", oni_call_noop, NULL},
+	{"trigvolume_setscript", bsl_db_register_type_void, "(string name, string script, string type)", bsl_symbol_parse_call, oni_call_noop},
 	// shows AI memory usage
-	{"ai2_showmem", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_showmem", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the current graphics quality
-	{"m3_quality_set", bsl_db_register_type_void, "(string quality)", oni_call_noop, NULL},
+	{"m3_quality_set", bsl_db_register_type_void, "(string quality)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the level of errors to report at console
-	{"ai2_set_reporterror", bsl_db_register_type_void, "(string error_level, string subsystem)", oni_call_noop, NULL},
+	{"ai2_set_reporterror", bsl_db_register_type_void, "(string error_level, string subsystem)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's min delay between shots
-	{"ai2_skill_delaymin", bsl_db_register_type_void, "(int mindelay)", oni_call_noop, NULL},
+	{"ai2_skill_delaymin", bsl_db_register_type_void, "(int mindelay)", bsl_symbol_parse_call, oni_call_noop},
 	// sends a message from the subtitle file
-	{"message", bsl_db_register_type_void, "(string message, int timer)", oni_call_noop, NULL},
+	{"message", bsl_db_register_type_void, "(string message, int timer)", bsl_symbol_parse_call, oni_call_noop},
 	// Kills the nearest P3 particle
-	{"p3_killnearest", bsl_db_register_type_void, "(bool no_recreate)", oni_call_noop, NULL},
+	{"p3_killnearest", bsl_db_register_type_void, "(bool no_recreate)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a single AI deaf
-	{"ai2_makedeaf", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"ai2_makedeaf", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// changes the fog start distance smoothly
-	{"gl_fog_start_changeto", bsl_db_register_type_void, "(float start_val, int frames)", oni_call_noop, NULL},
+	{"gl_fog_start_changeto", bsl_db_register_type_void, "(float start_val, int frames)", bsl_symbol_parse_call, oni_call_noop},
 	// waits for a character to play a specific animation
-	{"chr_wait_animation", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_wait_animation", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a environment animation: blocks until completed
-	{"env_anim_block", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"env_anim_block", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the field of view
-	{"gs_fov_set", bsl_db_register_type_void, "(float fov_degrees)", oni_call_noop, NULL},
+	{"gs_fov_set", bsl_db_register_type_void, "(float fov_degrees)", bsl_symbol_parse_call, oni_call_noop},
 	// turns display of an object on or off
-	{"obj_shade", bsl_db_register_type_void, "(int obj_id, int obj_id, float r, float g, float b)", oni_call_noop, NULL},
+	{"obj_shade", bsl_db_register_type_void, "(int obj_id, int obj_id, float r, float g, float b)", bsl_symbol_parse_call, oni_call_noop},
 	// bla bla bla
-	{"tr_write_collection", bsl_db_register_type_void, "(string collection_name, string file_name)", oni_call_noop, NULL},
+	{"tr_write_collection", bsl_db_register_type_void, "(string collection_name, string file_name)", bsl_symbol_parse_call, oni_call_noop},
 	// gives a character a powerup
-	{"chr_givepowerup", bsl_db_register_type_void, "([ai_name:string | script_id:int], string powerup, int amount)", oni_call_noop, NULL},
+	{"chr_givepowerup", bsl_db_register_type_void, "([ai_name:string | script_id:int], string powerup, int amount)", bsl_symbol_parse_call, oni_call_noop},
 	// cycles console text color
-	{"co_toggle_text", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"co_toggle_text", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets up an animation for an object
-	{"env_setanim_block", bsl_db_register_type_void, "(int obj_id, string object_name)", oni_call_noop, NULL},
+	{"env_setanim_block", bsl_db_register_type_void, "(int obj_id, string object_name)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to follow the player
-	{"ai2_followme", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_followme", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a camera animation
-	{"cm_anim", bsl_db_register_type_void, "(string cam_spec, string anim_name)", oni_call_noop, NULL},
+	{"cm_anim", bsl_db_register_type_void, "(string cam_spec, string anim_name)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the active engine
-	{"m3_engine_set", bsl_db_register_type_void, "(int geom_engine, int draw_engine)", oni_call_noop, NULL},
+	{"m3_engine_set", bsl_db_register_type_void, "(int geom_engine, int draw_engine)", bsl_symbol_parse_call, oni_call_noop},
 	// returns if this character is holding a weapon that is empty
-	{"chr_has_empty_weapon", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_has_empty_weapon", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the location of any character to the camera location
-	{"chr_location_settocamera", bsl_db_register_type_void, "(int chr_index)", oni_call_noop, NULL},
+	{"chr_location_settocamera", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call, oni_call_noop},
 	// sets part of the HUD to flash or not flash
-	{"ui_flash_element", bsl_db_register_type_void, "(element_name:string fill:int)", oni_call_noop, NULL},
+	{"ui_flash_element", bsl_db_register_type_void, "(element_name:string fill:int)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the location of the player character
-	{"goto", bsl_db_register_type_void, "(float loc_x, float loc_y, float loc_z)", oni_call_noop, NULL},
+	{"goto", bsl_db_register_type_void, "(float loc_x, float loc_y, float loc_z)", bsl_symbol_parse_call, oni_call_noop},
 	// win this level
-	{"win", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"win", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// fades the screen out
-	{"fade_out", bsl_db_register_type_void, "([r:float | r:int], [g:float | g:int], [b:float | b:int], int ticks)", oni_call_noop, NULL},
+	{"fade_out", bsl_db_register_type_void, "([r:float | r:int], [g:float | g:int], [b:float | b:int], int ticks)", bsl_symbol_parse_call, oni_call_noop},
 	// makes barabbas retrieve his gun if it is lost
-	{"ai2_barabbas_retrievegun", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_barabbas_retrievegun", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// bla bla bla
-	{"tr_write_animation", bsl_db_register_type_void, "(string anim_name, string file_name)", oni_call_noop, NULL},
+	{"tr_write_animation", bsl_db_register_type_void, "(string anim_name, string file_name)", bsl_symbol_parse_call, oni_call_noop},
 	// Selects what character to control
-	{"chr_focus", bsl_db_register_type_void, "(int chr_index)", oni_call_noop, NULL},
+	{"chr_focus", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call, oni_call_noop},
 	// ends a cutscene
-	{"end_cutscene", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"end_cutscene", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// returns the difficulty level
-	{"difficulty", bsl_db_register_type_int, "(void)", oni_call_noop, NULL},
+	{"difficulty", bsl_db_register_type_int, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// plays back a film and blocks until complete
-	{"chr_playback_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string film_name, string mode, int num_frames)", oni_call_noop, NULL},
+	{"chr_playback_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string film_name, string mode, int num_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// changes the fog end distance smoothly
-	{"gl_fog_end_changeto", bsl_db_register_type_void, "(float end_val, int frames)", oni_call_noop, NULL},
+	{"gl_fog_end_changeto", bsl_db_register_type_void, "(float end_val, int frames)", bsl_symbol_parse_call, oni_call_noop},
 	// slowly poisons a character
-	{"chr_poison", bsl_db_register_type_void, "([ai_name:string | script_id:int], int damage, int interval, int initial_interval)", oni_call_noop, NULL},
+	{"chr_poison", bsl_db_register_type_void, "([ai_name:string | script_id:int], int damage, int interval, int initial_interval)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's recoil compensation amount (0-1)
-	{"ai2_skill_recoil", bsl_db_register_type_void, "(float recoil_compensation)", oni_call_noop, NULL},
+	{"ai2_skill_recoil", bsl_db_register_type_void, "(float recoil_compensation)", bsl_symbol_parse_call, oni_call_noop},
 	// kills all the corpses inside a trigger volume
-	{"trigvolume_corpse", bsl_db_register_type_void, "(int trig_id)", oni_call_noop, NULL},
+	{"trigvolume_corpse", bsl_db_register_type_void, "(int trig_id)", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a environment animation: blocks until completed
-	{"env_anim", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"env_anim", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// stop the display of a cinematic insert
-	{"cinematic_stop", bsl_db_register_type_void, "(string bitmap_name, int end, float velocity)", oni_call_noop, NULL},
+	{"cinematic_stop", bsl_db_register_type_void, "(string bitmap_name, int end, float velocity)", bsl_symbol_parse_call, oni_call_noop},
 	// resets AI as if start of level
-	{"ai2_reset", bsl_db_register_type_void, "(int reset_player)", oni_call_noop, NULL},
+	{"ai2_reset", bsl_db_register_type_void, "(int reset_player)", bsl_symbol_parse_call, oni_call_noop},
 	// initiates a camera interpolation
-	{"cm_interpolate", bsl_db_register_type_void, "(string anim_name, int num_frames)", oni_call_noop, NULL},
+	{"cm_interpolate", bsl_db_register_type_void, "(string anim_name, int num_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// function to start music playing
-	{"sound_music_stop", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_music_stop", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// activates a turret
-	{"turret_activate", bsl_db_register_type_void, "(int turret_id)", oni_call_noop, NULL},
+	{"turret_activate", bsl_db_register_type_void, "(int turret_id)", bsl_symbol_parse_call, oni_call_noop},
 	// starts the countdown timer
-	{"timer_stop", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"timer_stop", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the current objective page.
-	{"objective_set", bsl_db_register_type_void, "(int page, string make_silent)", oni_call_noop, NULL},
+	{"objective_set", bsl_db_register_type_void, "(int page, string make_silent)", bsl_symbol_parse_call, oni_call_noop},
 	// plays an animation on a character and blocks until done
-	{"chr_animate_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim_name, int num_frames, int interp_frames)", oni_call_noop, NULL},
+	{"chr_animate_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim_name, int num_frames, int interp_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// prints location of a character
-	{"where", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"where", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// Disables parts of the daodan shield (for debugging)
-	{"p3_daodan_disable", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_daodan_disable", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the level of errors to log to file
-	{"ai2_set_logerror", bsl_db_register_type_void, "(string error_level, string subsystem)", oni_call_noop, NULL},
+	{"ai2_set_logerror", bsl_db_register_type_void, "(string error_level, string subsystem)", bsl_symbol_parse_call, oni_call_noop},
 	// causes the player to make a sound (alerts nearby AIs)
-	{"ai2_debug_makesound", bsl_db_register_type_void, "(string sound_type, float volume)", oni_call_noop, NULL},
+	{"ai2_debug_makesound", bsl_db_register_type_void, "(string sound_type, float volume)", bsl_symbol_parse_call, oni_call_noop},
 	// puts the camera in orbit mode
-	{"cm_orbit_block", bsl_db_register_type_void, "(float speed, float stopangle)", oni_call_noop, NULL},
+	{"cm_orbit_block", bsl_db_register_type_void, "(float speed, float stopangle)", bsl_symbol_parse_call, oni_call_noop},
 	// Triggers an event on all P3 particles of a specified class
-	{"p3_callevent", bsl_db_register_type_void, "(particle_class:string event_index:int)", oni_call_noop, NULL},
+	{"p3_callevent", bsl_db_register_type_void, "(particle_class:string event_index:int)", bsl_symbol_parse_call, oni_call_noop},
 	// shows a trigger
-	{"trig_show", bsl_db_register_type_void, "(int trigger_id)", oni_call_noop, NULL},
+	{"trig_show", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call, oni_call_noop},
 	// sets up an animation for an object
-	{"env_setanim", bsl_db_register_type_void, "(int obj_id, string object_name)", oni_call_noop, NULL},
+	{"env_setanim", bsl_db_register_type_void, "(int obj_id, string object_name)", bsl_symbol_parse_call, oni_call_noop},
 	// stops any environment animation on a character
-	{"chr_envanim_stop", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_envanim_stop", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// creates a new powerup
-	{"powerup_spawn", bsl_db_register_type_void, "(string poweruptype, int flag)", oni_call_noop, NULL},
+	{"powerup_spawn", bsl_db_register_type_void, "(string poweruptype, int flag)", bsl_symbol_parse_call, oni_call_noop},
 	// detaches the camera
-	{"cm_detach", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"cm_detach", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// waits for a character to play a specific animation type
-	{"chr_wait_animtype", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_wait_animtype", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// dumps all arguments
-	{"console_print", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"console_print", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// turns on the boss shield for a character
-	{"chr_boss_shield", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_boss_shield", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// sets a characters health by script id
-	{"chr_set_health", bsl_db_register_type_void, "([ai_name:string | script_id:int], int hit_points)", oni_call_noop, NULL},
+	{"chr_set_health", bsl_db_register_type_void, "([ai_name:string | script_id:int], int hit_points)", bsl_symbol_parse_call, oni_call_noop},
 	// sets part of the HUD to completely filled
-	{"ui_fill_element", bsl_db_register_type_void, "(string element_name, int fill)", oni_call_noop, NULL},
+	{"ui_fill_element", bsl_db_register_type_void, "(string element_name, int fill)", bsl_symbol_parse_call, oni_call_noop},
 	// teleports a character to a flag
-	{"chr_teleport", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id)", oni_call_noop, NULL},
+	{"chr_teleport", bsl_db_register_type_void, "([ai_name:string | script_id:int], int flag_id)", bsl_symbol_parse_call, oni_call_noop},
 	// fire off a trigger volume
-	{"trigvolume_trigger", bsl_db_register_type_void, "(string name, string type, [ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"trigvolume_trigger", bsl_db_register_type_void, "(string name, string type, [ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// activates a trigger
-	{"trig_activate", bsl_db_register_type_void, "(int trigger_id)", oni_call_noop, NULL},
+	{"trig_activate", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call, oni_call_noop},
 	// debugging print
-	{"dprint", bsl_db_register_type_void, "(string astring)", oni_call_noop, NULL},
+	{"dprint", bsl_db_register_type_void, "(string astring)", bsl_symbol_parse_call, oni_call_noop},
 	// deactivates a trigger
-	{"trig_deactivate", bsl_db_register_type_void, "(int trigger_id)", oni_call_noop, NULL},
+	{"trig_deactivate", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call, oni_call_noop},
 	// draws a line for an environment animation
-	{"debug_env_anim", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"debug_env_anim", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// hangs the game (used for testing error handling)
-	{"hang", bsl_db_register_type_void, "(string when)", oni_call_noop, NULL},
+	{"hang", bsl_db_register_type_void, "(string when)", bsl_symbol_parse_call, oni_call_noop},
 	// prints all nearby doors
-	{"door_printnearby", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"door_printnearby", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a character invincible
-	{"chr_invincible", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_invincible", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// makes one or all AIs forget they saw anything
-	{"ai2_forget", bsl_db_register_type_void, "([ai_name:string | script_id:int], string forget_char)", oni_call_noop, NULL},
+	{"ai2_forget", bsl_db_register_type_void, "([ai_name:string | script_id:int], string forget_char)", bsl_symbol_parse_call, oni_call_noop},
 	// enables ultra mode for a character
-	{"chr_ultra_mode", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_ultra_mode", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// forces a character to play a pain sound
-	{"chr_pain", bsl_db_register_type_void, "([ai_name:string | script_id:int], string pain_type)", oni_call_noop, NULL},
+	{"chr_pain", bsl_db_register_type_void, "([ai_name:string | script_id:int], string pain_type)", bsl_symbol_parse_call, oni_call_noop},
 	// removes a currently displayed message
-	{"message_remove", bsl_db_register_type_void, "(string message)", oni_call_noop, NULL},
+	{"message_remove", bsl_db_register_type_void, "(string message)", bsl_symbol_parse_call, oni_call_noop},
 	// locks an object as visible
-	{"obj_force_draw", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"obj_force_draw", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// forces an AI into inactive mode
-	{"ai2_inactive", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_inactive", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// function to start music playing
-	{"sound_music_start", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_music_start", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// shows the currently selected shooting skill
-	{"ai2_skill_show", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_skill_show", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// jams a door in its current state
-	{"door_jam", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_jam", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// Kills all P3 particles
-	{"p3_killall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_killall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a character unkillable
-	{"chr_unkillable", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_unkillable", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to come to the player
-	{"ai2_comehere", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_comehere", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// prints the index of the player's BNV
-	{"ai2_printbnvindex", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_printbnvindex", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// View flags with a specific prefix
-	{"flag_view_prefix", bsl_db_register_type_void, "(string prefix)", oni_call_noop, NULL},
+	{"flag_view_prefix", bsl_db_register_type_void, "(string prefix)", bsl_symbol_parse_call, oni_call_noop},
 	// turns of the shadow for this character
-	{"chr_shadow", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_shadow", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to report in
-	{"ai2_report", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_report", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// records that the character has the lsi
-	{"chr_has_lsi", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_has_lsi", bsl_db_register_type_bool, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// unjams a door so characters can open it
-	{"door_unjam", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_unjam", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// clears a characters inventory
-	{"chr_inv_reset", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_inv_reset", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the weapon for a give character
-	{"chr_weapon", bsl_db_register_type_void, "(int chr_index, [weapon_name:string | weapon_num:int])", oni_call_noop, NULL},
+	{"chr_weapon", bsl_db_register_type_void, "(int chr_index, [weapon_name:string | weapon_num:int])", bsl_symbol_parse_call, oni_call_noop},
 	// resets a console to initial state
-	{"console_reset", bsl_db_register_type_void, "(int console_id)", oni_call_noop, NULL},
+	{"console_reset", bsl_db_register_type_void, "(int console_id)", bsl_symbol_parse_call, oni_call_noop},
 	// locks the character active
-	{"chr_lock_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_lock_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to run a particular path
-	{"ai2_dopath", bsl_db_register_type_void, "([ai_name:string | script_id:int], string path_name)", oni_call_noop, NULL},
+	{"ai2_dopath", bsl_db_register_type_void, "([ai_name:string | script_id:int], string path_name)", bsl_symbol_parse_call, oni_call_noop},
 	// function plays an impulse sound
-	{"sound_impulse_play", bsl_db_register_type_void, "(string name, float volume)", oni_call_noop, NULL},
+	{"sound_impulse_play", bsl_db_register_type_void, "(string name, float volume)", bsl_symbol_parse_call, oni_call_noop},
 	// waits for a character to reach a specific animation state
-	{"chr_wait_animstate", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_wait_animstate", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// enable or disable a trigger volume
-	{"trigvolume_enable", bsl_db_register_type_void, "(string name, int enable, string type)", oni_call_noop, NULL},
+	{"trigvolume_enable", bsl_db_register_type_void, "(string name, int enable, string type)", bsl_symbol_parse_call, oni_call_noop},
 	// removes a binding from a input function
-	{"unbind", bsl_db_register_type_void, "(string input_name)", oni_call_noop, NULL},
+	{"unbind", bsl_db_register_type_void, "(string input_name)", bsl_symbol_parse_call, oni_call_noop},
 	// function to start an ambient sound
-	{"sound_ambient_start", bsl_db_register_type_void, "(string name, float volume)", oni_call_noop, NULL},
+	{"sound_ambient_start", bsl_db_register_type_void, "(string name, float volume)", bsl_symbol_parse_call, oni_call_noop},
 	// kills one or more AIs
-	{"ai2_kill", bsl_db_register_type_void, "(string param1, string param2)", oni_call_noop, NULL},
+	{"ai2_kill", bsl_db_register_type_void, "(string param1, string param2)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the active display mode
-	{"m3_display_set", bsl_db_register_type_void, "(int device_index, int mode_index)", oni_call_noop, NULL},
+	{"m3_display_set", bsl_db_register_type_void, "(int device_index, int mode_index)", bsl_symbol_parse_call, oni_call_noop},
 	// sets or clears an AI's non-combatant state
-	{"ai2_noncombatant", bsl_db_register_type_void, "([ai_name:string | script_id:int], int non_combatant)", oni_call_noop, NULL},
+	{"ai2_noncombatant", bsl_db_register_type_void, "([ai_name:string | script_id:int], int non_combatant)", bsl_symbol_parse_call, oni_call_noop},
 	// plays an animation on a character
-	{"chr_animate", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim_name, int num_frames, int interp_frames)", oni_call_noop, NULL},
+	{"chr_animate", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim_name, int num_frames, int interp_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// creates a chump
-	{"ai2_chump", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_chump", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// function to set the volume of playing music
-	{"sound_music_volume", bsl_db_register_type_void, "(string name, float volume, float time)", oni_call_noop, NULL},
+	{"sound_music_volume", bsl_db_register_type_void, "(string name, float volume, float time)", bsl_symbol_parse_call, oni_call_noop},
 	// starts the slowmotion timer
-	{"slowmo", bsl_db_register_type_void, "(int duration)", oni_call_noop, NULL},
+	{"slowmo", bsl_db_register_type_void, "(int duration)", bsl_symbol_parse_call, oni_call_noop},
 	// turns off fight mode
-	{"chr_peace", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_peace", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// bla bla bla
-	{"tr_write_lookup", bsl_db_register_type_void, "(string file_name)", oni_call_noop, NULL},
+	{"tr_write_lookup", bsl_db_register_type_void, "(string file_name)", bsl_symbol_parse_call, oni_call_noop},
 	// locks a door
-	{"door_lock", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_lock", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// counts the number of people in a trigger volume
-	{"trigvolume_count", bsl_db_register_type_int, "(int trig_id)", oni_call_noop, NULL},
+	{"trigvolume_count", bsl_db_register_type_int, "(int trig_id)", bsl_symbol_parse_call, oni_call_noop},
 	// Disarms a character or everyone
-	{"chr_disarm", bsl_db_register_type_void, "(int chr_index)", oni_call_noop, NULL},
+	{"chr_disarm", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call, oni_call_noop},
 	// draws a dot at a specified location
-	{"chr_draw_dot", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"chr_draw_dot", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's shooting inaccuracy multiplier
-	{"ai2_skill_inaccuracy", bsl_db_register_type_void, "(float inaccuracy)", oni_call_noop, NULL},
+	{"ai2_skill_inaccuracy", bsl_db_register_type_void, "(float inaccuracy)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to report in verbosely
-	{"ai2_report_verbose", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_report_verbose", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// function to start character dialog playing after the current dialog finishes
-	{"sound_dialog_play_block", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_dialog_play_block", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// reverts the shooting skill being edited to the saved copy,
-	{"ai2_skill_revert", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"ai2_skill_revert", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Gives a powerup to a character
-	{"give_powerup", bsl_db_register_type_void, "(string powerup_name, int amount, int character)", oni_call_noop, NULL},
+	{"give_powerup", bsl_db_register_type_void, "(string powerup_name, int amount, int character)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the far clipping plane
-	{"gs_farclipplane_set", bsl_db_register_type_void, "(float plane)", oni_call_noop, NULL},
+	{"gs_farclipplane_set", bsl_db_register_type_void, "(float plane)", bsl_symbol_parse_call, oni_call_noop},
 	// sets a characters health to full by script id
-	{"chr_full_health", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_full_health", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// changes a character's team
-	{"chr_changeteam", bsl_db_register_type_void, "([ai_name:string | script_id:int], string team_name)", oni_call_noop, NULL},
+	{"chr_changeteam", bsl_db_register_type_void, "([ai_name:string | script_id:int], string team_name)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the shade of a block of objects
-	{"env_shade", bsl_db_register_type_void, "(int gq_ref, int gq_ref, float r, float g, float b)", oni_call_noop, NULL},
+	{"env_shade", bsl_db_register_type_void, "(int gq_ref, int gq_ref, float r, float g, float b)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the perf prefix
-	{"perf_prefix", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"perf_prefix", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets the target to the specified flag
-	{"target_set", bsl_db_register_type_void, "(int flag_id, float min_distance)", oni_call_noop, NULL},
+	{"target_set", bsl_db_register_type_void, "(int flag_id, float min_distance)", bsl_symbol_parse_call, oni_call_noop},
 	// starts the countdown timer
-	{"timer_start", bsl_db_register_type_void, "(float duration, string script)", oni_call_noop, NULL},
+	{"timer_start", bsl_db_register_type_void, "(float duration, string script)", bsl_symbol_parse_call, oni_call_noop},
 	// causes a character to play a line of dialogue
-	{"chr_talk", bsl_db_register_type_void, "([ai_name:string | script_id:int], string sound_name, int pre_pause, int post_pause, string priority)", oni_call_noop, NULL},
+	{"chr_talk", bsl_db_register_type_void, "([ai_name:string | script_id:int], string sound_name, int pre_pause, int post_pause, string priority)", bsl_symbol_parse_call, oni_call_noop},
 	// function writes a list of sounds which have broken links to a file
-	{"sound_list_broken_links", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"sound_list_broken_links", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Toggles particle performance display and sets event masks
-	{"p3_perf", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_perf", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// function to stop an ambient sound
-	{"sound_ambient_stop", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_ambient_stop", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// restores the game
-	{"restore_game", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"restore_game", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's current movement mode
-	{"ai2_setmovementmode", bsl_db_register_type_void, "([ai_name:string | script_id:int], string mode)", oni_call_noop, NULL},
+	{"ai2_setmovementmode", bsl_db_register_type_void, "([ai_name:string | script_id:int], string mode)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a character weapon immune
-	{"chr_weapon_immune", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_weapon_immune", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// Lists a count of P3 particles
-	{"p3_count", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_count", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// saves the game
-	{"save_game", bsl_db_register_type_void, "(int save_point, string type)", oni_call_noop, NULL},
+	{"save_game", bsl_db_register_type_void, "(int save_point, string type)", bsl_symbol_parse_call, oni_call_noop},
 	// deactivates a console
-	{"console_deactivate", bsl_db_register_type_void, "(int console_id)", oni_call_noop, NULL},
+	{"console_deactivate", bsl_db_register_type_void, "(int console_id)", bsl_symbol_parse_call, oni_call_noop},
 	// function to interrupt the current character dialog and play a new one
-	{"sound_dialog_play_interrupt", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"sound_dialog_play_interrupt", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// resets a trigger to non-triggered state
-	{"trig_reset", bsl_db_register_type_void, "(int trigger_id)", oni_call_noop, NULL},
+	{"trig_reset", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a single AI ignore the player
-	{"ai2_makeignoreplayer", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"ai2_makeignoreplayer", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// sets if we killed griffen
-	{"killed_griffen", bsl_db_register_type_void, "(bool murder)", oni_call_noop, NULL},
+	{"killed_griffen", bsl_db_register_type_void, "(bool murder)", bsl_symbol_parse_call, oni_call_noop},
 	// this character will not die too much
-	{"chr_death_lock", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_death_lock", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// deactivates a turret
-	{"turret_deactivate", bsl_db_register_type_void, "(int turret_id)", oni_call_noop, NULL},
+	{"turret_deactivate", bsl_db_register_type_void, "(int turret_id)", bsl_symbol_parse_call, oni_call_noop},
 	// function to set the volume of a playing ambient sound
-	{"sound_ambient_volume", bsl_db_register_type_void, "(string name, float volume, float time)", oni_call_noop, NULL},
+	{"sound_ambient_volume", bsl_db_register_type_void, "(string name, float volume, float time)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's best aiming angle in degrees
-	{"ai2_skill_bestangle", bsl_db_register_type_void, "(float best_angle)", oni_call_noop, NULL},
+	{"ai2_skill_bestangle", bsl_db_register_type_void, "(float best_angle)", bsl_symbol_parse_call, oni_call_noop},
 	// resets all unheld weapons to their starting state
-	{"weapon_reset", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"weapon_reset", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes an AI panic or not panic
-	{"ai2_panic", bsl_db_register_type_void, "([ai_name:string | script_id:int], int timer)", oni_call_noop, NULL},
+	{"ai2_panic", bsl_db_register_type_void, "([ai_name:string | script_id:int], int timer)", bsl_symbol_parse_call, oni_call_noop},
 	// sets the alert state of an AI
-	{"ai2_setalert", bsl_db_register_type_void, "([ai_name:string | script_id:int], string alarm)", oni_call_noop, NULL},
+	{"ai2_setalert", bsl_db_register_type_void, "([ai_name:string | script_id:int], string alarm)", bsl_symbol_parse_call, oni_call_noop},
 	// marks a point in a cutscene
-	{"cutscene_sync", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"cutscene_sync", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a character utter a vocalization
-	{"chr_vocalize", bsl_db_register_type_void, "([ai_name:string | script_id:int], string type)", oni_call_noop, NULL},
+	{"chr_vocalize", bsl_db_register_type_void, "([ai_name:string | script_id:int], string type)", bsl_symbol_parse_call, oni_call_noop},
 	// selects a shooting skill to edit
-	{"ai2_skill_select", bsl_db_register_type_void, "(string char_class, string weapon_name)", oni_call_noop, NULL},
+	{"ai2_skill_select", bsl_db_register_type_void, "(string char_class, string weapon_name)", bsl_symbol_parse_call, oni_call_noop},
 	// Turns on the text console display
-	{"text_console", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"text_console", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// forces an AI to attack another character
-	{"ai2_attack", bsl_db_register_type_void, "([ai_name:string | script_id:int], [target_name:string | target_script_id:int])", oni_call_noop, NULL},
+	{"ai2_attack", bsl_db_register_type_void, "([ai_name:string | script_id:int], [target_name:string | target_script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// trips an alarm
-	{"ai2_tripalarm", bsl_db_register_type_void, "(int alarm_id, [ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_tripalarm", bsl_db_register_type_void, "(int alarm_id, [ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// prints AIs that are nearby
-	{"who", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"who", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Starts temporary-particle-creation mode
-	{"particle_temp_start", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"particle_temp_start", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// function to start a movie playing
-	{"movie_play", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"movie_play", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// resets all placed powerups to their starting points
-	{"powerup_reset", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"powerup_reset", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's grouping decay
-	{"ai2_skill_decay", bsl_db_register_type_void, "(float decay_amount)", oni_call_noop, NULL},
+	{"ai2_skill_decay", bsl_db_register_type_void, "(float decay_amount)", bsl_symbol_parse_call, oni_call_noop},
 	// closes a door (may not stay open)
-	{"door_close", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_close", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// resets the camera
-	{"cm_reset", bsl_db_register_type_void, "(float maxspeed, float maxfocalaccel)", oni_call_noop, NULL},
+	{"cm_reset", bsl_db_register_type_void, "(float maxspeed, float maxfocalaccel)", bsl_symbol_parse_call, oni_call_noop},
 	// Shows all registered variables and commands
-	{"dump_docs", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"dump_docs", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// creates a new weapon
-	{"weapon_spawn", bsl_db_register_type_void, "(string weapontype, int flag)", oni_call_noop, NULL},
+	{"weapon_spawn", bsl_db_register_type_void, "(string weapontype, int flag)", bsl_symbol_parse_call, oni_call_noop},
 	// set's a character's super value
-	{"chr_super", bsl_db_register_type_void, "([ai_name:string | script_id:int], float super_amount)", oni_call_noop, NULL},
+	{"chr_super", bsl_db_register_type_void, "([ai_name:string | script_id:int], float super_amount)", bsl_symbol_parse_call, oni_call_noop},
 	// starts or stops letterboxing
-	{"letterbox", bsl_db_register_type_void, "(int start_stop)", oni_call_noop, NULL},
+	{"letterbox", bsl_db_register_type_void, "(int start_stop)", bsl_symbol_parse_call, oni_call_noop},
 	// waits until a character's health falls below a value
-	{"chr_wait_health", bsl_db_register_type_void, "([ai_name:string | script_id:int], int hit_points)", oni_call_noop, NULL},
+	{"chr_wait_health", bsl_db_register_type_void, "([ai_name:string | script_id:int], int hit_points)", bsl_symbol_parse_call, oni_call_noop},
 	// makes an AI aware of another character
-	{"ai2_makeaware", bsl_db_register_type_void, "([ai_name:string | script_id:int], [target_name:string | target_script_id:int])", oni_call_noop, NULL},
+	{"ai2_makeaware", bsl_db_register_type_void, "([ai_name:string | script_id:int], [target_name:string | target_script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// start the display of a cinematic insert
-	{"cinematic_start", bsl_db_register_type_void, "(string bitmap_name, int draw_width, int draw_height, int start, int end, float velocity, bool mirror)", oni_call_noop, NULL},
+	{"cinematic_start", bsl_db_register_type_void, "(string bitmap_name, int draw_width, int draw_height, int start, int end, float velocity, bool mirror)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a character unstoppable
-	{"chr_unstoppable", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_unstoppable", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// displays a splash screen
-	{"splash_screen", bsl_db_register_type_void, "(string texture)", oni_call_noop, NULL},
+	{"splash_screen", bsl_db_register_type_void, "(string texture)", bsl_symbol_parse_call, oni_call_noop},
 	// turns display of an object on or off
-	{"obj_hide", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"obj_hide", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// Dump all particle classes with collision to a text file
-	{"p3_listcollision", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_listcollision", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// disables the weapon variant for a character
-	{"chr_dontaim", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", oni_call_noop, NULL},
+	{"chr_dontaim", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// debugging: enables the HUD help overlays
-	{"ui_show_help", bsl_db_register_type_void, "(int enable)", oni_call_noop, NULL},
+	{"ui_show_help", bsl_db_register_type_void, "(int enable)", bsl_symbol_parse_call, oni_call_noop},
 	// Spawns a new P3 particle
-	{"p3_spawn", bsl_db_register_type_void, "(string particle_class, float velocity)", oni_call_noop, NULL},
+	{"p3_spawn", bsl_db_register_type_void, "(string particle_class, float velocity)", bsl_symbol_parse_call, oni_call_noop},
 	// sets whether handled errors are silent
-	{"ai2_set_handlesilenterror", bsl_db_register_type_void, "(bool handle_silent, string subsystem)", oni_call_noop, NULL},
+	{"ai2_set_handlesilenterror", bsl_db_register_type_void, "(bool handle_silent, string subsystem)", bsl_symbol_parse_call, oni_call_noop},
 	// tells an AI to look at the player
-	{"ai2_lookatme", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"ai2_lookatme", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// plays an environment animation on a character and blocks
-	{"chr_envanim_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim, string norotation)", oni_call_noop, NULL},
+	{"chr_envanim_block", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim, string norotation)", bsl_symbol_parse_call, oni_call_noop},
 	// makes the player character fall front
-	{"fall_back", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"fall_back", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// resets a turret to initial state
-	{"turret_reset", bsl_db_register_type_void, "(int turret_id)", oni_call_noop, NULL},
+	{"turret_reset", bsl_db_register_type_void, "(int turret_id)", bsl_symbol_parse_call, oni_call_noop},
 	// Unlocks a specific diary page on the current level.
-	{"diary_page_unlock", bsl_db_register_type_void, "(int page)", oni_call_noop, NULL},
+	{"diary_page_unlock", bsl_db_register_type_void, "(int page)", bsl_symbol_parse_call, oni_call_noop},
 	// sets an AI's grouping error
-	{"ai2_skill_error", bsl_db_register_type_void, "(float error_amount)", oni_call_noop, NULL},
+	{"ai2_skill_error", bsl_db_register_type_void, "(float error_amount)", bsl_symbol_parse_call, oni_call_noop},
 	// reloads the sounds objects
-	{"sound_objects_reset", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"sound_objects_reset", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// Sets character's health
-	{"chr_health", bsl_db_register_type_void, "(int chr_index, int hit_points)", oni_call_noop, NULL},
+	{"chr_health", bsl_db_register_type_void, "(int chr_index, int hit_points)", bsl_symbol_parse_call, oni_call_noop},
 	// computes the number of objects in a range that have all their glass broken
-	{"env_broken", bsl_db_register_type_int, "(int gq_ref, int gq_endref)", oni_call_noop, NULL},
+	{"env_broken", bsl_db_register_type_int, "(int gq_ref, int gq_endref)", bsl_symbol_parse_call, oni_call_noop},
 	// gives a character a new weapon
-	{"chr_giveweapon", bsl_db_register_type_void, "([ai_name:string | script_id:int], string weapon_name)", oni_call_noop, NULL},
+	{"chr_giveweapon", bsl_db_register_type_void, "([ai_name:string | script_id:int], string weapon_name)", bsl_symbol_parse_call, oni_call_noop},
 	// Displays the characters combat stats
-	{"chr_display_combat_stats", bsl_db_register_type_void, "(int chr_index)", oni_call_noop, NULL},
+	{"chr_display_combat_stats", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call, oni_call_noop},
 	// opens a door (may not stay open)
-	{"door_open", bsl_db_register_type_void, "(int door_id)", oni_call_noop, NULL},
+	{"door_open", bsl_db_register_type_void, "(int door_id)", bsl_symbol_parse_call, oni_call_noop},
 	// plays an environment animation on a character
-	{"chr_envanim", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim, string norotation)", oni_call_noop, NULL},
+	{"chr_envanim", bsl_db_register_type_void, "([ai_name:string | script_id:int], string anim, string norotation)", bsl_symbol_parse_call, oni_call_noop},
 	// makes a corpse
-	{"make_corpse", bsl_db_register_type_void, "(string corpse_name)", oni_call_noop, NULL},
+	{"make_corpse", bsl_db_register_type_void, "(string corpse_name)", bsl_symbol_parse_call, oni_call_noop},
 	// binds an input to a function
-	{"bind", bsl_db_register_type_void, "(string input_name, string to, string input_function)", oni_call_noop, NULL},
+	{"bind", bsl_db_register_type_void, "(string input_name, string to, string input_function)", bsl_symbol_parse_call, oni_call_noop},
 	// reload scripts for a level
-	{"script_reload", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"script_reload", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// [ai_name:string | script_id:int] passive:int
-	{"ai2_passive", bsl_db_register_type_void, "([ai_name:string | script_id:int], int passive)", oni_call_noop, NULL},
+	{"ai2_passive", bsl_db_register_type_void, "([ai_name:string | script_id:int], int passive)", bsl_symbol_parse_call, oni_call_noop},
 	// Stops all environmental particles
-	{"p3_stopall", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"p3_stopall", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// makes the AI movement system take control of the player
-	{"ai2_takecontrol", bsl_db_register_type_void, "(int on_off)", oni_call_noop, NULL},
+	{"ai2_takecontrol", bsl_db_register_type_void, "(int on_off)", bsl_symbol_parse_call, oni_call_noop},
 	// plays back a film
-	{"chr_playback", bsl_db_register_type_void, "([ai_name:string | script_id:int], string file_name, string mode, int num_frames)", oni_call_noop, NULL},
+	{"chr_playback", bsl_db_register_type_void, "([ai_name:string | script_id:int], string file_name, string mode, int num_frames)", bsl_symbol_parse_call, oni_call_noop},
 	// creates a range of objects
-	{"obj_create", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"obj_create", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// sets which character we're authoring for a film
-	{"sc_focus", bsl_db_register_type_void, "(int chr_index)", oni_call_noop, NULL},
+	{"sc_focus", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call, oni_call_noop},
 	// Stops temporary-particle-creation mode
-	{"particle_temp_stop", bsl_db_register_type_void, "(void)", oni_call_noop, NULL},
+	{"particle_temp_stop", bsl_db_register_type_void, "(void)", bsl_symbol_parse_call, oni_call_noop},
 	// selects a path square in the player's BNV for debugging
-	{"ai2_pathdebugsquare", bsl_db_register_type_void, "(int x, int y)", oni_call_noop, NULL},
+	{"ai2_pathdebugsquare", bsl_db_register_type_void, "(int x, int y)", bsl_symbol_parse_call, oni_call_noop},
 	// turns display of an object on or off
-	{"obj_show", bsl_db_register_type_void, "(int obj_id, int obj_id)", oni_call_noop, NULL},
+	{"obj_show", bsl_db_register_type_void, "(int obj_id, int obj_id)", bsl_symbol_parse_call, oni_call_noop},
 	// reset a trigger volume to its level-load state
-	{"trigvolume_reset", bsl_db_register_type_void, "(string name)", oni_call_noop, NULL},
+	{"trigvolume_reset", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call, oni_call_noop},
 	// locks the character active
-	{"chr_unlock_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_unlock_active", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// creates and starts an AI from a character object
-	{"ai2_spawn", bsl_db_register_type_void, "(string ai_name, string force_spawn)", oni_call_noop, NULL},
+	{"ai2_spawn", bsl_db_register_type_void, "(string ai_name, string force_spawn)", bsl_symbol_parse_call, oni_call_noop},
 	// deletes a character
-	{"chr_delete", bsl_db_register_type_void, "([ai_name:string | script_id:int])", oni_call_noop, NULL},
+	{"chr_delete", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call, oni_call_noop},
 	// end
 	NULL
 };

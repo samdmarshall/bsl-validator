@@ -178,6 +178,8 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	printf("calling into oni -> %s(",(*context)->stack->active->symbol->u.func.name);
 	
+	int mismatch_arg = 0;
+	
 	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
 		int8_t matched_type = 0;
 		
@@ -229,7 +231,7 @@ uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_a
 		switch (matched_type) {
 			case 0: {
 				// not matched!
-				printf("mis-matching argument type!\n");
+				mismatch_arg++;
 				break;
 			}
 			case 1: {
