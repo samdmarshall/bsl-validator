@@ -15,21 +15,38 @@
 #include <unistd.h>
 
 typedef struct bsl_script bsl_script;
+
 typedef struct bsl_script_offset bsl_script_offset;
+
 typedef struct bsl_token bsl_token;
+
 typedef struct bsl_tkn_ir bsl_tkn_ir;
+
 typedef struct bsl_expression bsl_expression;
+
 typedef struct bsl_database bsl_database;
+typedef struct bsl_register_item bsl_register_item;
+
 typedef struct bsl_variable bsl_variable;
+
 typedef struct bsl_func_arg bsl_func_arg;
 typedef struct bsl_function_interpreted bsl_function_interpreted;
 typedef struct bsl_function_compiled bsl_function_compiled;
 typedef struct bsl_function bsl_function;
+
 typedef struct bsl_symbol bsl_symbol;
+
 typedef struct bsl_stack_scope bsl_stack_scope;
+
 typedef struct bsl_stack bsl_stack;
+
 typedef struct bsl_context bsl_context;
+
 typedef struct bsl_statement bsl_statement;
+
+typedef struct bsl_scheduler bsl_scheduler;
+
+typedef struct bsl_schedule_item bsl_schedule_item;
 
 #pragma mark -
 #pragma mark BSLScript
@@ -260,6 +277,30 @@ struct bsl_function {
 };
 
 #pragma mark -
+#pragma mark BSL Register Item
+
+
+typedef enum {
+	bsl_db_register_rtype_invalid,
+	
+	bsl_db_register_rtype_void,
+	bsl_db_register_rtype_int,
+	bsl_db_register_rtype_float,
+	bsl_db_register_rtype_bool,
+	bsl_db_register_rtype_string,
+	
+	bsl_db_register_rtype_count
+} bsl_db_register_rtype;
+
+struct bsl_register_item {
+	char *name;
+	bsl_db_register_rtype rtype;
+	char *args;
+	
+	FunctionPointer call;
+};
+
+#pragma mark -
 #pragma mark BSLStatement
 
 typedef enum {
@@ -345,6 +386,28 @@ struct bsl_context {
 	bsl_stack *stack;
 	
 	bsl_error error;
+};
+
+#pragma mark -
+#pragma mark BSLScheduleItem
+
+struct bsl_schedule_item {
+	uint32_t item_count;
+	
+	bsl_schedule_item *items;
+
+	// something to evaluate
+};
+
+#pragma mark -
+#pragma mark BSLScheduler
+
+struct bsl_scheduler {
+	uint32_t stack_depth;
+	
+	bsl_schedule_item *stack;
+	
+	bsl_schedule_item *current;
 };
 
 #endif

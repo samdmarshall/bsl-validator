@@ -63,6 +63,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			// advance to sleep value
 			curr = curr->next;
 			
+			// remove this code and give to scheduler to run instead.
+			
 			if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_type_int) {
 				bsl_variable *sleep_time = bsl_variable_create_from_token(curr->token, context);
 				
