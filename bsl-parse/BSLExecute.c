@@ -43,7 +43,7 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 	return result;
 }
 
-uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	printf("%s(",(*context)->stack->active->symbol->u.func.name);
 	
 	int mismatch_arg = 0;
@@ -149,9 +149,17 @@ uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bs
 		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
 			printf(", ");
 		}
+		
 	}
 	
 	printf(")");
+	
+	return mismatch_arg;
+}
+
+uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+
+	int mismatch_arg = bsl_symbol_parse_evaluate(context, rtype, args, arg_count);
 	
 	FunctionPointer call = (*context)->stack->active->symbol->u.func.u.comp.call;
 	
