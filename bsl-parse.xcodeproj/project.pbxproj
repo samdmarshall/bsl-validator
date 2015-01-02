@@ -22,26 +22,31 @@
 		2262FD341A51A6C400C9F47F /* BSLExecute.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328E41A508C7C00E01700 /* BSLExecute.c */; };
 		2262FD351A51A6C400C9F47F /* BSLScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CF1A4F3F1200E01700 /* BSLScript.c */; };
 		2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CC1A4F3A6D00E01700 /* OniScript.c */; };
-		2262FD3A1A51AF9500C9F47F /* BSLStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD381A51AF9500C9F47F /* BSLStack.c */; };
-		2262FD3D1A51F2C700C9F47F /* BSLStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3B1A51F2C700C9F47F /* BSLStatement.c */; };
-		2262FD411A571ECA00C9F47F /* BSLScheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */; };
-		22E328A81A4F028F00E01700 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328A71A4F028F00E01700 /* main.c */; };
-		22E328B01A4F02AA00E01700 /* BSLToken.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328AE1A4F02AA00E01700 /* BSLToken.c */; };
-		22E328B31A4F02B600E01700 /* BSLParse.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B11A4F02B600E01700 /* BSLParse.c */; };
-		22E328B61A4F070600E01700 /* BSLDatabase.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B41A4F070600E01700 /* BSLDatabase.c */; };
-		22E328B91A4F096100E01700 /* cmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B71A4F096100E01700 /* cmap.cpp */; };
-		22E328BC1A4F0AB300E01700 /* BSLContext.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328BA1A4F0AB300E01700 /* BSLContext.c */; };
-		22E328C51A4F0D7A00E01700 /* BSLExpression.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328C31A4F0D7A00E01700 /* BSLExpression.c */; };
-		22E328CA1A4F185600E01700 /* FileAccess.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328C81A4F185600E01700 /* FileAccess.c */; };
-		22E328CE1A4F3A6D00E01700 /* OniScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CC1A4F3A6D00E01700 /* OniScript.c */; };
-		22E328D11A4F3F1200E01700 /* BSLScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CF1A4F3F1200E01700 /* BSLScript.c */; };
-		22E328D41A4F6AC200E01700 /* BSLEvaluate.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328D21A4F6AC200E01700 /* BSLEvaluate.c */; };
-		22E328D81A4F7E1D00E01700 /* BSLSymbol.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328D61A4F7E1D00E01700 /* BSLSymbol.c */; };
-		22E328DD1A50622E00E01700 /* BSLTokenDefinitions.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328DC1A50622E00E01700 /* BSLTokenDefinitions.c */; };
-		22E328E01A506C5300E01700 /* BSLVariable.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328DE1A506C5300E01700 /* BSLVariable.c */; };
-		22E328E31A506C6400E01700 /* BSLFunction.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328E11A506C6400E01700 /* BSLFunction.c */; };
-		22E328E61A508C7C00E01700 /* BSLExecute.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328E41A508C7C00E01700 /* BSLExecute.c */; };
+		2262FD4D1A574B4400C9F47F /* BSL_stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD431A574B2200C9F47F /* BSL_stdlib.c */; };
+		2262FD501A574C1B00C9F47F /* BSLStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD381A51AF9500C9F47F /* BSLStack.c */; };
+		2262FD511A574C1B00C9F47F /* BSLStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3B1A51F2C700C9F47F /* BSLStatement.c */; };
+		2262FD521A574C1B00C9F47F /* BSLScheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */; };
+		2262FD561A574C4200C9F47F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328A71A4F028F00E01700 /* main.c */; };
+		2262FD571A574C5D00C9F47F /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
+		2262FD581A574C6600C9F47F /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2262FD4E1A574B5100C9F47F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22E3289C1A4F028F00E01700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2262FD231A51A6AC00C9F47F;
+			remoteInfo = bsl;
+		};
+		2262FD531A574C2700C9F47F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22E3289C1A4F028F00E01700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2262FD231A51A6AC00C9F47F;
+			remoteInfo = bsl;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		22E328A21A4F028F00E01700 /* CopyFiles */ = {
@@ -63,6 +68,9 @@
 		2262FD3C1A51F2C700C9F47F /* BSLStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement.h; sourceTree = "<group>"; };
 		2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLScheduler.c; sourceTree = "<group>"; };
 		2262FD401A571ECA00C9F47F /* BSLScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLScheduler.h; sourceTree = "<group>"; };
+		2262FD431A574B2200C9F47F /* BSL_stdlib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = BSL_stdlib.c; path = stdlib/BSL_stdlib.c; sourceTree = "<group>"; };
+		2262FD441A574B2200C9F47F /* BSL_stdlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BSL_stdlib.h; path = stdlib/BSL_stdlib.h; sourceTree = "<group>"; };
+		2262FD491A574B3F00C9F47F /* libBSLstdlib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libBSLstdlib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -107,10 +115,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2262FD461A574B3F00C9F47F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2262FD581A574C6600C9F47F /* libbsl.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22E328A11A4F028F00E01700 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2262FD571A574C5D00C9F47F /* libbsl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,9 +152,19 @@
 			name = Scheduler;
 			sourceTree = "<group>";
 		};
+		2262FD421A574B0D00C9F47F /* stdlib */ = {
+			isa = PBXGroup;
+			children = (
+				2262FD441A574B2200C9F47F /* BSL_stdlib.h */,
+				2262FD431A574B2200C9F47F /* BSL_stdlib.c */,
+			);
+			name = stdlib;
+			sourceTree = SOURCE_ROOT;
+		};
 		22E3289B1A4F028F00E01700 = {
 			isa = PBXGroup;
 			children = (
+				2262FD421A574B0D00C9F47F /* stdlib */,
 				22E328A61A4F028F00E01700 /* bsl-parse */,
 				22E328A51A4F028F00E01700 /* Products */,
 			);
@@ -148,6 +175,7 @@
 			children = (
 				22E328A41A4F028F00E01700 /* bsl-parse */,
 				2262FD241A51A6AC00C9F47F /* libbsl.dylib */,
+				2262FD491A574B3F00C9F47F /* libBSLstdlib.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -278,6 +306,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2262FD471A574B3F00C9F47F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -298,6 +333,24 @@
 			productReference = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		2262FD481A574B3F00C9F47F /* BSLstdlib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2262FD4A1A574B3F00C9F47F /* Build configuration list for PBXNativeTarget "BSLstdlib" */;
+			buildPhases = (
+				2262FD451A574B3F00C9F47F /* Sources */,
+				2262FD461A574B3F00C9F47F /* Frameworks */,
+				2262FD471A574B3F00C9F47F /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2262FD4F1A574B5100C9F47F /* PBXTargetDependency */,
+			);
+			name = BSLstdlib;
+			productName = BSLstdlib;
+			productReference = 2262FD491A574B3F00C9F47F /* libBSLstdlib.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 		22E328A31A4F028F00E01700 /* bsl-parse */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22E328AB1A4F028F00E01700 /* Build configuration list for PBXNativeTarget "bsl-parse" */;
@@ -309,6 +362,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2262FD541A574C2700C9F47F /* PBXTargetDependency */,
 			);
 			name = "bsl-parse";
 			productName = "bsl-parse";
@@ -325,6 +379,9 @@
 				ORGANIZATIONNAME = "Sam Marshall";
 				TargetAttributes = {
 					2262FD231A51A6AC00C9F47F = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					2262FD481A574B3F00C9F47F = {
 						CreatedOnToolsVersion = 6.1;
 					};
 					22E328A31A4F028F00E01700 = {
@@ -346,6 +403,7 @@
 			targets = (
 				22E328A31A4F028F00E01700 /* bsl-parse */,
 				2262FD231A51A6AC00C9F47F /* bsl */,
+				2262FD481A574B3F00C9F47F /* BSLstdlib */,
 			);
 		};
 /* End PBXProject section */
@@ -355,6 +413,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2262FD501A574C1B00C9F47F /* BSLStack.c in Sources */,
+				2262FD511A574C1B00C9F47F /* BSLStatement.c in Sources */,
+				2262FD521A574C1B00C9F47F /* BSLScheduler.c in Sources */,
 				2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */,
 				2262FD281A51A6C400C9F47F /* cmap.cpp in Sources */,
 				2262FD291A51A6C400C9F47F /* FileAccess.c in Sources */,
@@ -373,33 +434,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2262FD451A574B3F00C9F47F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2262FD4D1A574B4400C9F47F /* BSL_stdlib.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22E328A01A4F028F00E01700 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22E328E31A506C6400E01700 /* BSLFunction.c in Sources */,
-				22E328E61A508C7C00E01700 /* BSLExecute.c in Sources */,
-				2262FD411A571ECA00C9F47F /* BSLScheduler.c in Sources */,
-				22E328C51A4F0D7A00E01700 /* BSLExpression.c in Sources */,
-				2262FD3D1A51F2C700C9F47F /* BSLStatement.c in Sources */,
-				22E328B61A4F070600E01700 /* BSLDatabase.c in Sources */,
-				2262FD3A1A51AF9500C9F47F /* BSLStack.c in Sources */,
-				22E328D11A4F3F1200E01700 /* BSLScript.c in Sources */,
-				22E328A81A4F028F00E01700 /* main.c in Sources */,
-				22E328B01A4F02AA00E01700 /* BSLToken.c in Sources */,
-				22E328B91A4F096100E01700 /* cmap.cpp in Sources */,
-				22E328B31A4F02B600E01700 /* BSLParse.c in Sources */,
-				22E328CE1A4F3A6D00E01700 /* OniScript.c in Sources */,
-				22E328BC1A4F0AB300E01700 /* BSLContext.c in Sources */,
-				22E328E01A506C5300E01700 /* BSLVariable.c in Sources */,
-				22E328CA1A4F185600E01700 /* FileAccess.c in Sources */,
-				22E328D41A4F6AC200E01700 /* BSLEvaluate.c in Sources */,
-				22E328D81A4F7E1D00E01700 /* BSLSymbol.c in Sources */,
-				22E328DD1A50622E00E01700 /* BSLTokenDefinitions.c in Sources */,
+				2262FD561A574C4200C9F47F /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2262FD4F1A574B5100C9F47F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2262FD231A51A6AC00C9F47F /* bsl */;
+			targetProxy = 2262FD4E1A574B5100C9F47F /* PBXContainerItemProxy */;
+		};
+		2262FD541A574C2700C9F47F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2262FD231A51A6AC00C9F47F /* bsl */;
+			targetProxy = 2262FD531A574C2700C9F47F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		2262FD251A51A6AC00C9F47F /* Debug */ = {
@@ -417,6 +481,30 @@
 			name = Debug;
 		};
 		2262FD261A51A6AC00C9F47F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2262FD4B1A574B3F00C9F47F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2262FD4C1A574B3F00C9F47F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -525,6 +613,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		2262FD4A1A574B3F00C9F47F /* Build configuration list for PBXNativeTarget "BSLstdlib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2262FD4B1A574B3F00C9F47F /* Debug */,
+				2262FD4C1A574B3F00C9F47F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		22E3289F1A4F028F00E01700 /* Build configuration list for PBXProject "bsl-parse" */ = {
 			isa = XCConfigurationList;
