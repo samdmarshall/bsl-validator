@@ -143,6 +143,37 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 	return var;
 }
 
+uint32_t bsl_func_arg_parse_str(char **str, bsl_func_arg **f_args) {
+	bsl_variable var = {0};
+	uint32_t count = 0;
+	
+	bsl_func_arg *args = (*f_args);
+	
+	if (args == NULL) {
+		args = calloc(1, sizeof(bsl_func_arg));
+	}
+	
+	bsl_func_arg *tmp_arg = NULL;
+	
+start:
+	{
+		args = realloc(args, sizeof(bsl_func_arg) * (count + 1));
+		
+		if (tmp_arg == NULL) {
+			tmp_arg = calloc(1, sizeof(bsl_func_arg));
+		}
+		
+		memset(&var, 0, sizeof(bsl_variable));
+		
+		// do something about this
+		
+	}
+	
+	*f_args = args;
+	
+	return count;
+}
+
 uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args) {
 	bsl_variable var = {0};
 	uint32_t count = 0;

@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+bsl_tkn_ir * bsl_token_ir_generate_from_string(char *str);
+
 bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script);
 
 #endif /* defined(__bsl_parse__BSLParse__) */
