@@ -7,18 +7,6 @@
 //
 
 #include "BSLScript.h"
-#include "BSLGlobals.h"
-
-bsl_script * bsl_script_init() {
-	bsl_script *globals = calloc(1, sizeof(bsl_script));
-	
-	if (globals != NULL) {
-		globals->contents = mem_buff_copy(BSL_GLOBAL_DEFINES, strlen(BSL_GLOBAL_DEFINES));
-		globals->fd = NULL;
-	}
-	
-	return globals;
-}
 
 void OpenScriptFromFileInDir(char *dir_path, struct dirent *ent, DIR *dir, bsl_script *script) {
 	script->fd = file_ref_create(ent, dir);
