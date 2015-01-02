@@ -1,4 +1,4 @@
 func void main {
-	sleep 360f
+	sleep 30
 	dmsg "hello world";
 }

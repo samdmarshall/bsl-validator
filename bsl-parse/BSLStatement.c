@@ -22,14 +22,35 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 	switch (code) {
 		case BSLTokenCode_id_schedule: {
 			expr.type = bsl_statement_type_schedule;
+			
+			// function call
+			
+			// 'at' identifier
+			
+			// time value
+			
 			break;
 		}
 		case BSLTokenCode_id_iterate: {
 			expr.type = bsl_statement_type_iterate;
+			
+			// 'over' identifier
+		
+			// variable identifier
+			
+			// 'using' identifier
+			
+			// variable identifier
+			
+			// scope { }
+			
 			break;
 		}
 		case BSLTokenCode_id_return: {
 			expr.type = bsl_statement_type_return;
+			
+			// return value, stop evaluating
+			
 			break;
 		}
 		case BSLTokenCode_id_sleep: {
@@ -48,9 +69,9 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				if (sleep_time != NULL) {
 					
 					if (sleep_time->type == bsl_variable_int) {
-						int time_val = sleep_time->u.i/60;
+						useconds_t time_val = (sleep_time->u.i / 60) * 1000;
 						
-						sleep(time_val);
+						usleep(time_val);
 					}
 					else {
 						// error
@@ -77,7 +98,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			
 			bsl_function function = bsl_function_parse(&curr, context);
 			
-			// do function
+			// do function on separate thread
 			
 			bsl_function_release(function);
 			
@@ -85,6 +106,15 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 		}
 		case BSLTokenCode_id_if: {
 			expr.type = bsl_statement_type_conditional;
+			
+			// parse logic expression
+			
+			// scope (optional)
+			
+			// logical statement
+			
+			// else (if) (optional) repeat parsing ^^^
+			
 			break;
 		}
 		default: {
