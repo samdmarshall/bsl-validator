@@ -413,33 +413,33 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 
 void bsl_variable_set(bsl_variable *variable, bsl_variable *value) {
 	if (variable->type == value->type) {
-		printf("assigning var [%s:",variable->name);
+		debug_printf("assigning var [%s:",variable->name);
 		switch (variable->type) {
 			case bsl_variable_int: {
-				printf("int] [%i -> ",variable->u.i);
+				debug_printf("int] [%i -> ",variable->u.i);
 				variable->u.i = value->u.i;
-				printf("%i]\n",variable->u.i);
+				debug_printf("%i]\n",variable->u.i);
 				break;
 			}
 			case bsl_variable_bool: {
-				printf("bool] [%i -> ",variable->u.b);
+				debug_printf("bool] [%i -> ",variable->u.b);
 				variable->u.b = value->u.b;
-				printf("%i]\n",variable->u.i);
+				debug_printf("%i]\n",variable->u.i);
 				break;
 			}
 			case bsl_variable_float: {
-				printf("float] [%f -> ",variable->u.f);
+				debug_printf("float] [%f -> ",variable->u.f);
 				variable->u.f = value->u.f;
-				printf("%f]\n",variable->u.f);
+				debug_printf("%f]\n",variable->u.f);
 				break;
 			}
 			case bsl_variable_string: {
-				printf("string] [%s -> ",variable->u.s);
+				debug_printf("string] [%s -> ",variable->u.s);
 				if (variable->u.s != NULL) {
 					free(variable->u.s);
 				}
 				variable->u.s = value->u.s;
-				printf("%s]\n",variable->u.s);
+				debug_printf("%s]\n",variable->u.s);
 				break;
 			}
 			default: {

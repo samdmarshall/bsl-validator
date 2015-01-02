@@ -16,7 +16,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 	
 	bsl_tkn_ir *curr = (*item);
 	
-	printf("evaluate expression\n");
+	debug_printf("%s","evaluate expression\n");
 	bsl_token_code code = bsl_token_resolve_identifier(curr->token);
 	
 	switch (code) {

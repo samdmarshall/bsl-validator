@@ -29,7 +29,7 @@ int bsl_context_check_error(bsl_context *context) {
 	if (context->stack->active->symbol == NULL) {
 		
 		if (context->error != bsl_error_none) {
-			printf("implementation not finished yet, skipping error check!\n");
+			debug_printf("%s","implementation not finished yet, skipping error check!\n");
 		}
 		
 		return context->error;

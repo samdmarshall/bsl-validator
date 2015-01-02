@@ -49,6 +49,13 @@ typedef struct bsl_scheduler bsl_scheduler;
 
 typedef struct bsl_schedule_item bsl_schedule_item;
 
+
+#if DEBUG
+#define debug_printf(fmt, ...) printf(fmt, __VA_ARGS__)
+#else
+#define debug_printf(fmt, ...)
+#endif
+
 #pragma mark -
 #pragma mark BSLScript
 

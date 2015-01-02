@@ -157,7 +157,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 				func.u.interp.expression_count++;
 			}
 			else {
-				printf("error\n");
+				debug_printf("%s","error\n");
 			}
 			
 			if (curr->next == NULL) {
@@ -177,15 +177,15 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 }
 
 uintptr_t* oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	printf("calling into oni -> ");
+	debug_printf("%s","calling into oni -> ");
 	
 	int mismatch_arg = bsl_symbol_parse_evaluate(context, rtype, args, arg_count);
 	
 	if (mismatch_arg != 0) {
-		printf(" -> error in %i total args!",mismatch_arg);
+		debug_printf(" -> error in %i total args!",mismatch_arg);
 	}
 	
-	printf("\n");
+	debug_printf("%s","\n");
 	
 	return NULL;
 }

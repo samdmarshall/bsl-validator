@@ -44,14 +44,14 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 }
 
 int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	printf("%s(",(*context)->stack->active->symbol->u.func.name);
+	debug_printf("%s(",(*context)->stack->active->symbol->u.func.name);
 	
 	int mismatch_arg = 0;
 	
 	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
 		int8_t matched_type = 0;
 		
-		printf("[");
+		debug_printf("%s","[");
 		
 		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
 			
@@ -59,10 +59,10 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 			bsl_variable_type var_type = var.type;
 			char *var_name = var.name;
 			
-			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
+			debug_printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
 			
 			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
-				printf(" | ");
+				debug_printf("%s"," | ");
 			}
 			
 			if (args[param_index].arg_type_count > 0) {
@@ -93,7 +93,7 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 			}
 		}
 		
-		printf("] = ");
+		debug_printf("%s","] = ");
 		
 		// this is error checking for passed arguments
 		switch (matched_type) {
@@ -109,23 +109,23 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 				if (param_index < arg_count) {
 					switch (args[param_index].args[0].type) {
 						case bsl_variable_int: {
-							printf("%i",args[param_index].args[0].u.i);
+							debug_printf("%i",args[param_index].args[0].u.i);
 							break;
 						}
 						case bsl_variable_bool: {
-							printf("%i",args[param_index].args[0].u.b);
+							debug_printf("%i",args[param_index].args[0].u.b);
 							break;
 						}
 						case bsl_variable_float: {
-							printf("%f",args[param_index].args[0].u.f);
+							debug_printf("%f",args[param_index].args[0].u.f);
 							break;
 						}
 						case bsl_variable_string: {
-							printf("%s",args[param_index].args[0].u.s);
+							debug_printf("%s",args[param_index].args[0].u.s);
 							break;
 						}
 						case bsl_variable_None: {
-							printf("void");
+							debug_printf("%s","void");
 							break;
 						}
 						default: {
@@ -138,7 +138,7 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 			}
 			case 2: {
 				// null passed
-				printf("NULL");
+				debug_printf("%s","NULL");
 				break;
 			}
 			default: {
@@ -147,12 +147,12 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 		}
 		
 		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
-			printf(", ");
+			debug_printf("%s",", ");
 		}
 		
 	}
 	
-	printf(")");
+	debug_printf("%s",")");
 	
 	return mismatch_arg;
 }
@@ -164,11 +164,11 @@ uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bs
 	FunctionPointer call = (*context)->stack->active->symbol->u.func.u.comp.call;
 	
 	if (call != NULL && mismatch_arg == 0) {
-		printf(" -> ");
+		debug_printf("%s"," -> ");
 		return call(context, rtype, args, arg_count);
 	}
 	else {
-		printf("\n");
+		debug_printf("%s","\n");
 		return NULL;
 	}
 }
