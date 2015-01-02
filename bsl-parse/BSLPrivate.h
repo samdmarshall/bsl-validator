@@ -12,6 +12,7 @@
 #include "FileAccess.h"
 #include "cmap.h"
 #include <ctype.h>
+#include <unistd.h>
 
 typedef struct bsl_script bsl_script;
 typedef struct bsl_script_offset bsl_script_offset;
@@ -276,6 +277,10 @@ typedef enum {
 
 struct bsl_statement {
 	bsl_statement_type type;
+	
+	union {
+		
+	} u;
 };
 
 #pragma mark -

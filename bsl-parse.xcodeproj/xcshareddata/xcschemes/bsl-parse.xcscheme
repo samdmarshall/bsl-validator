@@ -60,6 +60,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-i $(SRCROOT)/GameDataFolder/IGMD/lab/ -s"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-i $(SRCROOT)/GameDataFolder/IGMD/test/ -s"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

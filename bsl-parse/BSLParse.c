@@ -23,13 +23,13 @@ bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script) {
 		
 		if (token != NULL) {
 			
+			token->offset.script = script;
+			token->offset.line = curr_line;
+			
 			bsl_error error = check_token_error(token);
 			if (error != bsl_error_none) {
 				break;
 			}
-			
-			token->offset.script = script;
-			token->offset.line = curr_line;
 			
 			if (token->code == BSLTokenCode_id_newline || token->code == BSLTokenCode_id_comment) {
 				curr_line++;

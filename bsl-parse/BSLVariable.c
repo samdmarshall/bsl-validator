@@ -84,7 +84,17 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 			
 			switch (var->type) {
 				case bsl_variable_int: {
-					tmp_int = atoi(token->contents);
+					char *f = strnstr(token->contents, "f", sizeof(char[token->offset.length]));
+					if (f != NULL) {
+						f++;
+						if (((uintptr_t)f - (uintptr_t)token->contents) != 1) {
+							f = token->contents;
+						}
+					}
+					else {
+						f = token->contents;
+					}
+					tmp_int = atoi(f);
 					break;
 				}
 				case bsl_variable_bool: {
@@ -310,6 +320,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 			}
 			case bsl_variable_float: {
 				if (curr->token->code == BSLTokenCode_id_float) {
+					// what about if it starts with an 'f'
 					tmp_float = strtof(curr->token->contents, NULL);
 				}
 				else {
