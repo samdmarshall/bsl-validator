@@ -24,6 +24,7 @@
 		2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CC1A4F3A6D00E01700 /* OniScript.c */; };
 		2262FD3A1A51AF9500C9F47F /* BSLStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD381A51AF9500C9F47F /* BSLStack.c */; };
 		2262FD3D1A51F2C700C9F47F /* BSLStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3B1A51F2C700C9F47F /* BSLStatement.c */; };
+		2262FD411A571ECA00C9F47F /* BSLScheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */; };
 		22E328A81A4F028F00E01700 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328A71A4F028F00E01700 /* main.c */; };
 		22E328B01A4F02AA00E01700 /* BSLToken.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328AE1A4F02AA00E01700 /* BSLToken.c */; };
 		22E328B31A4F02B600E01700 /* BSLParse.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B11A4F02B600E01700 /* BSLParse.c */; };
@@ -60,6 +61,8 @@
 		2262FD391A51AF9500C9F47F /* BSLStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStack.h; sourceTree = "<group>"; };
 		2262FD3B1A51F2C700C9F47F /* BSLStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement.c; sourceTree = "<group>"; };
 		2262FD3C1A51F2C700C9F47F /* BSLStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement.h; sourceTree = "<group>"; };
+		2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLScheduler.c; sourceTree = "<group>"; };
+		2262FD401A571ECA00C9F47F /* BSLScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLScheduler.h; sourceTree = "<group>"; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -121,6 +124,15 @@
 				2262FD381A51AF9500C9F47F /* BSLStack.c */,
 			);
 			name = Stack;
+			sourceTree = "<group>";
+		};
+		2262FD3E1A571EBB00C9F47F /* Scheduler */ = {
+			isa = PBXGroup;
+			children = (
+				2262FD401A571ECA00C9F47F /* BSLScheduler.h */,
+				2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */,
+			);
+			name = Scheduler;
 			sourceTree = "<group>";
 		};
 		22E3289B1A4F028F00E01700 = {
@@ -239,6 +251,7 @@
 		22E328EB1A508D0400E01700 /* Execute */ = {
 			isa = PBXGroup;
 			children = (
+				2262FD3E1A571EBB00C9F47F /* Scheduler */,
 				22E328E51A508C7C00E01700 /* BSLExecute.h */,
 				22E328E41A508C7C00E01700 /* BSLExecute.c */,
 			);
@@ -366,6 +379,7 @@
 			files = (
 				22E328E31A506C6400E01700 /* BSLFunction.c in Sources */,
 				22E328E61A508C7C00E01700 /* BSLExecute.c in Sources */,
+				2262FD411A571ECA00C9F47F /* BSLScheduler.c in Sources */,
 				22E328C51A4F0D7A00E01700 /* BSLExpression.c in Sources */,
 				2262FD3D1A51F2C700C9F47F /* BSLStatement.c in Sources */,
 				22E328B61A4F070600E01700 /* BSLDatabase.c in Sources */,
@@ -510,6 +524,7 @@
 				2262FD261A51A6AC00C9F47F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		22E3289F1A4F028F00E01700 /* Build configuration list for PBXProject "bsl-parse" */ = {
 			isa = XCConfigurationList;
