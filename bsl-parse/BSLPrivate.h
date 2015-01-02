@@ -25,7 +25,8 @@ typedef struct bsl_tkn_ir bsl_tkn_ir;
 typedef struct bsl_expression bsl_expression;
 
 typedef struct bsl_database bsl_database;
-typedef struct bsl_register_item bsl_register_item;
+typedef struct bsl_register_func_item bsl_register_func_item;
+typedef struct bsl_register_var_item bsl_register_var_item;
 
 typedef struct bsl_variable bsl_variable;
 
@@ -281,23 +282,28 @@ struct bsl_function {
 
 
 typedef enum {
-	bsl_db_register_rtype_invalid,
+	bsl_db_register_type_invalid,
 	
-	bsl_db_register_rtype_void,
-	bsl_db_register_rtype_int,
-	bsl_db_register_rtype_float,
-	bsl_db_register_rtype_bool,
-	bsl_db_register_rtype_string,
+	bsl_db_register_type_void,
+	bsl_db_register_type_int,
+	bsl_db_register_type_float,
+	bsl_db_register_type_bool,
+	bsl_db_register_type_string,
 	
-	bsl_db_register_rtype_count
-} bsl_db_register_rtype;
+	bsl_db_register_type_count
+} bsl_db_register_type;
 
-struct bsl_register_item {
+struct bsl_register_func_item {
 	char *name;
-	bsl_db_register_rtype rtype;
+	bsl_db_register_type rtype;
 	char *args;
 	
 	FunctionPointer call;
+};
+
+struct bsl_register_var_item {
+	char *name;
+	bsl_db_register_type type;
 };
 
 #pragma mark -
