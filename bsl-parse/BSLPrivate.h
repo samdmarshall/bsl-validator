@@ -259,6 +259,7 @@ struct bsl_function_interpreted {
 };
 
 struct bsl_function_compiled {
+	FunctionPointer parse;
 	FunctionPointer call;
 };
 
@@ -298,6 +299,7 @@ struct bsl_register_func_item {
 	bsl_db_register_type rtype;
 	char *args;
 	
+	FunctionPointer parse;
 	FunctionPointer call;
 };
 

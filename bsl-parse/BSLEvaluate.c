@@ -48,11 +48,6 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 				else if (item_token->code == BSLTokenCode_id_func) {
 					bsl_function func = bsl_function_parse(&item, context);
 					
-					// this needs to be changed so it registers against the database in a non-hacky method
-					if (func.type == bsl_func_type_comp) {
-						func.u.comp.call = oni_call_noop;
-					}
-					
 					bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_function);
 					var_symbol->u.func = func;
 					var_symbol->script = curr->token->offset.script;
@@ -142,7 +137,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 					}
 					
 					if (symbol->u.func.type == bsl_func_type_comp) {
-						symbol->u.func.u.comp.call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
+						symbol->u.func.u.comp.parse(&context, symbol->u.func.rtype, parsed_args, arg_counter);
 					}
 					
 					if (symbol->u.func.type == bsl_func_type_interp) {

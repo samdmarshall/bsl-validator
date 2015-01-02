@@ -77,6 +77,7 @@ void bsl_db_register_function(bsl_register_func_item function, bsl_database *db)
 		}
 	}
 	
+	func_symbol->u.func.u.comp.parse = function.parse;
 	func_symbol->u.func.u.comp.call = function.call;
 	
 	bsl_db_register(function.name, func_symbol, db->symtab);
