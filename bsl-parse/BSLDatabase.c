@@ -11,6 +11,7 @@
 #include "BSLSymbol.h"
 #include "BSLVariable.h"
 #include "BSLParse.h"
+#include "BSL_stdlib.h"
 
 void bsl_db_register(char *name, bsl_symbol *symbol, cmap_str symtab) {
 	cmap_str_setObjectForKey(symtab, name, symbol);
@@ -133,6 +134,19 @@ bsl_database * bsl_db_create() {
 			
 			func_counter++;
 		}
+		
+#if USE_STD_LIB
+		bsl_register_func_item *stdlib_func_item = STDLIB_FUNCTIONS;
+		uint32_t stdlib_func_counter = 0;
+		
+		while (stdlib_func_item[stdlib_func_counter].rtype != bsl_db_register_type_invalid) {
+			
+			bsl_db_register_function(stdlib_func_item[stdlib_func_counter], db);
+			
+			stdlib_func_counter++;
+		}
+#endif
+		
 		
 		
 		bsl_register_var_item *var_item = GLOBAL_VARIABLES;

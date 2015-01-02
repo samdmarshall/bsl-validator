@@ -11,12 +11,27 @@
 
 #include "BSLPrivate.h"
 
-int stdlib_multiply_int(int a, int b);
-float stdlib_multiply_float(float a, float b);
+#define USE_STD_LIB 0
+
+#if USE_STD_LIB
+#define STDLIB_FUNC_DEC 
+#define STDLIB_FUNC_IMP 
+#else
+#define STDLIB_FUNC_DEC static
+#define STDLIB_FUNC_IMP { return NULL; }
+#endif
+
+STDLIB_FUNC_DEC uintptr_t* stdlib_multiply_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) STDLIB_FUNC_IMP;
+STDLIB_FUNC_DEC uintptr_t* stdlib_multiply_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) STDLIB_FUNC_IMP;
+
+STDLIB_FUNC_DEC uintptr_t* stdlib_divide_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) STDLIB_FUNC_IMP;
+STDLIB_FUNC_DEC uintptr_t* stdlib_divide_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) STDLIB_FUNC_IMP;
 
 static bsl_register_func_item STDLIB_FUNCTIONS[] = {
-	{"mul", bsl_db_register_type_int, "int a, int b", stdlib_multiply_int},
-	{"mulf", bsl_db_register_type_float, "float a, float b", stdlib_multiply_float},
+	{"mul", bsl_db_register_type_int, "(int a, int b)", stdlib_multiply_int},
+	{"mulf", bsl_db_register_type_float, "(float a, float b)", stdlib_multiply_float},
+	{"div", bsl_db_register_type_int, "(int a, int b)", stdlib_divide_int},
+	{"divf", bsl_db_register_type_float, "(float a, float b)", stdlib_divide_float},
 	NULL
 };
 

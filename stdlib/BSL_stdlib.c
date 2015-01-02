@@ -7,11 +7,460 @@
 //
 
 #include "BSL_stdlib.h"
+#include "BSLVariable.h"
 
-int stdlib_multiply_int(int a, int b) {
-	return a * b;
+#if USE_STD_LIB
+
+uintptr_t* stdlib_multiply_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("calling into stdlib -> %s(",(*context)->stack->active->symbol->u.func.name);
+	
+	int values[2] = {0};
+	
+	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+		int8_t matched_type = 0;
+		
+		printf("[");
+		
+		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+			
+			bsl_variable var = (*context)->stack->active->symbol->u.func.args[param_index].args[type_index];
+			bsl_variable_type var_type = var.type;
+			char *var_name = var.name;
+			
+			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
+			
+			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+				printf(" | ");
+			}
+			
+			if (args[param_index].arg_type_count > 0) {
+				switch (var_type) {
+					case bsl_variable_int: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_float: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_bool: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+						break;
+					}
+					case bsl_variable_string: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+			}
+			else {
+				matched_type = 2;
+			}
+		}
+		
+		printf("] = ");
+		
+		// this is error checking for passed arguments
+		switch (matched_type) {
+			case 0: {
+				// not matched!
+				printf("mis-matching argument type!\n");
+				break;
+			}
+			case 1: {
+				// add checks for compatible types and convert them before evaluating
+				
+				// matched!
+				if (param_index < arg_count) {
+					switch (args[param_index].args[0].type) {
+						case bsl_variable_int: {
+							printf("%i",args[param_index].args[0].u.i);
+							break;
+						}
+						case bsl_variable_bool: {
+							printf("%i",args[param_index].args[0].u.b);
+							break;
+						}
+						case bsl_variable_float: {
+							printf("%f",args[param_index].args[0].u.f);
+							break;
+						}
+						case bsl_variable_string: {
+							printf("%s",args[param_index].args[0].u.s);
+							break;
+						}
+						case bsl_variable_None: {
+							printf("void");
+							break;
+						}
+						default: {
+							// error
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case 2: {
+				// null passed
+				printf("NULL");
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+		
+		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+			printf(", ");
+		}
+	}
+	
+	printf(")\n");
+	
+	return NULL;
 }
 
-float stdlib_multiply_float(float a, float b) {
-	return a * b;
+uintptr_t* stdlib_multiply_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("calling into stdlib -> %s(",(*context)->stack->active->symbol->u.func.name);
+	
+	float values[2] = {0};
+	
+	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+		int8_t matched_type = 0;
+		
+		printf("[");
+		
+		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+			
+			bsl_variable var = (*context)->stack->active->symbol->u.func.args[param_index].args[type_index];
+			bsl_variable_type var_type = var.type;
+			char *var_name = var.name;
+			
+			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
+			
+			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+				printf(" | ");
+			}
+			
+			if (args[param_index].arg_type_count > 0) {
+				switch (var_type) {
+					case bsl_variable_int: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_float: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_bool: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+						break;
+					}
+					case bsl_variable_string: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+			}
+			else {
+				matched_type = 2;
+			}
+		}
+		
+		printf("] = ");
+		
+		// this is error checking for passed arguments
+		switch (matched_type) {
+			case 0: {
+				// not matched!
+				printf("mis-matching argument type!\n");
+				break;
+			}
+			case 1: {
+				// add checks for compatible types and convert them before evaluating
+				
+				// matched!
+				if (param_index < arg_count) {
+					switch (args[param_index].args[0].type) {
+						case bsl_variable_int: {
+							printf("%i",args[param_index].args[0].u.i);
+							break;
+						}
+						case bsl_variable_bool: {
+							printf("%i",args[param_index].args[0].u.b);
+							break;
+						}
+						case bsl_variable_float: {
+							printf("%f",args[param_index].args[0].u.f);
+							break;
+						}
+						case bsl_variable_string: {
+							printf("%s",args[param_index].args[0].u.s);
+							break;
+						}
+						case bsl_variable_None: {
+							printf("void");
+							break;
+						}
+						default: {
+							// error
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case 2: {
+				// null passed
+				printf("NULL");
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+		
+		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+			printf(", ");
+		}
+	}
+	
+	printf(")\n");
+	
+	return NULL;
 }
+
+uintptr_t* stdlib_divide_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("calling into stdlib -> %s(",(*context)->stack->active->symbol->u.func.name);
+	
+	int values[2] = {0};
+	
+	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+		int8_t matched_type = 0;
+		
+		printf("[");
+		
+		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+			
+			bsl_variable var = (*context)->stack->active->symbol->u.func.args[param_index].args[type_index];
+			bsl_variable_type var_type = var.type;
+			char *var_name = var.name;
+			
+			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
+			
+			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+				printf(" | ");
+			}
+			
+			if (args[param_index].arg_type_count > 0) {
+				switch (var_type) {
+					case bsl_variable_int: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_float: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_bool: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+						break;
+					}
+					case bsl_variable_string: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+			}
+			else {
+				matched_type = 2;
+			}
+		}
+		
+		printf("] = ");
+		
+		// this is error checking for passed arguments
+		switch (matched_type) {
+			case 0: {
+				// not matched!
+				printf("mis-matching argument type!\n");
+				break;
+			}
+			case 1: {
+				// add checks for compatible types and convert them before evaluating
+				
+				// matched!
+				if (param_index < arg_count) {
+					switch (args[param_index].args[0].type) {
+						case bsl_variable_int: {
+							printf("%i",args[param_index].args[0].u.i);
+							break;
+						}
+						case bsl_variable_bool: {
+							printf("%i",args[param_index].args[0].u.b);
+							break;
+						}
+						case bsl_variable_float: {
+							printf("%f",args[param_index].args[0].u.f);
+							break;
+						}
+						case bsl_variable_string: {
+							printf("%s",args[param_index].args[0].u.s);
+							break;
+						}
+						case bsl_variable_None: {
+							printf("void");
+							break;
+						}
+						default: {
+							// error
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case 2: {
+				// null passed
+				printf("NULL");
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+		
+		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+			printf(", ");
+		}
+	}
+	
+	printf(")\n");
+	
+	return NULL;
+}
+
+uintptr_t* stdlib_divide_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	printf("calling into stdlib -> %s(",(*context)->stack->active->symbol->u.func.name);
+	
+	float values[2] = {0};
+	
+	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+		int8_t matched_type = 0;
+		
+		printf("[");
+		
+		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+			
+			bsl_variable var = (*context)->stack->active->symbol->u.func.args[param_index].args[type_index];
+			bsl_variable_type var_type = var.type;
+			char *var_name = var.name;
+			
+			printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
+			
+			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+				printf(" | ");
+			}
+			
+			if (args[param_index].arg_type_count > 0) {
+				switch (var_type) {
+					case bsl_variable_int: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_float: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+						break;
+					}
+					case bsl_variable_bool: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+						break;
+					}
+					case bsl_variable_string: {
+						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+			}
+			else {
+				matched_type = 2;
+			}
+		}
+		
+		printf("] = ");
+		
+		// this is error checking for passed arguments
+		switch (matched_type) {
+			case 0: {
+				// not matched!
+				printf("mis-matching argument type!\n");
+				break;
+			}
+			case 1: {
+				// add checks for compatible types and convert them before evaluating
+				
+				// matched!
+				if (param_index < arg_count) {
+					switch (args[param_index].args[0].type) {
+						case bsl_variable_int: {
+							printf("%i",args[param_index].args[0].u.i);
+							break;
+						}
+						case bsl_variable_bool: {
+							printf("%i",args[param_index].args[0].u.b);
+							break;
+						}
+						case bsl_variable_float: {
+							printf("%f",args[param_index].args[0].u.f);
+							break;
+						}
+						case bsl_variable_string: {
+							printf("%s",args[param_index].args[0].u.s);
+							break;
+						}
+						case bsl_variable_None: {
+							printf("void");
+							break;
+						}
+						default: {
+							// error
+							break;
+						}
+					}
+				}
+				break;
+			}
+			case 2: {
+				// null passed
+				printf("NULL");
+				break;
+			}
+			default: {
+				break;
+			}
+		}
+		
+		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+			printf(", ");
+		}
+	}
+	
+	printf(")\n");
+	
+	return NULL;
+}
+
+#endif

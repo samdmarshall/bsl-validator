@@ -10,6 +10,9 @@
 #define bsl_parse_BSLGlobals_h
 
 #include "BSLPrivate.h"
+
+#include "BSL_stdlib.h"
+
 #include "BSLFunction.h"
 
 static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
