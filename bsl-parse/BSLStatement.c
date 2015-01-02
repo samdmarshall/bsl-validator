@@ -123,5 +123,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 		}
 	}
 	
+	*item = curr;
+	
 	return expr;
 }
