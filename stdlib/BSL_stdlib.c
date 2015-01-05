@@ -19,7 +19,7 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
 		int8_t matched_type = 0;
 		
-		debug_printf("[");
+		debug_printf("%s","[");
 		
 		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
 			
@@ -30,7 +30,7 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 			debug_printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
 			
 			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
-				debug_printf(" | ");
+				debug_printf("%s"," | ");
 			}
 			
 			if (args[param_index].arg_type_count > 0) {
@@ -61,7 +61,7 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 			}
 		}
 		
-		debug_printf("] = ");
+		debug_printf("%s","] = ");
 		
 		// this is error checking for passed arguments
 		switch (matched_type) {
@@ -93,7 +93,7 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 							break;
 						}
 						case bsl_variable_None: {
-							debug_printf("void");
+							debug_printf("%s","void");
 							break;
 						}
 						default: {
@@ -106,7 +106,7 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 			}
 			case 2: {
 				// null passed
-				debug_printf("NULL");
+				debug_printf("%s","NULL");
 				break;
 			}
 			default: {
@@ -115,11 +115,11 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 		}
 		
 		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
-			debug_printf(", ");
+			debug_printf("%s",", ");
 		}
 	}
 	
-	debug_printf(")\n");
+	debug_printf("%s",")\n");
 	
 	FunctionPointer call = (*context)->stack->active->symbol->u.func.u.comp.call;
 	

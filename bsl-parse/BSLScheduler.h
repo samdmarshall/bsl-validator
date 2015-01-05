@@ -11,4 +11,8 @@
 
 #include "BSLPrivate.h"
 
+void bsl_scheduler_run(bsl_scheduler *scheduler);
+
+uint8_t bsl_scheduler_update(void *context);
+
 #endif /* defined(__bsl_parse__BSLScheduler__) */

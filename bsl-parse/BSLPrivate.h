@@ -259,6 +259,7 @@ typedef enum {
 
 typedef uintptr_t* Pointer;
 typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+typedef uint8_t (*FPCallback)(void *context);
 
 struct bsl_function_interpreted {
 	bsl_expression *expression;
