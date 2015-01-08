@@ -408,6 +408,7 @@ struct bsl_context {
 	bsl_stack *stack;
 	
 	bsl_error error;
+	uint8_t active_err;
 };
 
 #pragma mark -

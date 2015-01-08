@@ -50,7 +50,19 @@
 		2262FD771A57524700C9F47F /* BSL_stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD431A574B2200C9F47F /* BSL_stdlib.c */; };
 		2262FD781A57524E00C9F47F /* BSL_stdlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 2262FD441A574B2200C9F47F /* BSL_stdlib.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22662AD81A5AE2B30005DD03 /* BSLCoreTimer.c in Sources */ = {isa = PBXBuildFile; fileRef = 22662AD51A5AE2A20005DD03 /* BSLCoreTimer.c */; };
-		22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */; };
+		22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2299F1671A5F1ACC007A2884 /* BSLStatement_Conditional.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */; };
+		2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2299F16B1A5F1AEF007A2884 /* BSLStatement_Fork.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */; };
+		2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16A1A5F1AEF007A2884 /* BSLStatement_Fork.h */; };
+		2299F16F1A5F1B04007A2884 /* BSLStatement_Sleep.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F16D1A5F1B04007A2884 /* BSLStatement_Sleep.c */; };
+		2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16E1A5F1B04007A2884 /* BSLStatement_Sleep.h */; };
+		2299F1731A5F1B14007A2884 /* BSLStatement_Return.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1711A5F1B14007A2884 /* BSLStatement_Return.c */; };
+		2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1721A5F1B14007A2884 /* BSLStatement_Return.h */; };
+		2299F1781A5F1B32007A2884 /* BSLStatement_Schedule.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1761A5F1B32007A2884 /* BSLStatement_Schedule.c */; };
+		2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1771A5F1B32007A2884 /* BSLStatement_Schedule.h */; };
+		2299F17C1A5F1B4C007A2884 /* BSLStatement_Iterate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F17A1A5F1B4C007A2884 /* BSLStatement_Iterate.c */; };
+		2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17B1A5F1B4C007A2884 /* BSLStatement_Iterate.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,6 +99,18 @@
 		2262FD441A574B2200C9F47F /* BSL_stdlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BSL_stdlib.h; path = stdlib/BSL_stdlib.h; sourceTree = "<group>"; };
 		22662AD51A5AE2A20005DD03 /* BSLCoreTimer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLCoreTimer.c; sourceTree = "<group>"; };
 		22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLCoreTimer.h; sourceTree = "<group>"; };
+		2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Conditional.c; sourceTree = "<group>"; };
+		2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Conditional.h; sourceTree = "<group>"; };
+		2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Fork.c; sourceTree = "<group>"; };
+		2299F16A1A5F1AEF007A2884 /* BSLStatement_Fork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Fork.h; sourceTree = "<group>"; };
+		2299F16D1A5F1B04007A2884 /* BSLStatement_Sleep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Sleep.c; sourceTree = "<group>"; };
+		2299F16E1A5F1B04007A2884 /* BSLStatement_Sleep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Sleep.h; sourceTree = "<group>"; };
+		2299F1711A5F1B14007A2884 /* BSLStatement_Return.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Return.c; sourceTree = "<group>"; };
+		2299F1721A5F1B14007A2884 /* BSLStatement_Return.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Return.h; sourceTree = "<group>"; };
+		2299F1761A5F1B32007A2884 /* BSLStatement_Schedule.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Schedule.c; sourceTree = "<group>"; };
+		2299F1771A5F1B32007A2884 /* BSLStatement_Schedule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Schedule.h; sourceTree = "<group>"; };
+		2299F17A1A5F1B4C007A2884 /* BSLStatement_Iterate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Iterate.c; sourceTree = "<group>"; };
+		2299F17B1A5F1B4C007A2884 /* BSLStatement_Iterate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Iterate.h; sourceTree = "<group>"; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -171,6 +195,25 @@
 			name = stdlib;
 			sourceTree = SOURCE_ROOT;
 		};
+		2299F1631A5F1AA1007A2884 /* Keywords */ = {
+			isa = PBXGroup;
+			children = (
+				2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */,
+				2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */,
+				2299F16A1A5F1AEF007A2884 /* BSLStatement_Fork.h */,
+				2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */,
+				2299F16E1A5F1B04007A2884 /* BSLStatement_Sleep.h */,
+				2299F16D1A5F1B04007A2884 /* BSLStatement_Sleep.c */,
+				2299F1721A5F1B14007A2884 /* BSLStatement_Return.h */,
+				2299F1711A5F1B14007A2884 /* BSLStatement_Return.c */,
+				2299F1771A5F1B32007A2884 /* BSLStatement_Schedule.h */,
+				2299F1761A5F1B32007A2884 /* BSLStatement_Schedule.c */,
+				2299F17B1A5F1B4C007A2884 /* BSLStatement_Iterate.h */,
+				2299F17A1A5F1B4C007A2884 /* BSLStatement_Iterate.c */,
+			);
+			name = Keywords;
+			sourceTree = "<group>";
+		};
 		22E3289B1A4F028F00E01700 = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +292,7 @@
 				22E328E11A506C6400E01700 /* BSLFunction.c */,
 				2262FD3C1A51F2C700C9F47F /* BSLStatement.h */,
 				2262FD3B1A51F2C700C9F47F /* BSLStatement.c */,
+				2299F1631A5F1AA1007A2884 /* Keywords */,
 			);
 			name = Types;
 			sourceTree = "<group>";
@@ -312,7 +356,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */,
 				2262FD601A5750A900C9F47F /* OniScript.h in Headers */,
+				2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */,
 				2262FD611A5750A900C9F47F /* cmap.h in Headers */,
 				2262FD621A5750A900C9F47F /* FileAccess.h in Headers */,
 				2262FD631A5750A900C9F47F /* BSLPrivate.h in Headers */,
@@ -326,6 +372,8 @@
 				2262FD6B1A5750AA00C9F47F /* BSLVariable.h in Headers */,
 				2262FD6C1A5750AA00C9F47F /* BSLFunction.h in Headers */,
 				2262FD6D1A5750AA00C9F47F /* BSLStatement.h in Headers */,
+				2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */,
+				2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */,
 				2262FD6E1A5750AA00C9F47F /* BSLSymbol.h in Headers */,
 				2262FD6F1A5750AA00C9F47F /* BSLExpression.h in Headers */,
 				2262FD701A5750AA00C9F47F /* BSLScheduler.h in Headers */,
@@ -333,7 +381,9 @@
 				2262FD721A5750AA00C9F47F /* BSLGlobals.h in Headers */,
 				2262FD731A5750AA00C9F47F /* BSLScript.h in Headers */,
 				2262FD781A57524E00C9F47F /* BSL_stdlib.h in Headers */,
+				2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */,
 				22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */,
+				2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,15 +465,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2299F1671A5F1ACC007A2884 /* BSLStatement_Conditional.c in Sources */,
 				22662AD81A5AE2B30005DD03 /* BSLCoreTimer.c in Sources */,
 				2262FD771A57524700C9F47F /* BSL_stdlib.c in Sources */,
+				2299F1781A5F1B32007A2884 /* BSLStatement_Schedule.c in Sources */,
 				2262FD501A574C1B00C9F47F /* BSLStack.c in Sources */,
+				2299F16F1A5F1B04007A2884 /* BSLStatement_Sleep.c in Sources */,
 				2262FD511A574C1B00C9F47F /* BSLStatement.c in Sources */,
 				2262FD521A574C1B00C9F47F /* BSLScheduler.c in Sources */,
 				2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */,
 				2262FD281A51A6C400C9F47F /* cmap.cpp in Sources */,
 				2262FD291A51A6C400C9F47F /* FileAccess.c in Sources */,
 				2262FD2A1A51A6C400C9F47F /* BSLTokenDefinitions.c in Sources */,
+				2299F17C1A5F1B4C007A2884 /* BSLStatement_Iterate.c in Sources */,
+				2299F1731A5F1B14007A2884 /* BSLStatement_Return.c in Sources */,
 				2262FD2B1A51A6C400C9F47F /* BSLToken.c in Sources */,
 				2262FD2C1A51A6C400C9F47F /* BSLParse.c in Sources */,
 				2262FD2D1A51A6C400C9F47F /* BSLDatabase.c in Sources */,
@@ -433,6 +488,7 @@
 				2262FD311A51A6C400C9F47F /* BSLFunction.c in Sources */,
 				2262FD321A51A6C400C9F47F /* BSLSymbol.c in Sources */,
 				2262FD331A51A6C400C9F47F /* BSLExpression.c in Sources */,
+				2299F16B1A5F1AEF007A2884 /* BSLStatement_Fork.c in Sources */,
 				2262FD341A51A6C400C9F47F /* BSLExecute.c in Sources */,
 				2262FD351A51A6C400C9F47F /* BSLScript.c in Sources */,
 			);

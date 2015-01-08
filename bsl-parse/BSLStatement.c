@@ -13,6 +13,13 @@
 #include "BSLParse.h"
 #include "BSLExecute.h"
 
+#include "BSLStatement_Fork.h"
+#include "BSLStatement_Conditional.h"
+#include "BSLStatement_Sleep.h"
+#include "BSLStatement_Return.h"
+#include "BSLStatement_Iterate.h"
+#include "BSLStatement_Schedule.h"
+
 bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 	bsl_statement expr = {0};
 	expr.type = bsl_statement_type_invalid;
@@ -61,9 +68,12 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				if (result != NULL) {
 					
 					context->stack->active->scope_level	= BSLScope_func;
+					context->stack->active->scope_depth += 1;
 					
 					bsl_symbol_parse_call(&context, result->u.func.rtype, result->u.func.args, result->u.func.arg_count);
 					
+					
+					context->stack->active->scope_depth -= 1;
 				}
 				
 				break;
@@ -73,6 +83,10 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				debug_printf("%s","variable assignment: ");
 				
+				if (result != NULL) {
+					
+				}
+				
 				break;
 			}
 			case BSLTokenCode_id_schedule: {
@@ -80,9 +94,32 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				debug_printf("%s","schedule: ");
 				
+				bsl_tkn_ir *at = curr;
 				// function call
 				
 				// 'at' identifier
+				while (at != NULL) {
+					
+					if (at->token != NULL) {
+						
+						if (at->token->code == BSLTokenCode_id_at) {
+							break;
+						}
+					}
+					
+					at = at->next;
+				}
+				
+				if (at != NULL) {
+				
+					if (at->token->code == BSLTokenCode_id_at) {
+						
+						curr = at->next;
+					}
+				}
+				else {
+					// error, could not find keyword
+				}
 				
 				// time value
 				
@@ -165,11 +202,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				curr = curr->next;
 				
-				// bsl_function function = bsl_function_parse(&curr, context);
-				
 				// do function on separate thread
-				
-				// bsl_function_release(function);
 				
 				break;
 			}

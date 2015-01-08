@@ -114,6 +114,11 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 }
 
 void bsl_context_print_stack(bsl_context *context) {
+	
+	if (context->active_err == 1) {
+		return;
+	}
+	
 	printf("Error: printing current stack...\n");
 	
 	bsl_stack_scope *error = context->stack->active->prev;
@@ -135,10 +140,10 @@ void bsl_context_print_stack(bsl_context *context) {
 				char *name = bsl_symbol_get_name(symbol);
 				
 				if (script->fd == NULL) {
-					printf("compiled %s\n",name);
+					printf("compiled func %s\n",name);
 				}
 				else {
-					printf("%s:%i %s\n",script->fd->name,symbol->line,name);
+					printf("%s:%i func %s\n",script->fd->name,symbol->line,name);
 				}
 				
 				free(name);
@@ -164,6 +169,13 @@ void bsl_context_print_stack(bsl_context *context) {
 		
 		curr = curr->next;
 	}
+	
+	context->active_err = 1;
+}
+
+void bsl_context_reset_error_state(bsl_context *context) {
+	
+	context->active_err = 0;
 }
 
 void bsl_context_release(bsl_context *context) {

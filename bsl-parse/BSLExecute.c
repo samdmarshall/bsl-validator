@@ -160,13 +160,13 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 	
 	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
 	
-	if (tmp->stack->active == tmp->stack->state) {
+//	if (tmp->stack->active == tmp->stack->state) {
 		tmp->stack->active->next = bsl_stack_scope_create();
 		tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
 		tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
 		tmp->stack->active->next->prev = tmp->stack->active;
 		tmp->stack->active = tmp->stack->active->next;
-	}
+//	}
 	
 	for (uint32_t index = 0; index < interp.expression_count; index++) {
 		bsl_expression expr = interp.expression[index];
@@ -266,7 +266,9 @@ uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bs
 		debug_printf("%s"," -> error in symbol parse\n");
 	}
 	
-	bsl_context_check_error(*context);
+	if ((*context)->error != bsl_error_none) {
+		bsl_context_check_error(*context);
+	}
 	
 	return result;
 }

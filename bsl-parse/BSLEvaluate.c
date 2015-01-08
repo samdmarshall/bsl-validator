@@ -34,6 +34,7 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					var_symbol->u.value = var;
 					var_symbol->script = curr->token->offset.script;
 					var_symbol->line = curr->token->offset.line;
+					var_symbol->index = curr->token->offset.index;
 					
 					bsl_symbol *symbol_test = bsl_db_get_global(var_symbol->u.value.name, context);
 					if (symbol_test == NULL) {
@@ -52,6 +53,7 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					var_symbol->u.func = func;
 					var_symbol->script = curr->token->offset.script;
 					var_symbol->line = curr->token->offset.line;
+					var_symbol->index = curr->token->offset.index;
 					
 					bsl_symbol *symbol_test = bsl_db_get_global(var_symbol->u.func.name, context);
 					if (symbol_test == NULL) {
@@ -209,6 +211,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						local_var->u.value = local_variable;
 						local_var->script = curr->token->offset.script;
 						local_var->line = curr->token->offset.line;
+						local_var->index = curr->token->offset.index;
 						
 						context->stack->active->symbol = local_var;
 						context->stack->active->next = bsl_stack_scope_create();
@@ -227,6 +230,7 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 							expr_statement->u.expr = statement;
 							expr_statement->script = curr->token->offset.script;
 							expr_statement->line = curr->token->offset.line;
+							expr_statement->index = curr->token->offset.index;
 							
 							context->stack->active->symbol = expr_statement;
 							context->stack->active->next = bsl_stack_scope_create();
