@@ -8,7 +8,7 @@
 
 #include "BSLStatement_Conditional.h"
 
-bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context) {
+bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_function_interpreted interp, uint32_t *index) {
 	bsl_statement_conditional conditional = {};
 	
 	bsl_tkn_ir *curr = *token;
@@ -20,6 +20,7 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 	// scope (optional)
 	
 	// logical statement
+	(*index)++;
 	
 	// else (if) (optional) repeat parsing ^^^
 	

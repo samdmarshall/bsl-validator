@@ -22,7 +22,7 @@
 #include "BSLStatement_Var.h"
 #include "BSLStatement_Func.h"
 
-bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
+bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_function_interpreted interp, uint32_t *index) {
 	bsl_statement expr = {0};
 	expr.type = bsl_statement_type_invalid;
 	
@@ -67,12 +67,16 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				expr.u.func = bsl_statement_func_create(&curr, context);
 				
+				(*index)++;
+				
 				break;
 			}
 			case BSLTokenCode_type_var: {
 				expr.type = bsl_statement_type_var;
 				
 				expr.u.var = bsl_statement_var_create(&curr, context);
+				
+				(*index)++;
 				
 				break;
 			}
@@ -81,12 +85,16 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				expr.u.schedule = bsl_statement_schedule_create(&curr, context);
 				
+				(*index)++;
+				
 				break;
 			}
 			case BSLTokenCode_id_iterate: {
 				expr.type = bsl_statement_type_iterate;
 				
 				expr.u.iterate = bsl_statement_iterate_create(&curr, context);
+				
+				(*index)++;
 				
 				break;
 			}
@@ -95,12 +103,16 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				expr.u.ret = bsl_statement_return_create(&curr, context);
 				
+				(*index)++;
+				
 				break;
 			}
 			case BSLTokenCode_id_sleep: {
 				expr.type = bsl_statement_type_sleep;
 				
 				expr.u.sleep = bsl_statement_sleep_create(&curr, context);
+				
+				(*index)++;
 				
 				break;
 			}
@@ -109,12 +121,14 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				expr.u.fork = bsl_statement_fork_create(&curr, context);
 				
+				(*index)++;
+				
 				break;
 			}
 			case BSLTokenCode_id_if: {
 				expr.type = bsl_statement_type_conditional;
 				
-				expr.u.conditional = bsl_statement_conditional_create(&curr, context);
+				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
 				
 				break;
 			}

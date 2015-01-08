@@ -160,22 +160,24 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 	
 	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
 	
-//	if (tmp->stack->active == tmp->stack->state) {
-		tmp->stack->active->next = bsl_stack_scope_create();
-		tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
-		tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-		tmp->stack->active->next->prev = tmp->stack->active;
-		tmp->stack->active = tmp->stack->active->next;
-//	}
+	tmp->stack->active->next = bsl_stack_scope_create();
+	tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+	tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
+	tmp->stack->active->next->prev = tmp->stack->active;
+	tmp->stack->active = tmp->stack->active->next;
 	
-	for (uint32_t index = 0; index < interp.expression_count; index++) {
+	// this needs to be changed,
+	
+	uint32_t index = 0;
+	
+	while (index < interp.expression_count) {
 		bsl_expression expr = interp.expression[index];
 		
 		bsl_tkn_ir *curr = expr.tokens;
 		
 		if (curr->token != NULL) {
 			
-			bsl_statement statement = bsl_statement_parse(&curr, tmp);
+			bsl_statement statement = bsl_statement_parse(&curr, tmp, interp, &index);
 			
 			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
 			expr_statement->u.expr = statement;
@@ -234,9 +236,11 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 			if (bsl_context_check_error(*context) != bsl_error_none) {
 				break;
 			}
-
+			
 		}
-		
+		else {
+			index++;
+		}
 	}
 	
 	return NULL;

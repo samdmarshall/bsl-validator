@@ -11,6 +11,6 @@
 
 #include "BSLPrivate.h"
 
-bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context);
+bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_function_interpreted interp, uint32_t *index);
 
 #endif /* defined(__bsl_parse__BSLStatement__) */
