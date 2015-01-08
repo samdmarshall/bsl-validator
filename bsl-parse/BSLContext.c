@@ -132,21 +132,28 @@ void bsl_context_print_stack(bsl_context *context) {
 			
 			if (print_scope != curr->scope_depth) {
 				
+				char *name = bsl_symbol_get_name(symbol);
+				
 				if (script->fd == NULL) {
-					printf("compiled\n");
+					printf("compiled %s\n",name);
 				}
 				else {
-					char *name = bsl_symbol_get_name(symbol);
 					printf("%s:%i %s\n",script->fd->name,symbol->line,name);
-					free(name);
 				}
+				
+				free(name);
 				
 				print_scope++;
 			}
 			
 			if (curr == error) {
 				
-				printf("%s:%i",script->fd->name,symbol->line);
+				if (script->fd != NULL) {
+					printf("%s:%i",script->fd->name,symbol->line);
+				}
+				else {
+					printf("compiled");
+				}
 				
 				char *line = bsl_script_copy_line(script, error->symbol->index);
 				printf(" -> \"%s\"\n",line);
