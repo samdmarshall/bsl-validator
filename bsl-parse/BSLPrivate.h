@@ -56,6 +56,8 @@ typedef struct bsl_statement_conditional bsl_statement_conditional;
 typedef struct bsl_statement_return bsl_statement_return;
 typedef struct bsl_statement_sleep bsl_statement_sleep;
 typedef struct bsl_statement_iterate bsl_statement_iterate;
+typedef struct bsl_statement_func bsl_statement_func;
+typedef struct bsl_statement_var bsl_statement_var;
 
 #if DEBUG
 #define debug_printf(fmt, ...) printf(fmt, __VA_ARGS__)
@@ -368,6 +370,14 @@ struct bsl_statement_iterate {
 	
 };
 
+struct bsl_statement_func {
+	
+};
+
+struct bsl_statement_var {
+	
+};
+
 struct bsl_statement {
 	bsl_statement_type type;
 	
@@ -378,6 +388,8 @@ struct bsl_statement {
 		bsl_statement_sleep sleep;
 		bsl_statement_return ret;
 		bsl_statement_iterate iterate;
+		bsl_statement_func func;
+		bsl_statement_var var;
 	} u;
 };
 

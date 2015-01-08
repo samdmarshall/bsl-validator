@@ -10,6 +10,7 @@
 #include "BSLToken.h"
 #include "BSLExpression.h"
 
+// this really need to be fixed
 char * bsl_token_ir_copy_string(bsl_tkn_ir *token_ir) {
 	uint32_t string_length = 1;
 	uint32_t string_index = 0;

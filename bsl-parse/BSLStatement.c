@@ -19,6 +19,8 @@
 #include "BSLStatement_Return.h"
 #include "BSLStatement_Iterate.h"
 #include "BSLStatement_Schedule.h"
+#include "BSLStatement_Var.h"
+#include "BSLStatement_Func.h"
 
 bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 	bsl_statement expr = {0};
@@ -63,29 +65,14 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			case BSLTokenCode_type_func: {
 				expr.type = bsl_statement_type_func;
 				
-				debug_printf("%s","function call: ");
-				
-				if (result != NULL) {
-					
-					context->stack->active->scope_level	= BSLScope_func;
-					context->stack->active->scope_depth += 1;
-					
-					bsl_symbol_parse_call(&context, result->u.func.rtype, result->u.func.args, result->u.func.arg_count);
-					
-					
-					context->stack->active->scope_depth -= 1;
-				}
+				expr.u.func = bsl_statement_func_create(&curr, context, result);
 				
 				break;
 			}
 			case BSLTokenCode_type_var: {
 				expr.type = bsl_statement_type_var;
 				
-				debug_printf("%s","variable assignment: ");
-				
-				if (result != NULL) {
-					
-				}
+				expr.u.var = bsl_statement_var_create(&curr, context, result);
 				
 				break;
 			}
@@ -126,8 +113,6 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			}
 			case BSLTokenCode_id_if: {
 				expr.type = bsl_statement_type_conditional;
-				
-				context->stack->active->scope_level = BSLScope_cond;
 				
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context);
 				
