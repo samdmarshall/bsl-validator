@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+char * bsl_script_copy_line(bsl_script *script, uint16_t index);
+
 void OpenScriptFromFileInDir(char *dir_path, struct dirent *ent, DIR *dir, bsl_script *script);
 
 #endif /* defined(__bsl_parse__BSLScript__) */

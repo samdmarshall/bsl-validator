@@ -136,15 +136,10 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						arg_counter++;
 					}
 					
-					if (symbol->u.func.type == bsl_func_type_comp) {
-						symbol->u.func.u.comp.parse(&context, symbol->u.func.rtype, parsed_args, arg_counter);
-					}
-					
-					if (symbol->u.func.type == bsl_func_type_interp) {
-						// execute statements
-						bsl_symbol_parse_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
-					}
-					
+
+					// execute statements
+					bsl_symbol_parse_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
+				
 					free(parsed_args);
 				}
 				

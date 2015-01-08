@@ -108,6 +108,9 @@ typedef enum {
 	BSLTokenCode_type_float,
 	BSLTokenCode_type_string,
 	
+	BSLTokenCode_type_func,
+	BSLTokenCode_type_var,
+	
 	BSLTokenCode_id_schedule,
 	BSLTokenCode_id_iterate,
 	BSLTokenCode_id_repeat,
@@ -159,7 +162,7 @@ typedef enum {
 } bsl_error;
 
 struct bsl_token {
-	uint16_t code;
+	bsl_token_code code;
 	bsl_script_offset offset;
 	char *contents; // not allocated, this points directly to the context's text, use offset
 	bsl_error error;
@@ -328,6 +331,8 @@ typedef enum {
 	bsl_statement_type_schedule,
 	bsl_statement_type_iterate,
 	bsl_statement_type_return,
+	bsl_statement_type_func,
+	bsl_statement_type_var,
 	
 	bsl_statement_type_count
 } bsl_statement_type;
@@ -358,6 +363,7 @@ struct bsl_symbol {
 	
 	bsl_script *script;
 	uint16_t line;
+	uint16_t index;
 	
 	union {
 		bsl_variable value;
@@ -420,6 +426,8 @@ struct bsl_schedule_item {
 
 struct bsl_scheduler {
 	uint32_t stack_depth;
+	
+	uint32_t current_tick;
 	
 	bsl_schedule_item *stack;
 	

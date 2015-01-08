@@ -8,6 +8,25 @@
 
 #include "BSLScript.h"
 
+char * bsl_script_copy_line(bsl_script *script, uint16_t index) {
+	uint16_t counter = 1;
+	char *line = calloc(counter, sizeof(char));
+	
+	char *curr = &(script->contents->data[index]);
+	
+	while (curr[0] != '\n' && curr[0] != '\r') {
+		line = realloc(line, sizeof(char) * (counter + 1));
+		
+		line[counter] = '\0';
+		line[counter-1] = curr[0];
+		
+		curr = &(script->contents->data[index+counter]);
+		counter++;
+	}
+	
+	return line;
+}
+
 void OpenScriptFromFileInDir(char *dir_path, struct dirent *ent, DIR *dir, bsl_script *script) {
 	script->fd = file_ref_create(ent, dir);
 	

@@ -8,6 +8,7 @@
 
 #include "BSLContext.h"
 #include "BSLStack.h"
+#include "BSLScript.h"
 
 bsl_context * bsl_context_create() {
 	bsl_context *context = calloc(1, sizeof(bsl_context));
@@ -30,6 +31,8 @@ int bsl_context_check_error(bsl_context *context) {
 		
 		if (context->error != bsl_error_none) {
 			debug_printf("%s","implementation not finished yet, skipping error check!\n");
+			
+			bsl_context_print_stack(context);
 		}
 		
 		return context->error;
@@ -66,6 +69,8 @@ int bsl_context_check_error(bsl_context *context) {
 	}
 	if (message[0] != 0) {
 		printf("%s\n",message);
+		
+		bsl_context_print_stack(context);
 	}
 	
 	return context->error;
@@ -106,6 +111,37 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 		}
 	}
 	return context;
+}
+
+void bsl_context_print_stack(bsl_context *context) {
+	printf("printing current stack...\n");
+	
+	bsl_stack_scope *curr = context->stack->state;
+	
+	while (curr->next != NULL) {
+		
+		bsl_symbol *symbol = curr->symbol;
+		
+		if (symbol != NULL) {
+			
+			bsl_script *script = symbol->script;
+			
+			if (script->fd == 0) {
+				// compiled
+				printf("compiled");
+			}
+			else {
+				printf("%s:%i",script->fd->name,symbol->line);
+			}
+			
+			char *line = bsl_script_copy_line(script, symbol->index);
+			printf(" -> %s\n",line);
+			free(line);
+			
+		}
+		
+		curr = curr->next;
+	}
 }
 
 void bsl_context_release(bsl_context *context) {

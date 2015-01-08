@@ -10,6 +10,9 @@
 #include "BSLContext.h"
 #include "BSLEvaluate.h"
 #include "BSLVariable.h"
+#include "BSLStatement.h"
+#include "BSLSymbol.h"
+#include "BSLStack.h"
 
 int bsl_symbol_execute(char *name, bsl_context *context) {
 	int result = 0;
@@ -19,19 +22,9 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 		if (symbol->type == bsl_symbol_type_function) {
 			// setup state
 			
+			context->stack->active->symbol = symbol;
 			
-			// run expressions
-			for (uint32_t index = 0; index < symbol->u.func.u.interp.expression_count; index++) {
-				bsl_expression expression = symbol->u.func.u.interp.expression[index];
-				if (expression.tokens->token != NULL) {
-					context = bsl_evaluate_expression(&expression, context);
-					
-					if (bsl_context_check_error(context) != bsl_error_none) {
-						result = -1;
-						break;
-					}
-				}
-			}
+			bsl_symbol_parse_call(&context, symbol->u.func.rtype, symbol->u.func.args, symbol->u.func.arg_count);
 			
 		}
 	}
@@ -157,18 +150,96 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 	return mismatch_arg;
 }
 
+uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	debug_printf("%s"," calling interpreted\n");
+	
+	bsl_context *tmp = (*context);
+	
+	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
+	
+	if (tmp->stack->active == tmp->stack->state) {
+		tmp->stack->active->next = bsl_stack_scope_create();
+		tmp->stack->active = tmp->stack->active->next;
+	}
+	
+	for (uint32_t index = 0; index < interp.expression_count; index++) {
+		bsl_expression expr = interp.expression[index];
+		
+		bsl_tkn_ir *curr = expr.tokens;
+		
+		if (curr->token != NULL) {
+			
+			bsl_statement statement = bsl_statement_parse(&curr, tmp);
+			
+			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
+			expr_statement->u.expr = statement;
+			expr_statement->script = expr.tokens->token->offset.script;
+			expr_statement->line = expr.tokens->token->offset.line;
+			expr_statement->index = expr.tokens->token->offset.index;
+			
+			tmp->stack->active->symbol = expr_statement;
+			tmp->stack->active->next = bsl_stack_scope_create();
+			tmp->stack->active = tmp->stack->active->next;
+			
+			switch (statement.type) {
+				case bsl_statement_type_conditional: {
+					break;
+				}
+				case bsl_statement_type_sleep: {
+					break;
+				}
+				case bsl_statement_type_fork: {
+					break;
+				}
+				case bsl_statement_type_schedule: {
+					break;
+				}
+				case bsl_statement_type_iterate: {
+					break;
+				}
+				case bsl_statement_type_return: {
+					break;
+				}
+				case bsl_statement_type_func: {
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+
+		}
+		
+	}
+	
+	return NULL;
+}
+
+
 uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	
+	uintptr_t* result = NULL;
 
 	int mismatch_arg = bsl_symbol_parse_evaluate(context, rtype, args, arg_count);
 	
-	FunctionPointer call = (*context)->stack->active->symbol->u.func.u.comp.call;
+	FunctionPointer call = NULL;
+	
+	if ((*context)->stack->active->symbol->u.func.type == bsl_func_type_comp) {
+		call = (*context)->stack->active->symbol->u.func.u.comp.call;
+	}
+	else {
+		call = bsl_symbol_render_logic;
+	}
 	
 	if (call != NULL && mismatch_arg == 0) {
 		debug_printf("%s"," -> ");
-		return call(context, rtype, args, arg_count);
+		result = call(context, rtype, args, arg_count);
 	}
 	else {
-		debug_printf("%s","\n");
-		return NULL;
+		debug_printf("%s"," -> error in symbol parse\n");
 	}
+	
+	bsl_context_check_error(*context);
+	
+	return result;
 }

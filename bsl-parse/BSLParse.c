@@ -10,6 +10,37 @@
 #include "BSLToken.h"
 #include "BSLExpression.h"
 
+char * bsl_token_ir_copy_string(bsl_tkn_ir *token_ir) {
+	uint32_t string_length = 1;
+	uint32_t string_index = 0;
+	char *string = calloc(string_length, sizeof(char));
+	
+	bsl_tkn_ir *curr = token_ir;
+	
+	while (curr != NULL) {
+		if (curr->token != NULL) {
+			string = realloc(string, sizeof(char) * (string_length + 1 + curr->token->offset.length));
+			
+			strncpy(&(string[string_index]), curr->token->contents, sizeof(char[curr->token->offset.length]));
+			
+			string_length += curr->token->offset.length;
+			string_index = string_length - 1;
+			
+			string[string_index] = ' ';
+			
+			string_index++;
+			string_length++;
+		}
+		else {
+			string[string_index] = '\0';
+		}
+		
+		curr = curr->next;
+	}
+	
+	return string;
+}
+
 bsl_tkn_ir * bsl_token_ir_generate_from_string(char *str) {
 	bsl_tkn_ir *token_ir = calloc(1, sizeof(bsl_tkn_ir));
 	

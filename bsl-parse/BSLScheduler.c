@@ -28,6 +28,14 @@ uint8_t bsl_scheduler_update(void *context) {
 		
 	}
 	
+	if (scheduler->current_tick < 60) {
+		scheduler->current_tick++;
+	}
+	else {
+		scheduler->current_tick = 0;
+		
+		// advance on stack
+	}
 	
 	return active;
 }
