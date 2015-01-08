@@ -11,4 +11,6 @@
 
 #include "BSLPrivate.h"
 
+bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context);
+
 #endif /* defined(__bsl_parse__BSLStatement_Fork__) */

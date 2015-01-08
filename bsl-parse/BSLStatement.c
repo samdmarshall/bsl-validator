@@ -92,117 +92,35 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			case BSLTokenCode_id_schedule: {
 				expr.type = bsl_statement_type_schedule;
 				
-				debug_printf("%s","schedule: ");
-				
-				bsl_tkn_ir *at = curr;
-				// function call
-				
-				// 'at' identifier
-				while (at != NULL) {
-					
-					if (at->token != NULL) {
-						
-						if (at->token->code == BSLTokenCode_id_at) {
-							break;
-						}
-					}
-					
-					at = at->next;
-				}
-				
-				if (at != NULL) {
-				
-					if (at->token->code == BSLTokenCode_id_at) {
-						
-						curr = at->next;
-					}
-				}
-				else {
-					// error, could not find keyword
-				}
-				
-				// time value
+				expr.u.schedule = bsl_statement_schedule_create(&curr, context);
 				
 				break;
 			}
 			case BSLTokenCode_id_iterate: {
 				expr.type = bsl_statement_type_iterate;
 				
-				debug_printf("%s","iterate: ");
-				
-				// 'over' identifier
-				
-				// variable identifier
-				
-				// 'using' identifier
-				
-				// variable identifier
-				
-				// scope { }
+				expr.u.iterate = bsl_statement_iterate_create(&curr, context);
 				
 				break;
 			}
 			case BSLTokenCode_id_return: {
 				expr.type = bsl_statement_type_return;
 				
-				debug_printf("%s","return: ");
-				
-				// return value, stop evaluating
+				expr.u.ret = bsl_statement_return_create(&curr, context);
 				
 				break;
 			}
 			case BSLTokenCode_id_sleep: {
 				expr.type = bsl_statement_type_sleep;
 				
-				debug_printf("%s","sleep: ");
-				
-				if (curr->next == NULL) {
-					// parse error
-				}
-				
-				// advance to sleep value
-				curr = curr->next;
-				
-				// remove this code and give to scheduler to run instead.
-				
-				// add error checking here
-				
-				if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_type_int) {
-					//				bsl_variable *sleep_time = bsl_variable_create_from_token(curr->token, context);
-					//
-					//				if (sleep_time != NULL) {
-					//
-					//					if (sleep_time->type == bsl_variable_int) {
-					//						useconds_t time_val = (sleep_time->u.i / 60) * 1000;
-					//
-					//						usleep(time_val);
-					//					}
-					//					else {
-					//						// error
-					//					}
-					//
-					//					bsl_variable_release(*sleep_time);
-					//				}
-					
-				}
-				else {
-					// there is an error in parsing
-				}
+				expr.u.sleep = bsl_statement_sleep_create(&curr, context);
 				
 				break;
 			}
 			case BSLTokenCode_id_fork: {
 				expr.type = bsl_statement_type_fork;
 				
-				debug_printf("%s","fork: ");
-				
-				if (curr->next == NULL) {
-					// error
-				}
-				
-				curr = curr->next;
-				
-				// do function on separate thread
+				expr.u.fork = bsl_statement_fork_create(&curr, context);
 				
 				break;
 			}
@@ -211,15 +129,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				context->stack->active->scope_level = BSLScope_cond;
 				
-				debug_printf("%s","conditional evaluation: ");
-				
-				// parse logic expression
-				
-				// scope (optional)
-				
-				// logical statement
-				
-				// else (if) (optional) repeat parsing ^^^
+				expr.u.conditional = bsl_statement_conditional_create(&curr, context);
 				
 				break;
 			}

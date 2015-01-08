@@ -50,6 +50,13 @@ typedef struct bsl_scheduler bsl_scheduler;
 typedef struct bsl_schedule_item bsl_schedule_item;
 
 
+typedef struct bsl_statement_schedule bsl_statement_schedule;
+typedef struct bsl_statement_fork bsl_statement_fork;
+typedef struct bsl_statement_conditional bsl_statement_conditional;
+typedef struct bsl_statement_return bsl_statement_return;
+typedef struct bsl_statement_sleep bsl_statement_sleep;
+typedef struct bsl_statement_iterate bsl_statement_iterate;
+
 #if DEBUG
 #define debug_printf(fmt, ...) printf(fmt, __VA_ARGS__)
 #else
@@ -337,11 +344,40 @@ typedef enum {
 	bsl_statement_type_count
 } bsl_statement_type;
 
+struct bsl_statement_schedule {
+	
+};
+
+struct bsl_statement_conditional {
+	
+};
+
+struct bsl_statement_fork {
+	
+};
+
+struct bsl_statement_sleep {
+	
+};
+
+struct bsl_statement_return {
+	
+};
+
+struct bsl_statement_iterate {
+	
+};
+
 struct bsl_statement {
 	bsl_statement_type type;
 	
 	union {
-		
+		bsl_statement_schedule schedule;
+		bsl_statement_conditional conditional;
+		bsl_statement_fork fork;
+		bsl_statement_sleep sleep;
+		bsl_statement_return ret;
+		bsl_statement_iterate iterate;
 	} u;
 };
 
