@@ -65,14 +65,14 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			case BSLTokenCode_type_func: {
 				expr.type = bsl_statement_type_func;
 				
-				expr.u.func = bsl_statement_func_create(&curr, context, result);
+				expr.u.func = bsl_statement_func_create(&curr, context);
 				
 				break;
 			}
 			case BSLTokenCode_type_var: {
 				expr.type = bsl_statement_type_var;
 				
-				expr.u.var = bsl_statement_var_create(&curr, context, result);
+				expr.u.var = bsl_statement_var_create(&curr, context);
 				
 				break;
 			}

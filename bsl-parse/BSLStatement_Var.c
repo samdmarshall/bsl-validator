@@ -8,8 +8,10 @@
 
 #include "BSLStatement_Var.h"
 
-bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *context, bsl_symbol *symbol) {
+bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *context) {
 	bsl_statement_var var = {};
+	
+	bsl_symbol *symbol = context->stack->active->symbol;
 	
 	bsl_tkn_ir *curr = *token;
 	
