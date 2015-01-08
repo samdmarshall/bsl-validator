@@ -35,8 +35,8 @@ typedef struct mem_buff mem_buff;
 
 struct mem_buff {
 	char *data;
-	size_t length;
-	size_t offset;
+	int32_t length;
+	int32_t offset;
 };
 
 mem_buff * mem_buff_copy(char *buff, size_t length);

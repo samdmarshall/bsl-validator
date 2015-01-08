@@ -37,7 +37,7 @@ mem_buff * mem_buff_copy(char *buff, size_t length) {
 	if (buffer != NULL) {
 		buffer->data = calloc(length, sizeof(char));
 		memcpy(buffer->data, buff, length);
-		buffer->length = length;
+		buffer->length = (uint32_t)length;
 	}
 	
 	return buffer;
@@ -49,7 +49,7 @@ mem_buff * mem_buff_create(char *path) {
 		FILE *file = fopen(path, "r");
 		if (file) {
 			fseek(file, 0, SEEK_END);
-			buffer->length = ftell(file);
+			buffer->length = (uint32_t)ftell(file);
 			fseek(file, 0, SEEK_SET);
 			buffer->data = calloc(buffer->length, 1);
 			fread(buffer->data, buffer->length, 1, file);

@@ -175,6 +175,8 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 				}
 				
 				context->stack->active->next = bsl_stack_scope_create();
+				context->stack->active->next->prev = context->stack->active;
+				context->stack->active->next->scope_depth = context->stack->active->scope_depth;
 				context->stack->active = context->stack->active->next;
 				
 				break;
@@ -210,6 +212,8 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 						
 						context->stack->active->symbol = local_var;
 						context->stack->active->next = bsl_stack_scope_create();
+						context->stack->active->next->prev = context->stack->active;
+						context->stack->active->next->scope_depth = context->stack->active->scope_depth;
 						context->stack->active = context->stack->active->next;
 					}
 					else {
@@ -226,6 +230,8 @@ bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context
 							
 							context->stack->active->symbol = expr_statement;
 							context->stack->active->next = bsl_stack_scope_create();
+							context->stack->active->next->scope_depth = context->stack->active->scope_depth;
+							context->stack->active->next->prev = context->stack->active;
 							context->stack->active = context->stack->active->next;
 						}
 						else {

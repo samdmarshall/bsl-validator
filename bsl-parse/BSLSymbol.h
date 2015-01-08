@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+char * bsl_symbol_get_name(bsl_symbol *symbol);
+
 bsl_symbol * bsl_symbol_create(bsl_symbol_type type);
 
 void bsl_symbol_release(bsl_symbol *symbol);

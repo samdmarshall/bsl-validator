@@ -10,6 +10,33 @@
 #include "BSLVariable.h"
 #include "BSLFunction.h"
 
+char * bsl_symbol_get_name(bsl_symbol *symbol) {
+	char *result = calloc(1, sizeof(char));
+	
+	switch (symbol->type) {
+		case bsl_symbol_type_variable: {
+			size_t length = strlen(symbol->u.value.name);
+			result = realloc(result, sizeof(char) * (length + 1));
+			strncpy(result, symbol->u.value.name, length);
+			break;
+		}
+		case bsl_symbol_type_function: {
+			size_t length = strlen(symbol->u.func.name);
+			result = realloc(result, sizeof(char) * (length + 1));
+			strncpy(result, symbol->u.func.name, length);
+			break;
+		}
+		case bsl_symbol_type_statement: {
+			break;
+		}
+		default: {
+			break;
+		}
+	}
+	
+	return result;
+}
+
 bsl_symbol * bsl_symbol_create(bsl_symbol_type type) {
 	bsl_symbol *symbol = calloc(1, sizeof(bsl_symbol));
 	

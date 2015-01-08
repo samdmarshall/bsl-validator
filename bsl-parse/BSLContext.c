@@ -9,6 +9,7 @@
 #include "BSLContext.h"
 #include "BSLStack.h"
 #include "BSLScript.h"
+#include "BSLSymbol.h"
 
 bsl_context * bsl_context_create() {
 	bsl_context *context = calloc(1, sizeof(bsl_context));
@@ -30,7 +31,6 @@ int bsl_context_check_error(bsl_context *context) {
 	if (context->stack->active->symbol == NULL) {
 		
 		if (context->error != bsl_error_none) {
-			debug_printf("%s","implementation not finished yet, skipping error check!\n");
 			
 			bsl_context_print_stack(context);
 		}
@@ -114,7 +114,11 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 }
 
 void bsl_context_print_stack(bsl_context *context) {
-	printf("printing current stack...\n");
+	printf("Error: printing current stack...\n");
+	
+	bsl_stack_scope *error = context->stack->active->prev;
+	
+	int8_t print_scope = 0;
 	
 	bsl_stack_scope *curr = context->stack->state;
 	
@@ -126,17 +130,28 @@ void bsl_context_print_stack(bsl_context *context) {
 			
 			bsl_script *script = symbol->script;
 			
-			if (script->fd == 0) {
-				// compiled
-				printf("compiled");
-			}
-			else {
-				printf("%s:%i",script->fd->name,symbol->line);
+			if (print_scope != curr->scope_depth) {
+				
+				if (script->fd == NULL) {
+					printf("compiled\n");
+				}
+				else {
+					char *name = bsl_symbol_get_name(symbol);
+					printf("%s:%i %s\n",script->fd->name,symbol->line,name);
+					free(name);
+				}
+				
+				print_scope++;
 			}
 			
-			char *line = bsl_script_copy_line(script, symbol->index);
-			printf(" -> %s\n",line);
-			free(line);
+			if (curr == error) {
+				
+				printf("%s:%i",script->fd->name,symbol->line);
+				
+				char *line = bsl_script_copy_line(script, error->symbol->index);
+				printf(" -> \"%s\"\n",line);
+				free(line);
+			}
 			
 		}
 		

@@ -60,6 +60,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 				
 				if (result != NULL) {
 					
+					context->stack->active->scope_level	= BSLScope_func;
+					
 					bsl_symbol_parse_call(&context, result->u.func.rtype, result->u.func.args, result->u.func.arg_count);
 					
 				}
@@ -172,6 +174,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			case BSLTokenCode_id_if: {
 				expr.type = bsl_statement_type_conditional;
 				
+				context->stack->active->scope_level = BSLScope_cond;
+				
 				debug_printf("%s","conditional evaluation: ");
 				
 				// parse logic expression
@@ -187,6 +191,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context) {
 			default: {
 				
 				debug_printf("%s","unknown: ");
+				
+				context->error = bsl_error_token_invalid_syntax;
 				// error
 				break;
 			}

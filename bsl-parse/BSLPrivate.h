@@ -66,8 +66,8 @@ struct bsl_script {
 
 struct bsl_script_offset {
 	bsl_script *script;
-	uint16_t line;
-	uint16_t index;
+	uint32_t line;
+	uint32_t index;
 	int16_t length;
 } __attribute__((packed));
 
@@ -362,8 +362,8 @@ struct bsl_symbol {
 	bsl_symbol_type type;
 	
 	bsl_script *script;
-	uint16_t line;
-	uint16_t index;
+	uint32_t line;
+	uint32_t index;
 	
 	union {
 		bsl_variable value;
