@@ -20,7 +20,6 @@ OniScriptContext * LoadScriptsFromLevelPath(char *path) {
 		context->scripts = calloc(1, sizeof(bsl_script));
 		context->script_count = 0;
 		
-		
 		DIR *dir;
 		struct dirent *ent;
 		dir = opendir(path);

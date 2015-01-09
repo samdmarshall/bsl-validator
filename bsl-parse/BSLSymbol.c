@@ -52,13 +52,16 @@ void bsl_symbol_release(bsl_symbol *symbol) {
 		switch (symbol->type) {
 			case bsl_symbol_type_function: {
 				bsl_function_release(symbol->u.func);
+				
 				break;
 			}
 			case bsl_symbol_type_variable: {
 				bsl_variable_release(symbol->u.value);
+				
 				break;
 			}
 			default: {
+				
 				break;
 			}
 		}

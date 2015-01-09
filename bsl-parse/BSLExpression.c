@@ -42,6 +42,7 @@ bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 		
 		// end of expression when encountering any breaking behavior
 		while (curr->token->code != BSLTokenCode_ctl_semicolon && curr->token->code != BSLTokenCode_id_newline && curr->token->code != BSLTokenCode_id_comment) {
+			
 			if (expr_curr->token == NULL) {
 				expr_curr->token = calloc(1, sizeof(bsl_token));
 			}
@@ -57,6 +58,7 @@ bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 				else {
 					expr_curr->next = NULL;
 				}
+				
 				expr_curr->prev = expr_prev;
 				
 				expr_prev = expr_curr;

@@ -18,9 +18,10 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 	// parse logic expression
 	
 	// scope (optional)
+	// increasing index to
+	(*index)++;
 	
 	// logical statement
-	(*index)++;
 	
 	// else (if) (optional) repeat parsing ^^^
 	
