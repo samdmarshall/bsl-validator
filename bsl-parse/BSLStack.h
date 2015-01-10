@@ -17,6 +17,8 @@ void bsl_stack_scope_release(bsl_stack_scope *scope);
 
 bsl_stack * bsl_stack_create();
 
+void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_t depth);
+
 void bsl_stack_release(bsl_stack *stack);
 
 #endif /* defined(__bsl_parse__BSLStack__) */

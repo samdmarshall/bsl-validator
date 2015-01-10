@@ -13,17 +13,15 @@
 char * bsl_symbol_get_name(bsl_symbol *symbol) {
 	char *result = calloc(1, sizeof(char));
 	
+	char *name = "";
+	
 	switch (symbol->type) {
 		case bsl_symbol_type_variable: {
-			size_t length = strlen(symbol->u.value.name);
-			result = realloc(result, sizeof(char) * (length + 1));
-			strncpy(result, symbol->u.value.name, length);
+			name = symbol->u.value.name;
 			break;
 		}
 		case bsl_symbol_type_function: {
-			size_t length = strlen(symbol->u.func.name);
-			result = realloc(result, sizeof(char) * (length + 1));
-			strncpy(result, symbol->u.func.name, length);
+			name = symbol->u.func.name;
 			break;
 		}
 		case bsl_symbol_type_statement: {
@@ -33,6 +31,10 @@ char * bsl_symbol_get_name(bsl_symbol *symbol) {
 			break;
 		}
 	}
+	
+	size_t length = strlen(name);
+	result = realloc(result, sizeof(char) * (length + 1));
+	strncpy(result, name, length);
 	
 	return result;
 }
@@ -45,6 +47,14 @@ bsl_symbol * bsl_symbol_create(bsl_symbol_type type) {
 	}
 	
 	return symbol;
+}
+
+void bsl_symbol_update_info(bsl_symbol *symbol, bsl_script_offset offset) {
+	if (symbol != NULL) {
+		symbol->script = offset.script;
+		symbol->line = offset.line;
+		symbol->index = offset.index;
+	}
 }
 
 void bsl_symbol_release(bsl_symbol *symbol) {

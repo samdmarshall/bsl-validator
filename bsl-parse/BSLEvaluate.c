@@ -32,9 +32,7 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					
 					bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_variable);
 					var_symbol->u.value = var;
-					var_symbol->script = curr->token->offset.script;
-					var_symbol->line = curr->token->offset.line;
-					var_symbol->index = curr->token->offset.index;
+					bsl_symbol_update_info(var_symbol, curr->token->offset);
 					
 					bsl_symbol *symbol_test = bsl_db_get_global(var_symbol->u.value.name, context);
 					if (symbol_test == NULL) {
@@ -51,9 +49,7 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					
 					bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_function);
 					var_symbol->u.func = func;
-					var_symbol->script = curr->token->offset.script;
-					var_symbol->line = curr->token->offset.line;
-					var_symbol->index = curr->token->offset.index;
+					bsl_symbol_update_info(var_symbol, curr->token->offset);
 					
 					bsl_symbol *symbol_test = bsl_db_get_global(var_symbol->u.func.name, context);
 					if (symbol_test == NULL) {
@@ -103,155 +99,3 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 	
 	return context;
 }
-
-//bsl_context * bsl_evaluate_expression(bsl_expression *expr, bsl_context *context) {
-//	
-//	bsl_tkn_ir *curr = expr->tokens;
-//	
-//	while (curr != NULL) {
-//		bsl_token *token = curr->token;
-//		
-//		if (token != NULL) {
-//			char *token_name = calloc(token->offset.length + 1, sizeof(char));
-//			strncpy(token_name, token->contents, token->offset.length);
-//			
-//			bsl_symbol *symbol = bsl_db_get_global(token_name, context);
-//			if (symbol != NULL) {
-//				// global symbol
-//				context->stack->active->symbol = symbol;
-//				
-//				if (symbol->type == bsl_symbol_type_function) {
-//					
-//					// parse function arguments
-//					curr = curr->next;
-//					
-//					uint32_t arg_counter = 0;
-//					
-//					bsl_func_arg *parsed_args = calloc(symbol->u.func.arg_count, sizeof(bsl_func_arg));
-//					
-//					while (curr != NULL) {
-//						
-//						parsed_args[arg_counter].args = bsl_variable_create_from_token(curr->token, context);
-//						parsed_args[arg_counter].arg_type_count = 1;
-//						
-//						curr = curr->next;
-//						arg_counter++;
-//					}
-//					
-//
-//					// execute statements
-//					bsl_symbol_parse_call(&context, symbol->u.func.rtype, parsed_args, arg_counter);
-//				
-//					free(parsed_args);
-//				}
-//				
-//				if (symbol->type == bsl_symbol_type_variable) {
-//					// variable assignment
-//					
-//					// advance to the assignment operator
-//					curr = curr->next;
-//					
-//					if (curr == NULL || curr->token == NULL) {
-//						// error in syntax
-//						break;
-//					}
-//					
-//					if (curr->token->code == BSLTokenCode_op_assign) {
-//						// advance to variable;
-//						curr = curr->next;
-//						
-//						if (curr == NULL || curr->token == NULL) {
-//							// error in syntax
-//							break;
-//						}
-//						
-//						bsl_variable *value = bsl_variable_create_from_token(curr->token, context);
-//						if (value != NULL) {
-//							bsl_variable_set(&(symbol->u.value), value);
-//							
-//							free(value);
-//						}
-//					
-//					}
-//					
-//				}
-//				
-//				context->stack->active->next = bsl_stack_scope_create();
-//				context->stack->active->next->prev = context->stack->active;
-//				context->stack->active->next->scope_depth = context->stack->active->scope_depth;
-//				context->stack->active = context->stack->active->next;
-//				
-//				break;
-//			}
-//			else {
-//				// check if in local state
-//				bsl_symbol *local_symbol = bsl_db_get_state(token_name, context);
-//				
-//				if (local_symbol != NULL) {
-//					
-//					if (curr->next != NULL) {
-//						
-//						if (curr->next->token != NULL) {
-//							
-//							if (curr->next->token->code == BSLTokenCode_op_assign) {
-//								// variable assignment
-//								
-//								
-//							}
-//						}
-//					}
-//				}
-//				else {
-//					
-//					if (strncmp(token_name, "var", sizeof(char[3])) == 0) {
-//						// check if local variable, otherwise error
-//						bsl_variable local_variable = bsl_variable_parse(&curr, context);
-//						
-//						bsl_symbol *local_var = bsl_symbol_create(bsl_symbol_type_variable);
-//						local_var->u.value = local_variable;
-//						local_var->script = curr->token->offset.script;
-//						local_var->line = curr->token->offset.line;
-//						local_var->index = curr->token->offset.index;
-//						
-//						context->stack->active->symbol = local_var;
-//						context->stack->active->next = bsl_stack_scope_create();
-//						context->stack->active->next->prev = context->stack->active;
-//						context->stack->active->next->scope_depth = context->stack->active->scope_depth;
-//						context->stack->active = context->stack->active->next;
-//					}
-//					else {
-//						bsl_token_code code = bsl_token_resolve_identifier(token);
-//						
-//						if (code != BSLTokenCode_id_generic) {
-//							// evaluate expression
-//							
-//							bsl_function_interpreted interp = {};
-//							uint32_t index = 0;
-//							bsl_statement statement = bsl_statement_parse(&curr, context, interp, &index);
-//							
-//							bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
-//							expr_statement->u.expr = statement;
-//							expr_statement->script = curr->token->offset.script;
-//							expr_statement->line = curr->token->offset.line;
-//							expr_statement->index = curr->token->offset.index;
-//							
-//							context->stack->active->symbol = expr_statement;
-//							context->stack->active->next = bsl_stack_scope_create();
-//							context->stack->active->next->scope_depth = context->stack->active->scope_depth;
-//							context->stack->active->next->prev = context->stack->active;
-//							context->stack->active = context->stack->active->next;
-//						}
-//						else {
-//							context->error = bsl_error_token_invalid_syntax;
-//							break;
-//						}
-//					}
-//				}
-//			}
-//		}
-//		
-//		curr = curr->next;
-//	}
-//	
-//	return context;
-//}

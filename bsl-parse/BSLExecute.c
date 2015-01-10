@@ -160,11 +160,7 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 	
 	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
 	
-	tmp->stack->active->next = bsl_stack_scope_create();
-	tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
-	tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-	tmp->stack->active->next->prev = tmp->stack->active;
-	tmp->stack->active = tmp->stack->active->next;
+	bsl_stack_item_advance(&(tmp->stack->active), tmp->stack->active->scope_level, tmp->stack->active->scope_depth);
 	
 	// this needs to be changed,
 	
@@ -181,49 +177,40 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 			
 			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
 			expr_statement->u.expr = statement;
-			expr_statement->script = expr.tokens->token->offset.script;
-			expr_statement->line = expr.tokens->token->offset.line;
-			expr_statement->index = expr.tokens->token->offset.index;
+			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
 			
 			tmp->stack->active->symbol = expr_statement;
-			tmp->stack->active->next = bsl_stack_scope_create();
-			tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
-			tmp->stack->active->next->prev = tmp->stack->active;
+
+			bsl_scope_type type = BSLScope_invalid;
+			uint8_t depth = tmp->stack->active->scope_depth;
 			
 			switch (statement.type) {
 				case bsl_statement_type_conditional: {
-					tmp->stack->active->next->scope_level = BSLScope_cond;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = BSLScope_cond;
 					break;
 				}
 				case bsl_statement_type_sleep: {
-					tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = tmp->stack->active->scope_level;
 					break;
 				}
 				case bsl_statement_type_fork: {
-					tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = tmp->stack->active->scope_level;
 					break;
 				}
 				case bsl_statement_type_schedule: {
-					tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = tmp->stack->active->scope_level;
 					break;
 				}
 				case bsl_statement_type_iterate: {
-					tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = tmp->stack->active->scope_level;
 					break;
 				}
 				case bsl_statement_type_return: {
-					tmp->stack->active->next->scope_level = tmp->stack->active->scope_level;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = tmp->stack->active->scope_level;
 					break;
 				}
 				case bsl_statement_type_func: {
-					tmp->stack->active->next->scope_level = BSLScope_func;
-					tmp->stack->active->next->scope_depth = tmp->stack->active->scope_depth;
+					type = BSLScope_func;
 					break;
 				}
 				default: {
@@ -231,7 +218,7 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 				}
 			}
 			
-			tmp->stack->active = tmp->stack->active->next;
+			bsl_stack_item_advance(&(tmp->stack->active), type, depth);
 			
 			if (bsl_context_check_error(*context) != bsl_error_none) {
 				break;
@@ -255,8 +242,10 @@ uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bs
 	
 	FunctionPointer call = NULL;
 	
-	if ((*context)->stack->active->symbol->u.func.type == bsl_func_type_comp) {
-		call = (*context)->stack->active->symbol->u.func.u.comp.call;
+	bsl_function function = (*context)->stack->active->symbol->u.func;
+	
+	if (function.type == bsl_func_type_comp) {
+		call = function.u.comp.call;
 	}
 	else {
 		call = bsl_symbol_render_logic;

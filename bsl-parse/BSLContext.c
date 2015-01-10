@@ -28,7 +28,9 @@ bsl_context * bsl_context_create() {
 int bsl_context_check_error(bsl_context *context) {
 	char message[1024] = {0};
 	
-	if (context->stack->active->symbol == NULL) {
+	bsl_symbol *symbol = context->stack->active->symbol;
+	
+	if (symbol == NULL) {
 		
 		if (context->error != bsl_error_none) {
 			
@@ -39,11 +41,12 @@ int bsl_context_check_error(bsl_context *context) {
 	}
 	
 	char *name = "";
-	if (context->stack->active->symbol->type == bsl_symbol_type_variable) {
-		name = context->stack->active->symbol->u.value.name;
+	
+	if (symbol->type == bsl_symbol_type_variable) {
+		name = symbol->u.value.name;
 	}
-	if (context->stack->active->symbol->type == bsl_symbol_type_function) {
-		name = context->stack->active->symbol->u.func.name;
+	if (symbol->type == bsl_symbol_type_function) {
+		name = symbol->u.func.name;
 	}
 	
 	switch (context->error) {
@@ -51,15 +54,15 @@ int bsl_context_check_error(bsl_context *context) {
 			break;
 		}
 		case bsl_error_invalid_identifier: {
-			sprintf(message, "Invalid use of identifier \"%s\" at %s:%i", name, context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
+			sprintf(message, "Invalid use of identifier \"%s\" at %s:%i", name, symbol->script->fd->name, symbol->line);
 			break;
 		}
 		case bsl_error_reserved_word: {
-			sprintf(message, "Use of reserved word at %s:%i",context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
+			sprintf(message, "Use of reserved word at %s:%i", symbol->script->fd->name, symbol->line);
 			break;
 		}
 		case bsl_error_invalid_scope: {
-			sprintf(message, "Scoping error at %s:%i\n",context->stack->active->symbol->script->fd->name,context->stack->active->symbol->line);
+			sprintf(message, "Scoping error at %s:%i\n", symbol->script->fd->name, symbol->line);
 			break;
 		}
 		default: {
@@ -140,10 +143,10 @@ void bsl_context_print_stack(bsl_context *context) {
 				char *name = bsl_symbol_get_name(symbol);
 				
 				if (script->fd == NULL) {
-					printf("compiled func %s\n",name);
+					printf("compiled func %s\n", name);
 				}
 				else {
-					printf("%s:%i func %s\n",script->fd->name,symbol->line,name);
+					printf("%s:%i func %s\n", script->fd->name, symbol->line,name);
 				}
 				
 				free(name);
@@ -154,14 +157,14 @@ void bsl_context_print_stack(bsl_context *context) {
 			if (curr == error) {
 				
 				if (script->fd != NULL) {
-					printf("%s:%i",script->fd->name,symbol->line);
+					printf("%s:%i", script->fd->name, symbol->line);
 				}
 				else {
 					printf("compiled");
 				}
 				
 				char *line = bsl_script_copy_line(script, error->symbol->index);
-				printf(" -> \"%s\"\n",line);
+				printf(" -> \"%s\"\n", line);
 				free(line);
 			}
 			

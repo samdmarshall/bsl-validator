@@ -15,6 +15,8 @@ char * bsl_symbol_get_name(bsl_symbol *symbol);
 
 bsl_symbol * bsl_symbol_create(bsl_symbol_type type);
 
+void bsl_symbol_update_info(bsl_symbol *symbol, bsl_script_offset offset);
+
 void bsl_symbol_release(bsl_symbol *symbol);
 
 #endif /* defined(__bsl_parse__BSLSymbol__) */

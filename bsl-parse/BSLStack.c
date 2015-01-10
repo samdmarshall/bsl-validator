@@ -46,6 +46,17 @@ bsl_stack * bsl_stack_create() {
 	return stack;
 }
 
+void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_t depth) {
+	bsl_stack_scope *item = *scope;
+	if (item != NULL) {
+		item->next = bsl_stack_scope_create();
+		item->next->scope_depth = depth;
+		item->next->scope_level = type;
+		item->next->prev = item;
+	}
+	*scope = item->next;
+}
+
 void bsl_stack_release(bsl_stack *stack) {
 	if (stack != NULL) {
 		if (stack->state != NULL) {
