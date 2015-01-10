@@ -83,7 +83,7 @@ struct bsl_script_offset {
 #pragma mark -
 #pragma mark BSLToken
 
-typedef enum {
+typedef enum bsl_token_code {
 	BSLTokenCode_empty,
 	
 	BSLTokenCode_op_assign,
@@ -152,7 +152,7 @@ typedef enum {
 	BSLTokenCode_Count
 } bsl_token_code;
 
-typedef enum {
+typedef enum bsl_error {
 	bsl_error_none,
 	
 	bsl_error_token_invalid_string,
@@ -190,7 +190,7 @@ struct bsl_tkn_ir {
 #pragma mark -
 #pragma mark BSLExpression
 
-typedef enum {
+typedef enum bsl_scope_type {
 	BSLScope_invalid,
 	
 	BSLScope_global,
@@ -216,7 +216,7 @@ struct bsl_database {
 #pragma mark -
 #pragma mark BSLVariable
 
-typedef enum {
+typedef enum bsl_variable_type {
 	bsl_variable_None,
 	
 	bsl_variable_int,
@@ -231,7 +231,7 @@ struct bsl_variable {
 	bsl_variable_type type;
 	char *name;
 	
-	union {
+	union bsl_variable_union {
 		float f;
 		int i;
 		int8_t b;
@@ -248,7 +248,7 @@ struct bsl_func_arg {
 	
 };
 
-typedef enum {
+typedef enum bsl_func_rtype {
 	bsl_func_rtype_invalid,
 	
 	bsl_func_rtype_bool,
@@ -260,7 +260,7 @@ typedef enum {
 	bsl_func_rtype_Count
 } bsl_func_rtype;
 
-typedef enum {
+typedef enum bsl_func_type {
 	bsl_func_type_invalid,
 	
 	bsl_func_type_interp,
@@ -292,7 +292,7 @@ struct bsl_function {
 	bsl_func_arg *args;
 	uint32_t arg_count;
 	
-	union {
+	union bsl_function_union {
 		bsl_function_interpreted interp;
 		bsl_function_compiled comp;
 	} u;
@@ -302,7 +302,7 @@ struct bsl_function {
 #pragma mark BSL Register Item
 
 
-typedef enum {
+typedef enum bsl_db_register_type {
 	bsl_db_register_type_invalid,
 	
 	bsl_db_register_type_void,
@@ -331,7 +331,7 @@ struct bsl_register_var_item {
 #pragma mark -
 #pragma mark BSLStatement
 
-typedef enum {
+typedef enum bsl_statement_type {
 	bsl_statement_type_invalid,
 	
 	bsl_statement_type_conditional,
@@ -381,7 +381,7 @@ struct bsl_statement_var {
 struct bsl_statement {
 	bsl_statement_type type;
 	
-	union {
+	union bsl_statement_union {
 		bsl_statement_schedule schedule;
 		bsl_statement_conditional conditional;
 		bsl_statement_fork fork;
@@ -396,7 +396,7 @@ struct bsl_statement {
 #pragma mark -
 #pragma mark BSLSymbol
 
-typedef enum {
+typedef enum bsl_symbol_type {
 	bsl_symbol_type_invalid,
 	
 	bsl_symbol_type_variable,
@@ -413,7 +413,7 @@ struct bsl_symbol {
 	uint32_t line;
 	uint32_t index;
 	
-	union {
+	union bsl_symbol_union {
 		bsl_variable value;
 		bsl_function func;
 		bsl_statement expr;

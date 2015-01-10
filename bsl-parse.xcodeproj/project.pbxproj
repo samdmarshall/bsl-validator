@@ -54,19 +54,19 @@
 		2299F1671A5F1ACC007A2884 /* BSLStatement_Conditional.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */; };
 		2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F16B1A5F1AEF007A2884 /* BSLStatement_Fork.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */; };
-		2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16A1A5F1AEF007A2884 /* BSLStatement_Fork.h */; };
+		2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16A1A5F1AEF007A2884 /* BSLStatement_Fork.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F16F1A5F1B04007A2884 /* BSLStatement_Sleep.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F16D1A5F1B04007A2884 /* BSLStatement_Sleep.c */; };
-		2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16E1A5F1B04007A2884 /* BSLStatement_Sleep.h */; };
+		2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F16E1A5F1B04007A2884 /* BSLStatement_Sleep.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1731A5F1B14007A2884 /* BSLStatement_Return.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1711A5F1B14007A2884 /* BSLStatement_Return.c */; };
-		2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1721A5F1B14007A2884 /* BSLStatement_Return.h */; };
+		2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1721A5F1B14007A2884 /* BSLStatement_Return.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1781A5F1B32007A2884 /* BSLStatement_Schedule.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1761A5F1B32007A2884 /* BSLStatement_Schedule.c */; };
-		2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1771A5F1B32007A2884 /* BSLStatement_Schedule.h */; };
+		2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1771A5F1B32007A2884 /* BSLStatement_Schedule.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F17C1A5F1B4C007A2884 /* BSLStatement_Iterate.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F17A1A5F1B4C007A2884 /* BSLStatement_Iterate.c */; };
-		2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17B1A5F1B4C007A2884 /* BSLStatement_Iterate.h */; };
+		2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17B1A5F1B4C007A2884 /* BSLStatement_Iterate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1801A5F204B007A2884 /* BSLStatement_Func.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F17E1A5F204B007A2884 /* BSLStatement_Func.c */; };
-		2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */; };
+		2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1841A5F205A007A2884 /* BSLStatement_Var.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1821A5F205A007A2884 /* BSLStatement_Var.c */; };
-		2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1831A5F205A007A2884 /* BSLStatement_Var.h */; };
+		2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1831A5F205A007A2884 /* BSLStatement_Var.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -368,36 +368,36 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */,
 				2262FD601A5750A900C9F47F /* OniScript.h in Headers */,
-				2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */,
 				2262FD611A5750A900C9F47F /* cmap.h in Headers */,
 				2262FD621A5750A900C9F47F /* FileAccess.h in Headers */,
 				2262FD631A5750A900C9F47F /* BSLPrivate.h in Headers */,
 				2262FD641A5750AA00C9F47F /* BSLTokenDefinitions.h in Headers */,
 				2262FD651A5750AA00C9F47F /* BSLToken.h in Headers */,
 				2262FD661A5750AA00C9F47F /* BSLParse.h in Headers */,
-				2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */,
 				2262FD671A5750AA00C9F47F /* BSLStack.h in Headers */,
 				2262FD681A5750AA00C9F47F /* BSLDatabase.h in Headers */,
 				2262FD691A5750AA00C9F47F /* BSLContext.h in Headers */,
 				2262FD6A1A5750AA00C9F47F /* BSLEvaluate.h in Headers */,
 				2262FD6B1A5750AA00C9F47F /* BSLVariable.h in Headers */,
 				2262FD6C1A5750AA00C9F47F /* BSLFunction.h in Headers */,
-				2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */,
 				2262FD6D1A5750AA00C9F47F /* BSLStatement.h in Headers */,
-				2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */,
-				2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */,
 				2262FD6E1A5750AA00C9F47F /* BSLSymbol.h in Headers */,
 				2262FD6F1A5750AA00C9F47F /* BSLExpression.h in Headers */,
 				2262FD701A5750AA00C9F47F /* BSLScheduler.h in Headers */,
+				2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */,
+				2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */,
+				2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */,
+				2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */,
+				2299F1791A5F1B32007A2884 /* BSLStatement_Schedule.h in Headers */,
+				2299F1701A5F1B04007A2884 /* BSLStatement_Sleep.h in Headers */,
+				2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */,
 				2262FD711A5750AA00C9F47F /* BSLExecute.h in Headers */,
 				2262FD721A5750AA00C9F47F /* BSLGlobals.h in Headers */,
 				2262FD731A5750AA00C9F47F /* BSLScript.h in Headers */,
 				2262FD781A57524E00C9F47F /* BSL_stdlib.h in Headers */,
 				2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */,
 				22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */,
-				2299F17D1A5F1B4C007A2884 /* BSLStatement_Iterate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

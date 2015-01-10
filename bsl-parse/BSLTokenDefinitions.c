@@ -31,6 +31,26 @@ if (strncmp(token->contents, str(ident), csize(ident)) == 0) { \
 	return flag; \
 }
 
+/*
+	This function looks a bit confusing, so instead of trying to comment each part,
+ it will be described in detail here.
+ 
+ BSL has a a number of keywords that are reserved in the language. The original
+ implementation has them looked up staticly based on string length then calls
+ to `strncmp`. This is done for performance reasons, as it is much faster than 
+ iterating over a datastructure to find the keywords. I have created three 
+ macros (see above) that mask the boilerplate code associated with doing the 
+ static lookup of these keywords.
+ 
+ The switch is ordered from top to bottom - lowest to highest char length of
+ the keyword. Each word length case is sorted alphabetically (top to bottom)
+ based on the first letter of the key word. Then that contains a series of 
+ if-statments that perform `strncmp` compares in alphabetical order (top to
+ bottom) of the full length of the keywords.
+ 
+ This must be followed if new keywords are added to the language dictionary to
+ preserve the speed and correct behavior of lookup.
+*/
 bsl_token_code bsl_token_resolve_identifier(bsl_token *token) {
 	if (token->offset.length > 8 || token->offset.length < 2) {
 		return BSLTokenCode_id_generic;
