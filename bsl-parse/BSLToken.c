@@ -195,176 +195,268 @@ loop_parse:
 					
 					// parsing the rest of the symbols
 					switch (curr) {
-						case '!': {
+						case '!': { // logical NOT operator
+							// token length of one
 							token->offset.length = 1;
+							// token code for logical NOT
 							token->code = BSLTokenCode_op_NOT;
-							text->offset++;
-							break;
-						}
-						case '\"': {
-							token->offset.length = 1;
-							token->code = BSLTokenCode_id_string;
+							// increase to next position in text buffer
 							text->offset++;
 							
-							while (1) {
+							break;
+						}
+						case '\"': { // start of string
+							// default token length is one
+							token->offset.length = 1;
+							// token code string identifier type
+							token->code = BSLTokenCode_id_string;
+							// advance to next position in text buffer
+							text->offset++;
+							
+							// finding the whole string value
+							while (1) { // while true
+								// getting current text char value
 								char curr_tmp = text->data[text->offset];
 								
+								// finding if the current char value is the end of a string
 								if (curr_tmp == '\"' || curr_tmp == '"') {
+									// found the end of the string identifier, increase length to include this identifier
 									token->offset.length++;
+									// increase to the next position in the text buffer
 									text->offset++;
+									// leave the while loop
 									break;
 								}
 								
+								// finding if the current char value is a syntax error
 								if (curr_tmp == 0 || curr_tmp == '\n' || curr_tmp == '\r') {
-									// add check for syntax error
+									// this is a syntax error
 									token->error = bsl_error_token_invalid_string;
+									// leave the while loop
 									break;
 								}
 								
+								// increase token length
 								token->offset.length++;
+								// advance to the next position in the text buffer
 								text->offset++;
 							}
+							
 							break;
 						}
-						case '(': {
+						case '(': { // left parenthesis
+							// default token length of one
 							token->offset.length = 1;
+							// token left parenthesis code
 							token->code = BSLTokenCode_ctl_lparen;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case ')': {
+						case ')': { // right parenthesis
+							// default token length of one
 							token->offset.length = 1;
+							// token right parenthesis code
 							token->code = BSLTokenCode_ctl_rparen;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '[': {
+						case '[': { // left square bracket
+							// default token length of one
 							token->offset.length = 1;
+							// token left square bracket code
 							token->code = BSLTokenCode_ctl_lbracket;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case ']': {
+						case ']': { // right square bracket
+							// default token length of one
 							token->offset.length = 1;
+							// token right square bracket code
 							token->code = BSLTokenCode_ctl_rbracket;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '+': {
+						case '+': { // addition operator
+							// default token length of one
 							token->offset.length = 1;
+							// token addition operator code
 							token->code = BSLTokenCode_op_plus;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '-': {
+						case '-': { // subtraction operator
+							// default token length of one
 							token->offset.length = 1;
+							// token subtraction operator code
 							token->code = BSLTokenCode_op_minus;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case ',': {
+						case ',': { // comma
+							// default token length of one
 							token->offset.length = 1;
 							token->code = BSLTokenCode_ctl_comma;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case ';': {
+						case ';': { // semicolon
+							// default token length of one
 							token->offset.length = 1;
+							// token semicolon operator code
 							token->code = BSLTokenCode_ctl_semicolon;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case ':': {
+						case ':': { // colon
+							// default token length of one
 							token->offset.length = 1;
+							// token colon operator code
 							token->code = BSLTokenCode_ctl_colon;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '=': {
+						case '=': { // assignment operator
+							// default token length of one
 							token->offset.length = 1;
+							// token assignment operator code
 							token->code = BSLTokenCode_op_assign;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '{': {
+						case '{': { // left brace
+							// default token length of one
 							token->offset.length = 1;
+							// token left brace code
 							token->code = BSLTokenCode_ctl_lbrace;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '}': {
+						case '}': { // right brace
+							// default token length of one
 							token->offset.length = 1;
+							// token right brace code
 							token->code = BSLTokenCode_ctl_rbrace;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '|': {
+						case '|': { // vertical bar
+							// default token length of one
 							token->offset.length = 1;
+							// token vertical bar code
 							token->code = BSLTokenCode_bar;
+							// increase offset in text
 							text->offset++;
 							break;
 						}
-						case '<': {
+						case '<': { // less than operator
+							// default token length of one
 							token->offset.length = 1;
+							// token less than code
 							token->code = BSLTokenCode_cmp_lt;
-							text->offset++;
-							if (peek == '=') {
-								token->offset.length++;
-								token->code = BSLTokenCode_cmp_le;
-								text->offset++;
-							}
-							break;
-						}
-						case '>': {
-							token->offset.length = 1;
-							token->code = BSLTokenCode_cmp_gt;
-							text->offset++;
-							if (peek == '=') {
-								token->offset.length++;
-								token->code = BSLTokenCode_cmp_ge;
-								text->offset++;
-							}
-							break;
-						}
-						case '#': {
-							token->offset.length = 1;
-							token->code = BSLTokenCode_id_comment;
+							// increase offset in text
 							text->offset++;
 							
-							while (1) {
+							if (peek == '=') {
+								// increate the token length
+								token->offset.length++;
+								// token less than or equal to code
+								token->code = BSLTokenCode_cmp_le;
+								// increase offset in text
+								text->offset++;
+							}
+							
+							break;
+						}
+						case '>': { // greater than operator
+							// default token length of one
+							token->offset.length = 1;
+							// token greater than code
+							token->code = BSLTokenCode_cmp_gt;
+							// increase offset in text
+							text->offset++;
+							
+							if (peek == '=') {
+								// increate the token length
+								token->offset.length++;
+								// token greater than or equal to code
+								token->code = BSLTokenCode_cmp_ge;
+								// increase offset in text
+								text->offset++;
+							}
+							
+							break;
+						}
+						case '#': { // comment token
+							// default token length is at least one
+							token->offset.length = 1;
+							// token comment code
+							token->code = BSLTokenCode_id_comment;
+							// increase offset in text
+							text->offset++;
+							
+							// finding the end of the current line
+							while (1) { // while true
+								// getting the current char value from the text buffer
 								char curr_tmp = text->data[text->offset];
+								// getting the next char value from the text buffer
 								char peek_tmp = text->data[text->offset + 1 ];
 								
-								if(curr_tmp == 0) {
+								if(curr_tmp == 0) { // if this is the end of the memory buffer
+									// leave the while loop
 									break;
 								}
 								if(curr_tmp == '\n') {
+									// increase offset in text
 									text->offset++;
+									// increate the length of the token
 									token->offset.length += 1;
+									
 									if(peek_tmp == '\r') {
+										// increase offset in text
 										text->offset++;
+										// increate the length of the token
 										token->offset.length += 1;
 									}
+									// leave the while loop because we have found the end of the line
 									break;
 								}
 								
 								if (curr_tmp == '\r') {
+									// increase offset in text
 									text->offset++;
+									// increate the length of the token
 									token->offset.length += 1;
+									
 									if (peek_tmp == '\n') {
+										// increase offset in text
 										text->offset++;
+										// increate the length of the token
 										token->offset.length += 1;
 									}
+									// leave the while loop because we have found the end of the line
 									break;
 								}
 								
 								token->offset.length++;
+								// increase offset in text
 								text->offset++;
 							}
 							
 							break;
 						}
-						default: {
+						default: { // other syntax
 							// syntax error
 							token->error = bsl_error_token_invalid_syntax;
 							break;
