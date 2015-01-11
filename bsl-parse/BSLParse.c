@@ -11,7 +11,9 @@
 #include "BSLExpression.h"
 
 char * bsl_token_ir_copy_string(bsl_tkn_ir *token_ir) {
+	// the string need at least 1 byte length ('\0')
 	uint32_t string_length = 1;
+	// the index is base zero
 	uint32_t string_index = 0;
 	// assign the ir iterator to the start of the ir sequence
 	bsl_tkn_ir *curr = token_ir;
@@ -64,7 +66,7 @@ bsl_tkn_ir * bsl_token_ir_generate_from_string(char *str) {
 	script->contents = mem_buff_copy(str, strlen(str));
 	// this has no file descriptor
 	script->fd = NULL;
-	
+	// calling ir gen based on script object
 	return bsl_token_ir_generate_from_script(script);
 }
 

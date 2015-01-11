@@ -36,6 +36,7 @@
  
  */
 
+// returns the code type of the passed token
 bsl_token_code bsl_token_resolve_identifier(bsl_token *token);
 
 #endif

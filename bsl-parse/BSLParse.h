@@ -11,10 +11,13 @@
 
 #include "BSLPrivate.h"
 
+// returns an allocated string representation of the passed token ir sequence
 char * bsl_token_ir_copy_string(bsl_tkn_ir *token_ir);
 
+// returns token ir sequence from a passed char string
 bsl_tkn_ir * bsl_token_ir_generate_from_string(char *str);
 
+// returns token ir sequence from passed script file
 bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script);
 
 #endif /* defined(__bsl_parse__BSLParse__) */
