@@ -11,8 +11,8 @@
 
 #include "FileAccess.h"
 #include "cmap.h"
+#include "TimeUtil.h"
 #include <ctype.h>
-#include <unistd.h>
 
 typedef struct bsl_script bsl_script;
 

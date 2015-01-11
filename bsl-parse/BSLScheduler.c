@@ -57,6 +57,24 @@ void bsl_scheduler_evaluate_statement(bsl_scheduler *scheduler, bsl_schedule_ite
 			statement->u.sleep.current.tv_usec += interval.tv_usec;
 			
 			// compare to statement->u.sleep.total
+			switch (timeval_compare(statement->u.sleep.current, statement->u.sleep.total)) {
+				case -1: {
+					// less than
+					break;
+				}
+				case 0: {
+					// equal to
+					break;
+				}
+				case 1: {
+					// greater than
+					break;
+				}
+				default: {
+					// error
+					break;
+				}
+			}
 			
 			break;
 		}

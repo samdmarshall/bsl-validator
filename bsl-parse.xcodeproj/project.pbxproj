@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22235E721A632FCC000D5DE2 /* TimeUtil.c in Sources */ = {isa = PBXBuildFile; fileRef = 22235E701A632FCC000D5DE2 /* TimeUtil.c */; };
+		22235E731A632FCC000D5DE2 /* TimeUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 22235E711A632FCC000D5DE2 /* TimeUtil.h */; };
 		2262FD281A51A6C400C9F47F /* cmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22E328B71A4F096100E01700 /* cmap.cpp */; };
 		2262FD291A51A6C400C9F47F /* FileAccess.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328C81A4F185600E01700 /* FileAccess.c */; };
 		2262FD2A1A51A6C400C9F47F /* BSLTokenDefinitions.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328DC1A50622E00E01700 /* BSLTokenDefinitions.c */; };
@@ -92,6 +94,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		22235E701A632FCC000D5DE2 /* TimeUtil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TimeUtil.c; sourceTree = "<group>"; };
+		22235E711A632FCC000D5DE2 /* TimeUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeUtil.h; sourceTree = "<group>"; };
 		2262FD241A51A6AC00C9F47F /* libbsl.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libbsl.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		2262FD381A51AF9500C9F47F /* BSLStack.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStack.c; sourceTree = "<group>"; };
 		2262FD391A51AF9500C9F47F /* BSLStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStack.h; sourceTree = "<group>"; };
@@ -277,6 +281,8 @@
 				22E328B71A4F096100E01700 /* cmap.cpp */,
 				22E328C91A4F185600E01700 /* FileAccess.h */,
 				22E328C81A4F185600E01700 /* FileAccess.c */,
+				22235E711A632FCC000D5DE2 /* TimeUtil.h */,
+				22235E701A632FCC000D5DE2 /* TimeUtil.c */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -372,6 +378,7 @@
 				2262FD611A5750A900C9F47F /* cmap.h in Headers */,
 				2262FD621A5750A900C9F47F /* FileAccess.h in Headers */,
 				2262FD631A5750A900C9F47F /* BSLPrivate.h in Headers */,
+				22235E731A632FCC000D5DE2 /* TimeUtil.h in Headers */,
 				2262FD641A5750AA00C9F47F /* BSLTokenDefinitions.h in Headers */,
 				2262FD651A5750AA00C9F47F /* BSLToken.h in Headers */,
 				2262FD661A5750AA00C9F47F /* BSLParse.h in Headers */,
@@ -499,6 +506,7 @@
 				2299F1841A5F205A007A2884 /* BSLStatement_Var.c in Sources */,
 				2262FD2E1A51A6C400C9F47F /* BSLContext.c in Sources */,
 				2262FD2F1A51A6C400C9F47F /* BSLEvaluate.c in Sources */,
+				22235E721A632FCC000D5DE2 /* TimeUtil.c in Sources */,
 				2262FD301A51A6C400C9F47F /* BSLVariable.c in Sources */,
 				2262FD311A51A6C400C9F47F /* BSLFunction.c in Sources */,
 				2299F1801A5F204B007A2884 /* BSLStatement_Func.c in Sources */,
