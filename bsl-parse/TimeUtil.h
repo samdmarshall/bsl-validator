@@ -11,6 +11,21 @@
 
 #include <unistd.h>
 
-int timeval_compare(struct timeval a, struct timeval b);
+typedef struct time_interval time_interval;
+
+struct time_interval {
+	struct timeval tv;
+	uint16_t ips; // iterations per second
+};
+
+typedef enum timeval_comp {
+	timeval_comp_lt,
+	timeval_comp_eq,
+	timeval_comp_gt
+} timeval_comp;
+
+timeval_comp timeval_compare(struct timeval a, struct timeval b);
+void timeval_add(struct timeval *a, struct timeval b);
+void timeval_sub(struct timeval *a, struct timeval b);
 
 #endif /* defined(__bsl_parse__TimeUtil__) */

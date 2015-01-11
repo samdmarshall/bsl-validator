@@ -11,6 +11,6 @@
 
 #include "BSLPrivate.h"
 
-void bsl_core_timer_create(struct timeval tv, FPCallback update_callback, void *context);
+void bsl_core_timer_create(struct time_interval interval, FPCallback update_callback, void *context);
 
 #endif /* defined(__bsl_parse__BSLCoreTimer__) */

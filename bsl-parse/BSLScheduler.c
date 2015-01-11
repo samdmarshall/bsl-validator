@@ -10,12 +10,17 @@
 #include "BSLCoreTimer.h"
 
 void bsl_scheduler_run(bsl_scheduler *scheduler) {
-	struct timeval tv = { 0, 16666 }; // once every 1/60th of a second
+	struct time_interval interval = {0};
+	// once every 1/60th of a second
+	interval.tv.tv_sec = 0;
+	interval.tv.tv_usec = 16666;
+	// 60 times a second
+	interval.ips = 60;
 	
-	bsl_core_timer_create(tv, bsl_scheduler_update, scheduler);
+	bsl_core_timer_create(interval, bsl_scheduler_update, scheduler);
 }
 
-uint8_t bsl_scheduler_update(void *context, struct timeval interval) {
+uint8_t bsl_scheduler_update(void *context, struct time_interval interval) {
 	uint8_t active = 0;
 	
 	bsl_scheduler *scheduler = (bsl_scheduler *)context;
@@ -28,11 +33,11 @@ uint8_t bsl_scheduler_update(void *context, struct timeval interval) {
 		
 		for (uint32_t index = 0; index < scheduler->current->item_count; index++) {
 			
-			bsl_scheduler_evaluate_statement(scheduler, &(scheduler->current->items[index]), interval);
+			bsl_scheduler_evaluate_statement(scheduler, &(scheduler->current->items[index]), interval.tv);
 		}
 	}
 	
-	if (scheduler->current_tick < 60) {
+	if (scheduler->current_tick < interval.ips) {
 		scheduler->current_tick++;
 	}
 	else {
@@ -53,20 +58,19 @@ void bsl_scheduler_evaluate_statement(bsl_scheduler *scheduler, bsl_schedule_ite
 			break;
 		}
 		case bsl_statement_type_sleep: {
-			statement->u.sleep.current.tv_sec += interval.tv_sec;
-			statement->u.sleep.current.tv_usec += interval.tv_usec;
+			timeval_add(&(statement->u.sleep.current), interval);
 			
 			// compare to statement->u.sleep.total
 			switch (timeval_compare(statement->u.sleep.current, statement->u.sleep.total)) {
-				case -1: {
+				case timeval_comp_lt: {
 					// less than
 					break;
 				}
-				case 0: {
+				case timeval_comp_eq: {
 					// equal to
 					break;
 				}
-				case 1: {
+				case timeval_comp_gt: {
 					// greater than
 					break;
 				}
