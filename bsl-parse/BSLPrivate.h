@@ -51,12 +51,21 @@ typedef struct bsl_schedule_item bsl_schedule_item;
 
 
 typedef struct bsl_statement_schedule bsl_statement_schedule;
+
 typedef struct bsl_statement_fork bsl_statement_fork;
+
+typedef struct bsl_conditional bsl_conditional;
+typedef struct bsl_statement_conditional_case bsl_statement_conditional_case;
 typedef struct bsl_statement_conditional bsl_statement_conditional;
+
 typedef struct bsl_statement_return bsl_statement_return;
+
 typedef struct bsl_statement_sleep bsl_statement_sleep;
+
 typedef struct bsl_statement_iterate bsl_statement_iterate;
+
 typedef struct bsl_statement_func bsl_statement_func;
+
 typedef struct bsl_statement_var bsl_statement_var;
 
 #if DEBUG
@@ -346,20 +355,42 @@ typedef enum bsl_statement_type {
 	bsl_statement_type_count
 } bsl_statement_type;
 
-struct bsl_statement_schedule {
-	
+
+struct bsl_statement_func {
+	bsl_function function;
 };
 
-struct bsl_statement_conditional {
-	
+struct bsl_statement_var {
+	bsl_variable variable;
 };
 
 struct bsl_statement_fork {
-	
+	bsl_statement_func function;
 };
 
 struct bsl_statement_sleep {
+	struct timeval time;
+};
+
+struct bsl_statement_schedule {
+	bsl_statement_sleep sleep;
+	bsl_statement_fork fork;
+};
+
+struct bsl_conditional {
 	
+};
+
+struct bsl_statement_conditional_case {
+	bsl_conditional *cond;
+	
+	bsl_expression *expressions;
+	uint32_t expression_count;
+};
+
+struct bsl_statement_conditional {
+	bsl_statement_conditional_case *cond_case;
+	uint8_t case_count;
 };
 
 struct bsl_statement_return {
@@ -367,14 +398,6 @@ struct bsl_statement_return {
 };
 
 struct bsl_statement_iterate {
-	
-};
-
-struct bsl_statement_func {
-	
-};
-
-struct bsl_statement_var {
 	
 };
 
