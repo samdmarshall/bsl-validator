@@ -59,17 +59,6 @@ char * bsl_token_ir_copy_string(bsl_tkn_ir *token_ir) {
 	return string;
 }
 
-bsl_tkn_ir * bsl_token_ir_generate_from_string(char *str) {
-	// creating script object to pass to `bsl_token_ir_generate_from_script()`
-	bsl_script *script = calloc(1, sizeof(bsl_script));
-	// moving string into a memory buffer structure
-	script->contents = mem_buff_copy(str, strlen(str));
-	// this has no file descriptor
-	script->fd = NULL;
-	// calling ir gen based on script object
-	return bsl_token_ir_generate_from_script(script);
-}
-
 bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script) {
 	// allocating token ir sequence
 	bsl_tkn_ir *token_ir = calloc(1, sizeof(bsl_tkn_ir));

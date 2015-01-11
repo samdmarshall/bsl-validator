@@ -11,6 +11,8 @@
 #include "BSLSymbol.h"
 #include "BSLVariable.h"
 #include "BSLParse.h"
+#include "BSLScript.h"
+
 #include "BSL_stdlib.h"
 
 void bsl_db_register(char *name, bsl_symbol *symbol, cmap_str symtab) {
@@ -56,8 +58,9 @@ void bsl_db_register_function(bsl_register_func_item function, bsl_database *db)
 	func_symbol->u.func.name = calloc(strlen(function.name) + 1, sizeof(char));
 	strncpy(func_symbol->u.func.name, function.name, strlen(function.name));
 	
+	func_symbol->script = bsl_script_create_with_string(function.args);
 	
-	bsl_tkn_ir *args = bsl_token_ir_generate_from_string(function.args);
+	bsl_tkn_ir *args = bsl_token_ir_generate_from_script(func_symbol->script);
 	
 	bsl_tkn_ir *curr = args->next;
 	

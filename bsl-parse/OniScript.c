@@ -17,7 +17,7 @@ OniScriptContext * LoadScriptsFromLevelPath(char *path) {
 	OniScriptContext *context = calloc(1, sizeof(OniScriptContext));
 	
 	if (context != NULL) {
-		context->scripts = calloc(1, sizeof(bsl_script));
+		context->scripts = bsl_script_create();
 		context->script_count = 0;
 		
 		DIR *dir;

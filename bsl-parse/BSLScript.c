@@ -8,6 +8,44 @@
 
 #include "BSLScript.h"
 
+bsl_script * bsl_script_create() {
+	bsl_script *script = calloc(1, sizeof(bsl_script));
+	
+	if (script != NULL) {
+		
+	}
+	
+	return script;
+}
+
+bsl_script * bsl_script_create_with_string(char *string) {
+	bsl_script *script = bsl_script_create();
+	
+	if (script != NULL) {
+		// moving string into a memory buffer structure
+		script->contents = mem_buff_copy(string, strlen(string));
+		// this has no file descriptor
+		script->fd = NULL;
+	}
+	
+	return script;
+}
+
+void bsl_script_release(bsl_script *script) {
+	if (script != NULL) {
+		
+		if (script->contents != NULL) {
+			mem_buff_release(script->contents);
+		}
+		
+		if (script->fd != NULL) {
+			file_ref_release(script->fd);
+		}
+		
+		free(script);
+	}
+}
+
 char * bsl_script_copy_line(bsl_script *script, uint16_t index) {
 	uint16_t counter = 1;
 	char *line = calloc(counter, sizeof(char));

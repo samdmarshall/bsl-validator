@@ -54,9 +54,13 @@ void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_
 		item->next->scope_depth = depth;
 		item->next->scope_level = type;
 		item->next->prev = item;
+		
+		// passing next stack scope item back up out
+		*scope = item->next;
 	}
-	// passing next stack scope item back up out
-	*scope = item->next;
+	else {
+		*scope = item;
+	}
 }
 
 void bsl_stack_release(bsl_stack *stack) {
