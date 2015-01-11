@@ -47,6 +47,7 @@ bsl_stack * bsl_stack_create() {
 }
 
 void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_t depth) {
+	// convenience call to advance the stack scope item sequence
 	bsl_stack_scope *item = *scope;
 	if (item != NULL) {
 		item->next = bsl_stack_scope_create();
@@ -54,6 +55,7 @@ void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_
 		item->next->scope_level = type;
 		item->next->prev = item;
 	}
+	// passing next stack scope item back up out
 	*scope = item->next;
 }
 
