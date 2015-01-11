@@ -25,6 +25,7 @@ typedef enum timeval_comp {
 } timeval_comp;
 
 timeval_comp timeval_compare(struct timeval a, struct timeval b);
+
 void timeval_add(struct timeval *a, struct timeval b);
 void timeval_sub(struct timeval *a, struct timeval b);
 
