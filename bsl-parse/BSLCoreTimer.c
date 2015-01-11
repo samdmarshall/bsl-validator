@@ -25,7 +25,7 @@ void bsl_core_timer_create(struct timeval tv, FPCallback update_callback, void *
 		}
 		
 		if (update_callback != NULL) {
-			active = update_callback(context);
+			active = update_callback(context, tv);
 		}
 		else {
 			active = 0;

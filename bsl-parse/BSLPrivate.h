@@ -280,7 +280,7 @@ typedef enum bsl_func_type {
 
 typedef uintptr_t* Pointer;
 typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
-typedef uint8_t (*FPCallback)(void *context);
+typedef uint8_t (*FPCallback)(void *context, struct timeval interval);
 
 struct bsl_function_interpreted {
 	bsl_expression *expression;
@@ -369,7 +369,8 @@ struct bsl_statement_fork {
 };
 
 struct bsl_statement_sleep {
-	struct timeval time;
+	struct timeval total;
+	struct timeval current;
 };
 
 struct bsl_statement_schedule {
@@ -491,6 +492,7 @@ struct bsl_schedule_item {
 	bsl_schedule_item *items;
 
 	// something to evaluate
+	bsl_statement *statement;
 };
 
 #pragma mark -

@@ -13,6 +13,8 @@
 
 void bsl_scheduler_run(bsl_scheduler *scheduler);
 
-uint8_t bsl_scheduler_update(void *context);
+uint8_t bsl_scheduler_update(void *context, struct timeval interval);
+
+void bsl_scheduler_evaluate_statement(bsl_scheduler *scheduler, bsl_schedule_item *item, struct timeval interval);
 
 #endif /* defined(__bsl_parse__BSLScheduler__) */
