@@ -126,7 +126,6 @@ if_loop:
 			result = bsl_function_interp_expression_increment(&curr, interp, index);
 		}
 		
-		printf("");
 		// used to track if we only should read one expression or not
 		int8_t found_brace = 0;
 		// tracking depth scope of braces
