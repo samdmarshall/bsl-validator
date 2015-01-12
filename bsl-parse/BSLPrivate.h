@@ -383,8 +383,17 @@ struct bsl_statement_schedule {
 	bsl_statement_fork fork;
 };
 
-struct bsl_conditional {
+typedef enum bsl_conditional_type {
+	bsl_conditional_type_invalid,
 	
+	bsl_conditional_type_if,
+	bsl_conditional_type_else,
+	
+	bsl_conditional_type_count
+} bsl_conditional_type;
+
+struct bsl_conditional {
+	bsl_conditional_type type;
 };
 
 struct bsl_statement_conditional_case {

@@ -10,6 +10,7 @@
 #include "BSLStack.h"
 #include "BSLScript.h"
 #include "BSLSymbol.h"
+#include "BSLToken.h"
 
 bsl_context * bsl_context_create() {
 	bsl_context *context = calloc(1, sizeof(bsl_context));
@@ -80,19 +81,9 @@ int bsl_context_check_error(bsl_context *context) {
 }
 
 bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
-	switch (item_token->code) {
-		case BSLTokenCode_ctl_lbrace: {
-			context->scope_depth++;
-			break;
-		}
-		case BSLTokenCode_ctl_rbrace: {
-			context->scope_depth--;
-			break;
-		}
-		default: {
-			break;
-		}
-	}
+	bsl_token_check_scope_increase(&(context->scope_depth), item_token, BSLTokenCode_ctl_lbrace);
+	bsl_token_check_scope_decrease(&(context->scope_depth), item_token, BSLTokenCode_ctl_rbrace);
+	
 	if (context->scope_depth < 0) {
 		// throw error
 		context->error = bsl_error_invalid_scope;
@@ -113,6 +104,7 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 			}
 		}
 	}
+	
 	return context;
 }
 

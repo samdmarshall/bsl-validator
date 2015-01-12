@@ -134,7 +134,12 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
 					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[index];
 					
-					case_eval[index] = bsl_conditional_evaluation(cond_case.cond, &context);
+					if (cond_case.cond->type == bsl_conditional_type_else) {
+						case_eval[index] = 1;
+					}
+					else {
+						case_eval[index] = bsl_conditional_evaluation(cond_case.cond, &context);
+					}
 				}
 				
 				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
