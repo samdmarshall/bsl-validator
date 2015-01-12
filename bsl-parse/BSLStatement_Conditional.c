@@ -65,6 +65,36 @@ int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_interpreted
 	return 0;
 }
 
+int bsl_statement_conditional_increment_token(bsl_tkn_ir **item, bsl_interpreted_code interp, uint32_t *index) {
+	bsl_tkn_ir *curr = *item;
+	
+	int result = bsl_function_interp_expression_increment(&curr, interp, index);
+	
+	while (curr->token == NULL) {
+		result = bsl_function_interp_expression_increment(&curr, interp, index);
+	}
+	
+	*item = curr;
+	
+	return result;
+}
+
+int bsl_statement_conditional_decrement_token(bsl_tkn_ir **item, bsl_interpreted_code interp, uint32_t *index) {
+	bsl_tkn_ir *curr = *item;
+	
+	int result = 0;
+	
+	while (curr->token != NULL) {
+		result = bsl_function_interp_expression_decrement(&curr, interp, index);
+	}
+	
+	result = bsl_function_interp_expression_decrement(&curr, interp, index);
+	
+	*item = curr;
+	
+	return result;
+}
+
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement_conditional conditional = {0};
 	conditional.cond_case = calloc(1, sizeof(bsl_statement_conditional_case));
@@ -120,11 +150,7 @@ if_loop:
 		}
 
 		// smart advancing past conditional to expressions
-		result = bsl_function_interp_expression_increment(&curr, interp, index);
-		
-		while (curr->token == NULL) {
-			result = bsl_function_interp_expression_increment(&curr, interp, index);
-		}
+		result = bsl_statement_conditional_increment_token(&curr, interp, index);
 		
 		// used to track if we only should read one expression or not
 		int8_t found_brace = 0;
@@ -140,6 +166,8 @@ if_loop:
 		
 		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
 		cond_case->code.expression_count = 1;
+		
+		int8_t found_else = 0;
 		
 		while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
 			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
@@ -165,23 +193,36 @@ if_loop:
 				//		-> jump back to do another conditional
 				//		-> break
 				
-				result = bsl_function_interp_expression_increment(&curr, interp, index);
-				
-				while (curr->token == NULL) {
-					result = bsl_function_interp_expression_increment(&curr, interp, index);
-				}
-				
-				if (curr->token->code == BSLTokenCode_id_else) {
+				if (curr->token->code == BSLTokenCode_ctl_rbrace) {
+					result = bsl_statement_conditional_increment_token(&curr, interp, index);
 					
-					conditional.case_count += 1;
-					conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
-					goto if_loop;
+					if (curr->token->code == BSLTokenCode_id_else) {
+						found_else = 1;
+						
+						// check for next if
+						result = bsl_statement_conditional_increment_token(&curr, interp, index);
+						
+						if (curr->token->code != BSLTokenCode_id_if) {
+							
+							result = bsl_statement_conditional_decrement_token(&curr, interp, index);
+						}
+					}
+					
+					if (found_else == 1) {
+						conditional.case_count += 1;
+						conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
+						goto if_loop;
+					}
+					else {
+						break;
+					}
 				}
-				else {
-					break;
-				}
+				
 			}
 			else {
+				
+				// in here the expressions need to be parsed out
+				
 				printf("");
 				
 				result = bsl_function_interp_expression_increment(&curr, interp, index);
@@ -189,7 +230,6 @@ if_loop:
 				printf("");
 			}
 			
-			printf("");
 		}
 
 //				// smart advancing to next ir item

@@ -146,7 +146,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 					
 					if (case_eval[index] == 1) {
 						
-						bsl_execute_interpreted_code(expr.u.conditional.cond_case[index].code, &context);
+						//bsl_execute_interpreted_code(expr.u.conditional.cond_case[index].code, &context);
 						break;
 					}
 				}
