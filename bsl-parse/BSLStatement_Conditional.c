@@ -131,48 +131,67 @@ if_loop:
 		// tracking depth scope of braces
 		int8_t brace_scope = 0;
 		
+		if (curr->token->code == BSLTokenCode_ctl_lbrace) {
+			bsl_token_check_scope_increase(&brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
+			found_brace = 1;
+			result = bsl_function_interp_expression_increment(&curr, interp, index);
+		}
 		
-//
-//		// smart advancing past conditional to expressions
-//		result = bsl_function_interp_expression_increment(&curr, interp, index);
-//		
-//		if (curr->token != NULL) {
-//			// used to track if we only should read one expression or not
-//			int found_brace = 0;
-//			// tracking depth scope of braces
-//			int8_t brace_scope = 0;
-//			// check if using a encapsulating brace
-//			if (curr->token->code == BSLTokenCode_ctl_lbrace) {
-//				// found a brace, track scope and advance
-//				found_brace = 1;
-//				// increase brace scope
-//				brace_scope += 1;
-//				
-//				// smart advancing to next ir item
-//				result = bsl_function_interp_expression_increment(&curr, interp, index);
-//			}
-//			
-//			cond_case->code.expression = calloc(1, sizeof(bsl_expression));
-//			cond_case->code.expression_count = 1;
-//			
-//			int8_t found_else = 0;
-//			while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
-//				
-//				bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
-//				case_expr->scope_type = BSLScope_cond;
-//				case_expr->scope_level = brace_scope;
-//				
-//				if (curr->token != NULL) {
-//					// store expression
-//					bsl_token_check_scope_increase(&brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
-//					bsl_token_check_scope_decrease(&brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
-//				}
-//				
-//				if (case_expr->tokens == NULL) {
-//					// watch out for this ownership!
-//					case_expr->tokens = curr;
-//				}
-//				
+		
+		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
+		cond_case->code.expression_count = 1;
+		
+		while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
+			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
+			case_expr->scope_type = BSLScope_cond;
+			case_expr->scope_level = brace_scope;
+			
+			if (curr->token != NULL) {
+				// store expression
+				bsl_token_check_scope_increase(&brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
+				bsl_token_check_scope_decrease(&brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
+			}
+			else {
+				while (curr->token == NULL) {
+					result = bsl_function_interp_expression_increment(&curr, interp, index);
+				}
+				continue;
+			}
+			
+			if (brace_scope == 0) {
+				
+				// check the end of the brace
+				// check the next token for `else`
+				//		-> jump back to do another conditional
+				//		-> break
+				
+				result = bsl_function_interp_expression_increment(&curr, interp, index);
+				
+				while (curr->token == NULL) {
+					result = bsl_function_interp_expression_increment(&curr, interp, index);
+				}
+				
+				if (curr->token->code == BSLTokenCode_id_else) {
+					
+					conditional.case_count += 1;
+					conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
+					goto if_loop;
+				}
+				else {
+					break;
+				}
+			}
+			else {
+				printf("");
+				
+				result = bsl_function_interp_expression_increment(&curr, interp, index);
+				
+				printf("");
+			}
+			
+			printf("");
+		}
+
 //				// smart advancing to next ir item
 //				if (found_brace == 1) {
 //					uint32_t track = *index;
@@ -226,23 +245,6 @@ if_loop:
 //					}
 //				}
 //			}
-//			
-//		}
-//		
-//		if (curr->token != NULL) {
-//			// else (if) (optional) repeat parsing ^^^
-//			if (curr->token->code == BSLTokenCode_id_else) {
-//				bsl_function_interp_expression_increment(&curr, interp, index);
-//				
-//				if (curr->token->code != BSLTokenCode_id_if) {
-//					bsl_function_interp_expression_decrement(&curr, interp, index);
-//				}
-//				
-//				conditional.case_count += 1;
-//				conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
-//				goto if_loop;
-//			}
-//		}
 		
 	}
 	
