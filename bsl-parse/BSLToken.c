@@ -473,6 +473,18 @@ loop_parse:
 	}
 }
 
+void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_code code) {
+	if (token->code == code) {
+		(*scope) += 1;
+	}
+}
+
+void bsl_token_check_scope_decrease(int8_t *scope, bsl_token *token, bsl_token_code code) {
+	if (token->code == code) {
+		(*scope) -= 1;
+	}
+}
+
 int check_token_error(bsl_token *token) {
 	char message[1024] = {0};
 	switch (token->error) {
