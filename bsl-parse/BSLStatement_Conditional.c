@@ -68,12 +68,14 @@ int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_interpreted
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement_conditional conditional = {0};
 	conditional.cond_case = calloc(1, sizeof(bsl_statement_conditional_case));
-	conditional.cond_case->cond = calloc(1, sizeof(bsl_conditional));
 	
 	bsl_tkn_ir *curr = *token;
 	
 if_loop:
 	{
+		bsl_statement_conditional_case *cond_case = &(conditional.cond_case[conditional.case_count]);
+		cond_case->cond = calloc(1, sizeof(bsl_conditional));
+		
 		int result = 0;
 		
 		debug_printf("%s","conditional evaluation: ");
@@ -82,6 +84,8 @@ if_loop:
 		if (curr->token != NULL) { // check to make sure we have a token
 			// check to make sure we still have the starting `if`
 			if (curr->token->code == BSLTokenCode_id_if) {
+				cond_case->cond->type = bsl_conditional_type_if;
+				
 				// advance to the next token
 				curr = curr->next;
 				
@@ -109,11 +113,15 @@ if_loop:
 					// error in scope of conditional
 				}
 				else {
-					conditional.case_count += 1;
+//					conditional.case_count += 1;
 				}
 				
 			}
-			else {
+			else if (curr->token->code == BSLTokenCode_id_else) {
+				
+				cond_case->cond->type = bsl_conditional_type_else;
+				
+			} else {
 				// error
 			}
 		}
@@ -137,7 +145,6 @@ if_loop:
 				result = bsl_function_interp_expression_increment(&curr, interp, index);
 			}
 			
-			bsl_statement_conditional_case *cond_case = &(conditional.cond_case[conditional.case_count - 1]);
 			cond_case->code.expression = calloc(1, sizeof(bsl_expression));
 			cond_case->code.expression_count = 1;
 			
@@ -207,8 +214,21 @@ if_loop:
 			
 		}
 		
-		// else (if) (optional) repeat parsing ^^^
-		printf("");
+		if (curr->token != NULL) {
+			// else (if) (optional) repeat parsing ^^^
+			if (curr->token->code == BSLTokenCode_id_else) {
+				bsl_function_interp_expression_increment(&curr, interp, index);
+				
+				if (curr->token->code != BSLTokenCode_id_if) {
+					bsl_function_interp_expression_decrement(&curr, interp, index);
+				}
+				
+				conditional.case_count++;
+				conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
+				goto if_loop;
+			}
+		}
+		
 	}
 	
 	// move current position
