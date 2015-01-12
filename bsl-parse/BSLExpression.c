@@ -8,6 +8,7 @@
 
 #include "BSLExpression.h"
 #include "BSLContext.h"
+#include "BSLToken.h"
 
 bsl_expression * bsl_expression_create(bsl_context *context) {
 	bsl_expression *expression = calloc(1, sizeof(bsl_expression));
@@ -31,6 +32,34 @@ void bsl_expression_release(bsl_expression *expression) {
 	}
 }
 
+int bsl_expression_check_end(bsl_token_code code) {
+	switch (code) {
+		case BSLTokenCode_ctl_semicolon:
+		case BSLTokenCode_id_newline:
+		case BSLTokenCode_id_comment: {
+			return 1;
+		}
+		default: {
+			return 0;
+		}
+	}
+}
+
+int bsl_expression_check_control(bsl_token_code code) {
+	switch (code) {
+		case BSLTokenCode_ctl_semicolon:
+		case BSLTokenCode_id_newline:
+		case BSLTokenCode_id_comment:
+		case BSLTokenCode_ctl_lbrace:
+		case BSLTokenCode_ctl_rbrace: {
+			return 1;
+		}
+		default: {
+			return 0;
+		}
+	}
+}
+
 bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 	bsl_expression *expression = NULL;
 	
@@ -41,40 +70,59 @@ bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 		bsl_tkn_ir *expr_curr = expression->tokens;
 		bsl_tkn_ir *expr_prev = NULL;
 		
-		if (curr->token->code == BSLTokenCode_ctl_lbrace || curr->token->code == BSLTokenCode_ctl_rbrace) {
-			if (expr_curr->token == NULL) {
-				expr_curr->token = calloc(1, sizeof(bsl_token));
-			}
-			memcpy(expr_curr->token, curr->token, sizeof(bsl_token));
+		bsl_tkn_ir *initial = NULL;
+		
+		int expression_end = 0;
+		int8_t paren_counter = 0;
+		
+		// end of expression when encountering any breaking behavior
+		while (expression_end != 1) {
 			
-			curr = curr->next;
-		}
-		else {
-			// end of expression when encountering any breaking behavior
-			while (curr->token->code != BSLTokenCode_ctl_semicolon && curr->token->code != BSLTokenCode_id_newline && curr->token->code != BSLTokenCode_id_comment) {
+			expression_end = bsl_expression_check_control(curr->token->code);
+			if (expression_end != 1) {
+				if (initial == NULL) {
+					initial = curr;
+				}
 				
 				if (expr_curr->token == NULL) {
 					expr_curr->token = calloc(1, sizeof(bsl_token));
 				}
 				memcpy(expr_curr->token, curr->token, sizeof(bsl_token));
 				
-				if (curr->next == NULL) {
-					break;
+				int next = 0;
+				if (initial->token->code != BSLTokenCode_id_if) {
+					next = bsl_expression_check_end(curr->next->token->code);
+				} else {
+					bsl_token_check_scope_increase(&paren_counter, curr->token, BSLTokenCode_ctl_lparen);
+					bsl_token_check_scope_decrease(&paren_counter, curr->token, BSLTokenCode_ctl_rparen);
+					
+					if (paren_counter == 0 && initial != curr) {
+						next = 1;
+					}
+				}
+				
+				if (next == 0) {
+					expr_curr->next = calloc(1, sizeof(bsl_tkn_ir));
 				}
 				else {
-					if (curr->next->token->code != BSLTokenCode_ctl_semicolon && curr->next->token->code != BSLTokenCode_id_newline && curr->next->token->code != BSLTokenCode_id_comment) {
-						expr_curr->next = calloc(1, sizeof(bsl_tkn_ir));
+					expr_curr->next = NULL;
+					expression_end = next;
+					continue;
+				}
+				
+				expr_curr->prev = expr_prev;
+				
+				expr_prev = expr_curr;
+				expr_curr = expr_curr->next;
+				
+				curr = curr->next;
+			}
+			else {
+				if (curr->token->code == BSLTokenCode_ctl_lbrace || curr->token->code == BSLTokenCode_ctl_rbrace) {
+					if (expr_curr->token == NULL) {
+						expr_curr->token = calloc(1, sizeof(bsl_token));
 					}
-					else {
-						expr_curr->next = NULL;
-					}
-					
-					expr_curr->prev = expr_prev;
-					
-					expr_prev = expr_curr;
-					expr_curr = expr_curr->next;
-					
-					curr = curr->next;
+					memcpy(expr_curr->token, curr->token, sizeof(bsl_token));
 				}
 			}
 		}

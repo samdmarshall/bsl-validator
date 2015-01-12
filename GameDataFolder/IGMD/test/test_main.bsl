@@ -5,7 +5,7 @@ func void main {
 	if (my_save_point eq 0) 
 	{
 		dmsg "foo";
-	} 
+	}
 	else 
 	{
 		dmsg "bar";
