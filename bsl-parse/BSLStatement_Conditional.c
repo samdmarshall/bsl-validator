@@ -23,6 +23,10 @@ int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted
 		
 		// assign the current ir item to the start of the ir sequence in the next expression
 		curr = interp.expression[(*index)].tokens;
+		
+		if (curr == NULL) {
+			
+		}
 	}
 	else {
 		curr = curr->next;
@@ -135,7 +139,7 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 		cond_case->code.expression_count = 1;
 		
 		int8_t found_else = 0;
-		while (brace_scope != 0 && result == 0) {
+		while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
 			
 			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
 			case_expr->scope_type = BSLScope_cond;
@@ -173,17 +177,23 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 					
 					if (result == 0) {
 						
-						if (curr->token->code == BSLTokenCode_id_else) {
-							// found else
-							found_else = 1;
+						if (curr->token != NULL) {
+							if (curr->token->code == BSLTokenCode_id_else) {
+								// found else
+								found_else = 1;
+							}
+							else {
+								result = bsl_function_interp_expression_decrement(&curr, interp, index);
+								break;
+							}
 						}
 						else {
-							result = bsl_function_interp_expression_decrement(&curr, interp, index);
+							// error
 							break;
 						}
 					}
 					else {
-						// error
+						break;
 					}
 				}
 				else {
