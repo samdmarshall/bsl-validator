@@ -40,7 +40,7 @@ loop_parse:
 				// current char value of the current text pointer
 				char curr = curr_ptr[0];
 				// current char value of the next char following current
-				char peek = text->data[text->offset + 1 ];
+				char peek = (text->offset + 1 >= text->length ? '\0' : text->data[text->offset + 1 ]);
 				
 				// index offset in the text buffer of the token start position
 				token->offset.index = text->offset;

@@ -136,8 +136,8 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	if (curr->token->code == BSLTokenCode_ctl_lbrace) {
 		// found start of function expressions
 		
-		func.u.interp.expression = calloc(1, sizeof(bsl_expression));
-		func.u.interp.expression_count = 0;
+		func.u.interp.code.expression = calloc(1, sizeof(bsl_expression));
+		func.u.interp.code.expression_count = 0;
 		
 		context = bsl_context_update(context, curr->token);
 		curr = curr->next;
@@ -152,9 +152,9 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 			// add expressions here
 			bsl_expression *expression = bsl_expression_parse(&curr, context);
 			if (expression != NULL) {
-				func.u.interp.expression = realloc(func.u.interp.expression, sizeof(bsl_expression) * (func.u.interp.expression_count + 1));
-				memcpy(&(func.u.interp.expression[func.u.interp.expression_count]), expression, sizeof(bsl_expression));
-				func.u.interp.expression_count++;
+				func.u.interp.code.expression = realloc(func.u.interp.code.expression, sizeof(bsl_expression) * (func.u.interp.code.expression_count + 1));
+				memcpy(&(func.u.interp.code.expression[func.u.interp.code.expression_count]), expression, sizeof(bsl_expression));
+				func.u.interp.code.expression_count++;
 			}
 			else {
 				debug_printf("%s","error\n");

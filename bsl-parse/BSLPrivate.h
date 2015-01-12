@@ -31,6 +31,7 @@ typedef struct bsl_register_var_item bsl_register_var_item;
 typedef struct bsl_variable bsl_variable;
 
 typedef struct bsl_func_arg bsl_func_arg;
+typedef struct bsl_interpreted_code bsl_interpreted_code;
 typedef struct bsl_function_interpreted bsl_function_interpreted;
 typedef struct bsl_function_compiled bsl_function_compiled;
 typedef struct bsl_function bsl_function;
@@ -282,9 +283,13 @@ typedef uintptr_t* Pointer;
 typedef uintptr_t* (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 typedef uint8_t (*FPCallback)(void *context, struct time_interval interval);
 
-struct bsl_function_interpreted {
+struct bsl_interpreted_code {
 	bsl_expression *expression;
 	uint32_t expression_count;
+};
+
+struct bsl_function_interpreted {
+	bsl_interpreted_code code;
 };
 
 struct bsl_function_compiled {
@@ -385,8 +390,7 @@ struct bsl_conditional {
 struct bsl_statement_conditional_case {
 	bsl_conditional *cond;
 	
-	bsl_expression *expressions;
-	uint32_t expression_count;
+	bsl_interpreted_code code;
 };
 
 struct bsl_statement_conditional {

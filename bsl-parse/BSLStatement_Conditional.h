@@ -11,8 +11,10 @@
 
 #include "BSLPrivate.h"
 
-bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_function_interpreted interp, uint32_t *index);
+bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index);
 
 bsl_statement_conditional_case bsl_statement_conditional_case_create();
+
+int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context);
 
 #endif /* defined(__bsl_parse__BSLStatement_Conditional__) */

@@ -22,7 +22,7 @@
 #include "BSLStatement_Var.h"
 #include "BSLStatement_Func.h"
 
-bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_function_interpreted interp, uint32_t *index) {
+bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement expr = {0};
 	expr.type = bsl_statement_type_invalid;
 	
@@ -129,6 +129,22 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_f
 				expr.type = bsl_statement_type_conditional;
 				
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
+				
+				int8_t *case_eval = calloc(expr.u.conditional.case_count, sizeof(int8_t));
+				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
+					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[index];
+					
+					case_eval[index] = bsl_conditional_evaluation(cond_case.cond, &context);
+				}
+				
+				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
+					
+					if (case_eval[index] == 1) {
+						
+						bsl_execute_interpreted_code(expr.u.conditional.cond_case[index].code, &context);
+						break;
+					}
+				}
 				
 				break;
 			}

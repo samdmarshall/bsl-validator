@@ -9,7 +9,7 @@
 #include "BSLStatement_Conditional.h"
 #include "BSLToken.h"
 
-int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_function_interpreted interp, uint32_t *index) {
+int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted_code interp, uint32_t *index) {
 	
 	bsl_tkn_ir *curr = *token;
 	
@@ -33,7 +33,7 @@ int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_function_in
 	return 0;
 }
 
-int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_function_interpreted interp, uint32_t *index) {
+int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_interpreted_code interp, uint32_t *index) {
 	
 	bsl_tkn_ir *curr = *token;
 	
@@ -61,8 +61,9 @@ int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_function_in
 	return 0;
 }
 
-bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_function_interpreted interp, uint32_t *index) {
-	bsl_statement_conditional conditional = {};
+bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
+	bsl_statement_conditional conditional = {0};
+	conditional.cond_case = calloc(1, sizeof(bsl_statement_conditional_case));
 	
 	bsl_tkn_ir *curr = *token;
 	
@@ -100,6 +101,9 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 			if (scope_tracker != 0) {
 				// error in scope of conditional
 			}
+			else {
+				conditional.case_count += 1;
+			}
 			
 		}
 		else {
@@ -126,8 +130,16 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 			result = bsl_function_interp_expression_increment(&curr, interp, index);
 		}
 		
+		bsl_statement_conditional_case *cond_case = &(conditional.cond_case[conditional.case_count - 1]);
+		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
+		cond_case->code.expression_count = 1;
+		
 		int8_t found_else = 0;
 		while (brace_scope != 0 && result == 0) {
+			
+			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
+			case_expr->scope_type = BSLScope_cond;
+			case_expr->scope_level = brace_scope;
 			
 			if (curr->token != NULL) {
 				// store expression
@@ -135,9 +147,25 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 				bsl_token_check_scope_decrease(&brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
 			}
 			
+			if (case_expr->tokens == NULL) {
+				// watch out for this ownership!
+				case_expr->tokens = curr;
+			}
+			
 			// smart advancing to next ir item
 			if (found_brace == 1) {
+				uint32_t track = *index;
 				result = bsl_function_interp_expression_increment(&curr, interp, index);
+				
+				if (track != *index) {
+					cond_case->code.expression = realloc(cond_case->code.expression, sizeof(bsl_expression) * (cond_case->code.expression_count + 1));
+					cond_case->code.expression_count += 1;
+					
+					cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = 0;
+					cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_invalid;
+					cond_case->code.expression[cond_case->code.expression_count - 1].tokens = NULL;
+				}
+				
 			}
 			else {
 				if (curr->next == NULL) {
@@ -153,6 +181,9 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 							result = bsl_function_interp_expression_decrement(&curr, interp, index);
 							break;
 						}
+					}
+					else {
+						// error
 					}
 				}
 				else {
@@ -171,4 +202,11 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 	*token = curr;
 	
 	return conditional;
+}
+
+int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) {
+	int8_t result = 0;
+	
+	
+	return result;
 }

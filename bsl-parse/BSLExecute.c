@@ -153,34 +153,27 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 	return mismatch_arg;
 }
 
-uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	debug_printf("%s"," calling interpreted\n");
+void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context) {
 	
 	bsl_context *tmp = (*context);
 	
-	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
-	
-	bsl_stack_item_advance(&(tmp->stack->active), tmp->stack->active->scope_level, tmp->stack->active->scope_depth);
-	
-	// this needs to be changed,
-	
 	uint32_t index = 0;
 	
-	while (index < interp.expression_count) {
-		bsl_expression expr = interp.expression[index];
+	while (index < code.expression_count) {
+		bsl_expression expr = code.expression[index];
 		
 		bsl_tkn_ir *curr = expr.tokens;
 		
 		if (curr->token != NULL) {
 			
-			bsl_statement statement = bsl_statement_parse(&curr, tmp, interp, &index);
+			bsl_statement statement = bsl_statement_parse(&curr, tmp, code, &index);
 			
 			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
 			expr_statement->u.expr = statement;
 			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
 			
 			tmp->stack->active->symbol = expr_statement;
-
+			
 			bsl_scope_type type = BSLScope_invalid;
 			uint8_t depth = tmp->stack->active->scope_depth;
 			
@@ -229,6 +222,18 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 			index++;
 		}
 	}
+}
+
+uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	debug_printf("%s"," calling interpreted\n");
+	
+	bsl_context *tmp = (*context);
+	
+	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
+	
+	bsl_stack_item_advance(&(tmp->stack->active), tmp->stack->active->scope_level, tmp->stack->active->scope_depth);
+	
+	bsl_execute_interpreted_code(interp.code, context);
 	
 	return NULL;
 }
