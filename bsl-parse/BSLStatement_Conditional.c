@@ -163,7 +163,6 @@ if_loop:
 			result = bsl_function_interp_expression_increment(&curr, interp, index);
 		}
 		
-		
 		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
 		cond_case->code.expression_count = 1;
 		
@@ -180,9 +179,11 @@ if_loop:
 				bsl_token_check_scope_decrease(&brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
 			}
 			else {
+				
 				while (curr->token == NULL) {
 					result = bsl_function_interp_expression_increment(&curr, interp, index);
 				}
+				
 				continue;
 			}
 			
