@@ -25,8 +25,7 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 	
 	var_symbol->u.value = var.variable;
 	
-	
-	bsl_symbol *symbol_test = bsl_db_get_state(var_symbol->u.value.name, context);
+	bsl_symbol *symbol_test = bsl_stack_search_scope(var_symbol->u.value.name, context);
 	if (symbol_test == NULL) {
 		bsl_db_register_state(var_symbol->u.value.name, var_symbol, context);
 	}
@@ -34,7 +33,6 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 		// error, already registered symbol
 		context->error = bsl_error_registered_symbol;
 	}
-	
 	
 	// move current position
 	*token = curr;

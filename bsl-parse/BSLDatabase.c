@@ -12,6 +12,7 @@
 #include "BSLVariable.h"
 #include "BSLParse.h"
 #include "BSLScript.h"
+#include "BSLStack.h"
 
 #include "BSL_stdlib.h"
 
@@ -199,7 +200,7 @@ bsl_symbol * bsl_db_get_global(char *name, bsl_context *context) {
 }
 
 bsl_symbol * bsl_db_get_state(char *name, bsl_context *context) {
-	return bsl_db_get_symbol(name, context->stack->active->symtab);
+	return bsl_stack_search_scope(name, context->stack->active->symtab);
 }
 
 void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context) {
@@ -209,7 +210,12 @@ void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context
 }
 
 void bsl_db_register_state(char *name, bsl_symbol *symbol, bsl_context *context) {
-	if (context->stack->active->symtab != NULL) {
-		bsl_db_register(name, symbol, context->stack->active->symtab);
+	if (context->curr_scope == BSLScope_global) {
+		bsl_db_register_global(name, symbol, context);
+	}
+	else {
+		if (context->stack->active->symtab != NULL) {
+			bsl_db_register(name, symbol, context->stack->active->symtab);
+		}
 	}
 }
