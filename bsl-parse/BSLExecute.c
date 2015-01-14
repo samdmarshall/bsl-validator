@@ -39,25 +39,25 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 	return result;
 }
 
-int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	debug_printf("%s(",(*context)->stack->active->symbol->u.func.name);
+int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	debug_printf("%s(",symbol->u.func.name);
 	
 	int mismatch_arg = 0;
 	
-	for (uint32_t param_index = 0; param_index < (*context)->stack->active->symbol->u.func.arg_count; param_index++) {
+	for (uint32_t param_index = 0; param_index < symbol->u.func.arg_count; param_index++) {
 		int8_t matched_type = 0;
 		
 		debug_printf("%s","[");
 		
-		for (uint32_t type_index = 0; type_index < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count; type_index++) {
+		for (uint32_t type_index = 0; type_index < symbol->u.func.args[param_index].arg_type_count; type_index++) {
 			
-			bsl_variable var = (*context)->stack->active->symbol->u.func.args[param_index].args[type_index];
+			bsl_variable var = symbol->u.func.args[param_index].args[type_index];
 			bsl_variable_type var_type = var.type;
 			char *var_name = var.name;
 			
 			debug_printf("%s:%s", var_name, bsl_variable_get_type_name(var_type));
 			
-			if (type_index + 1 < (*context)->stack->active->symbol->u.func.args[param_index].arg_type_count) {
+			if (type_index + 1 < symbol->u.func.args[param_index].arg_type_count) {
 				debug_printf("%s"," | ");
 			}
 			
@@ -142,7 +142,7 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 			}
 		}
 		
-		if (param_index + 1 < (*context)->stack->active->symbol->u.func.arg_count) {
+		if (param_index + 1 < symbol->u.func.arg_count) {
 			debug_printf("%s",", ");
 		}
 		
@@ -151,6 +151,10 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 	debug_printf("%s",")");
 	
 	return mismatch_arg;
+}
+
+int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	return bsl_symbol_parse_evaluate_symbol(context, (*context)->stack->active->symbol, rtype, args, arg_count);
 }
 
 void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context) {
@@ -238,16 +242,18 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 	return NULL;
 }
 
+uintptr_t* bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol) {
+	return bsl_symbol_parse_call_symbol(context, symbol, symbol->u.func.rtype, symbol->u.func.args, symbol->u.func.arg_count);
+}
 
-uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	
+uintptr_t* bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	uintptr_t* result = NULL;
-
-	int mismatch_arg = bsl_symbol_parse_evaluate(context, rtype, args, arg_count);
+	
+	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 	
 	FunctionPointer call = NULL;
 	
-	bsl_function function = (*context)->stack->active->symbol->u.func;
+	bsl_function function = symbol->u.func;
 	
 	if (function.type == bsl_func_type_comp) {
 		call = function.u.comp.call;
@@ -269,4 +275,8 @@ uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bs
 	}
 	
 	return result;
+}
+
+uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	return bsl_symbol_parse_call_symbol(context, (*context)->stack->active->symbol, rtype, args, arg_count);
 }

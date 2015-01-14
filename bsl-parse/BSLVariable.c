@@ -7,6 +7,7 @@
 //
 
 #include "BSLVariable.h"
+#include "BSLExecute.h"
 
 bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 	switch (code) {
@@ -334,7 +335,60 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 				}
 				case bsl_symbol_type_function: {
 					
-					// is this even supported?
+					// parse and call function
+
+					switch (var.type) {
+						case bsl_variable_int: {
+							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
+								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_int = 0;
+							}
+							else {
+								// error
+								context->error = bsl_error_var_invalid_type_assignment;
+							}
+							break;
+						}
+						case bsl_variable_bool: {
+							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
+								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_bool = 0;
+							}
+							else {
+								// error
+								context->error = bsl_error_var_invalid_type_assignment;
+							}
+							break;
+						}
+						case bsl_variable_float: {
+							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_float) {
+								// what about if it starts with an 'f'
+								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_float = 0.f;
+							}
+							else {
+								// error
+								context->error = bsl_error_var_invalid_type_assignment;
+							}
+							break;
+						}
+						case bsl_variable_string: {
+							if (resolve_symbol->u.func.rtype == bsl_func_rtype_string) {
+								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_str = "";
+							}
+							else {
+								// error
+								context->error = bsl_error_var_invalid_type_assignment;
+							}
+							break;
+						}
+						default: {
+							// error
+							//context->error = bsl_error_var_invalid_type_assignment;
+							break;
+						}
+					}
 					
 					break;
 				}

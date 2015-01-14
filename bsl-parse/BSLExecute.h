@@ -15,7 +15,13 @@ int bsl_symbol_execute(char *name, bsl_context *context);
 
 void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context);
 
+int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+
 int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+
+uintptr_t* bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol);
+
+uintptr_t* bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 
 uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 
