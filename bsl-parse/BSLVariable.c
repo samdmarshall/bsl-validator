@@ -248,8 +248,8 @@ start:
 	return count;
 }
 
-bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
-	bsl_variable var = {0};
+void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_variable *variable) {
+	bsl_variable var = *variable;
 	int tmp_int = 0;
 	float tmp_float = 0.f;
 	int8_t tmp_bool = 0;
@@ -260,30 +260,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 	
 	if (curr == NULL || curr->token == NULL) {
 		context->error = bsl_error_token_invalid_syntax;
-		return var;
-	}
-	
-	// getting variable type
-	var.type = bsl_variable_get_type(curr->token->code);
-	
-	// moving to the name identifier
-	curr = curr->next;
-	
-	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax;
-		return var;
-	}
-	
-	// copying the name;
-	var.name = calloc(curr->token->offset.length + 1, sizeof(char));
-	strncpy(var.name, curr->token->contents, curr->token->offset.length);
-	
-	// next identifier
-	curr = curr->next;
-	
-	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax;
-		return var;
+		return;
 	}
 	
 	if (curr->token->code == BSLTokenCode_op_assign) {
@@ -294,7 +271,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 		
 		if (curr == NULL || curr->token == NULL) {
 			context->error = bsl_error_token_invalid_syntax;
-			return var;
+			return;
 		}
 		
 		switch (var.type) {
@@ -373,6 +350,41 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 			break;
 		}
 	}
+	
+	// end of evaluation line
+	*item = curr;
+	
+	*variable = var;
+}
+
+bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
+	bsl_variable var = {0};
+	
+	// moving to the type identifier
+	bsl_tkn_ir *curr = (*item)->next;
+	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return var;
+	}
+	
+	// getting variable type
+	var.type = bsl_variable_get_type(curr->token->code);
+	
+	// moving to the name identifier
+	curr = curr->next;
+	
+	if (curr == NULL || curr->token == NULL) {
+		context->error = bsl_error_token_invalid_syntax;
+		return var;
+	}
+	
+	// copying the name;
+	var.name = calloc(curr->token->offset.length + 1, sizeof(char));
+	strncpy(var.name, curr->token->contents, curr->token->offset.length);
+	
+	// next identifier
+	bsl_variable_parse_assign(&curr, context, &var);
 	
 	// end of evaluation line
 	*item = curr;

@@ -207,3 +207,9 @@ void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context
 		bsl_db_register(name, symbol, context->global->symtab);
 	}
 }
+
+void bsl_db_register_state(char *name, bsl_symbol *symbol, bsl_context *context) {
+	if (context->stack->active->symtab != NULL) {
+		bsl_db_register(name, symbol, context->stack->active->symtab);
+	}
+}

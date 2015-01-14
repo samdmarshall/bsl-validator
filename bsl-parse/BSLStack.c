@@ -7,6 +7,7 @@
 //
 
 #include "BSLStack.h"
+#include "BSLDatabase.h"
 
 bsl_stack_scope * bsl_stack_scope_create() {
 	bsl_stack_scope *scope = calloc(1, sizeof(bsl_stack_scope));
@@ -71,4 +72,25 @@ void bsl_stack_release(bsl_stack *stack) {
 		
 		free(stack);
 	}
+}
+
+bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context) {
+	bsl_symbol *symbol = bsl_db_get_global(name, context);
+	
+	if (symbol == NULL) {
+		
+		bsl_stack_scope *curr = context->stack->active;
+		
+		while (curr->scope_depth == context->stack->active->scope_depth) {
+			symbol = bsl_db_get_symbol(name, curr->symtab);
+			
+			if (symbol != NULL) {
+				break;
+			}
+			
+			curr = curr->prev;
+		}
+	}
+	
+	return symbol;
 }

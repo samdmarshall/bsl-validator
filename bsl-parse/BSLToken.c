@@ -477,6 +477,24 @@ void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_c
 	if (token->code == code) {
 		(*scope) += 1;
 	}
+	
+	switch (code) {
+		case BSLTokenCode_ctl_lparen: {
+			if ((*scope) > 4) {
+				// expression too complex
+			}
+			break;
+		}
+		case BSLTokenCode_ctl_lbrace: {
+			break;
+		}
+		case BSLTokenCode_ctl_lbracket: {
+			break;
+		}
+		default: {
+			break;
+		}
+	}
 }
 
 void bsl_token_check_scope_decrease(int8_t *scope, bsl_token *token, bsl_token_code code) {

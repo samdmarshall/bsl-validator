@@ -55,6 +55,7 @@ typedef struct bsl_statement_schedule bsl_statement_schedule;
 
 typedef struct bsl_statement_fork bsl_statement_fork;
 
+typedef struct bsl_operation bsl_operation;
 typedef struct bsl_conditional bsl_conditional;
 typedef struct bsl_statement_conditional_case bsl_statement_conditional_case;
 typedef struct bsl_statement_conditional bsl_statement_conditional;
@@ -383,6 +384,12 @@ struct bsl_statement_schedule {
 	bsl_statement_fork fork;
 };
 
+struct bsl_operation {
+	// value 1
+	// operation
+	// value 2
+};
+
 typedef enum bsl_conditional_type {
 	bsl_conditional_type_invalid,
 	
@@ -394,6 +401,9 @@ typedef enum bsl_conditional_type {
 
 struct bsl_conditional {
 	bsl_conditional_type type;
+	
+	bsl_operation *op;
+	uint8_t op_count;
 };
 
 struct bsl_statement_conditional_case {

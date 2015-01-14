@@ -12,6 +12,7 @@
 #include "BSLFunction.h"
 #include "BSLParse.h"
 #include "BSLExecute.h"
+#include "BSLStack.h"
 
 #include "BSLStatement_Fork.h"
 #include "BSLStatement_Conditional.h"
@@ -45,7 +46,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 			char *name = calloc(curr->token->offset.length + 1, sizeof(char));
 			strncpy(name, curr->token->contents, curr->token->offset.length);
 			
-			result = bsl_db_get_global(name, context);
+			result = bsl_stack_search_scope(name, context);
 			if (result != NULL) {
 				
 				if (result->type == bsl_symbol_type_function) {
@@ -71,10 +72,19 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				
 				break;
 			}
-			case BSLTokenCode_type_var: {
+			case BSLTokenCode_id_var: { // creating a local variable
 				expr.type = bsl_statement_type_var;
 				
 				expr.u.var = bsl_statement_var_create(&curr, context);
+				
+				(*index)++;
+				
+				break;
+			}
+			case BSLTokenCode_type_var: { // assigning a value
+				expr.type = bsl_statement_type_var;
+				
+				expr.u.var = bsl_statement_var_assign(&curr, context);
 				
 				(*index)++;
 				

@@ -13,4 +13,6 @@
 
 bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *context);
 
+bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *context);
+
 #endif /* defined(__bsl_parse__BSLStatement_Var__) */

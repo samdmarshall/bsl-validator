@@ -21,4 +21,6 @@ void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_
 
 void bsl_stack_release(bsl_stack *stack);
 
+bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context);
+
 #endif /* defined(__bsl_parse__BSLStack__) */
