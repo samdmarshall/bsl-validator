@@ -23,13 +23,16 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 	uint32_t arg_count = symbol->u.func.arg_count;
 	
 	uint32_t counter = 0;
-	while (counter < arg_count && curr->token != NULL) {
+	while (curr->token != NULL) {
+		if (curr->next == NULL) {
+			break;
+		}
+		
 		args[counter].arg_type_count = 1;
 		args[counter].args = bsl_variable_func_arg_parse(&curr, context);
 		
 		counter++;
 	}
-	counter--;
 	
 	for (uint32_t index = counter; index < arg_count; index++) {
 		args[index].args = calloc(1, sizeof(bsl_variable));
