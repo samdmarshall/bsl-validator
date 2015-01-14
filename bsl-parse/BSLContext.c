@@ -66,6 +66,10 @@ int bsl_context_check_error(bsl_context *context) {
 			sprintf(message, "Scoping error at %s:%i\n", symbol->script->fd->name, symbol->line);
 			break;
 		}
+		case bsl_error_func_param_count: {
+			sprintf(message, "Using more than 8 parameters in function signature at %s:%i\n", symbol->script->fd->name, symbol->line);
+			break;
+		}
 		default: {
 			sprintf(message, "Unknown Error Code <%i>",context->error);
 			break;

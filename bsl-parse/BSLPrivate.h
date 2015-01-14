@@ -178,6 +178,8 @@ typedef enum bsl_error {
 	
 	bsl_error_registered_symbol,
 	
+	bsl_error_func_param_count,
+	
 	bsl_error_count
 } bsl_error;
 
@@ -518,17 +520,16 @@ struct bsl_schedule_item {
 	// something to evaluate
 	bsl_statement *statement;
 	
-	bsl_schedule_item *next;
-	bsl_schedule_item *prev;
+	bsl_schedule_item *parent;
 };
 
 #pragma mark -
 #pragma mark BSLScheduler
 
 struct bsl_scheduler {
-	uint32_t stack_depth;
-	
 	uint32_t current_tick;
+	
+	uint32_t stack_depth;
 	
 	bsl_schedule_item *stack;
 	

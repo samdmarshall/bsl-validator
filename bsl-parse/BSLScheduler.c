@@ -42,19 +42,21 @@ bsl_scheduler * bsl_scheduler_create(bsl_context *context) {
 					}
 				}
 				
+				scheduler->current->item_count = 1;
+				scheduler->current->items = calloc(scheduler->current->item_count, sizeof(bsl_schedule_item));
 				
-				scheduler->current->next = calloc(1, sizeof(bsl_schedule_item));
-				
-				scheduler->current->prev = prev;
+				scheduler->current->parent = prev;
 				
 				prev = scheduler->current;
 				
-				scheduler->current = scheduler->current->next;
+				scheduler->current = scheduler->current->items;
 			}
 			
 			curr = curr->next;
 		}
 	}
+	
+	scheduler->current = scheduler->stack;
 	
 	return scheduler;
 }

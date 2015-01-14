@@ -15,7 +15,7 @@ int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted
 	
 	if (curr->next == NULL) {
 		// check to make sure we aren't over-running
-		if ((*index) + 1 > interp.expression_count) {
+		if ((*index) + 1 >= interp.expression_count) {
 			return -1;
 		}
 		// increasing index to next expression
@@ -72,6 +72,10 @@ int bsl_statement_conditional_increment_token(bsl_tkn_ir **item, bsl_interpreted
 	
 	while (curr->token == NULL) {
 		result = bsl_function_interp_expression_increment(&curr, interp, index);
+		
+		if (result == -1) {
+			break;
+		}
 	}
 	
 	*item = curr;
@@ -86,6 +90,10 @@ int bsl_statement_conditional_decrement_token(bsl_tkn_ir **item, bsl_interpreted
 	
 	while (curr->token != NULL) {
 		result = bsl_function_interp_expression_decrement(&curr, interp, index);
+		
+		if (result == -1) {
+			break;
+		}
 	}
 	
 	result = bsl_function_interp_expression_decrement(&curr, interp, index);
@@ -197,26 +205,33 @@ if_loop:
 				if (curr->token->code == BSLTokenCode_ctl_rbrace) {
 					result = bsl_statement_conditional_increment_token(&curr, interp, index);
 					
-					if (curr->token->code == BSLTokenCode_id_else) {
-						found_else = 1;
+					if (curr->token != NULL) {
 						
-						// check for next if
-						result = bsl_statement_conditional_increment_token(&curr, interp, index);
-						
-						if (curr->token->code != BSLTokenCode_id_if) {
+						if (curr->token->code == BSLTokenCode_id_else) {
+							found_else = 1;
 							
-							result = bsl_statement_conditional_decrement_token(&curr, interp, index);
+							// check for next if
+							result = bsl_statement_conditional_increment_token(&curr, interp, index);
+							
+							if (curr->token->code != BSLTokenCode_id_if) {
+								
+								result = bsl_statement_conditional_decrement_token(&curr, interp, index);
+							}
 						}
-					}
-					
-					if (found_else == 1) {
-						conditional.case_count += 1;
-						conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
-						goto if_loop;
+						
+						if (found_else == 1) {
+							conditional.case_count += 1;
+							conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
+							goto if_loop;
+						}
+						else {
+							break;
+						}
 					}
 					else {
 						break;
 					}
+					
 				}
 				
 			}

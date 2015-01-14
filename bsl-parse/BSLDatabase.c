@@ -200,7 +200,7 @@ bsl_symbol * bsl_db_get_global(char *name, bsl_context *context) {
 }
 
 bsl_symbol * bsl_db_get_state(char *name, bsl_context *context) {
-	return bsl_stack_search_scope(name, context->stack->active->symtab);
+	return bsl_stack_search_scope(name, context);
 }
 
 void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context) {

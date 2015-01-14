@@ -69,7 +69,7 @@ int EvaluateContext(OniScriptContext *context) {
 	
 	bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
 	
-	bsl_scheduler_run(scheduler);
+	//bsl_scheduler_run(scheduler);
 	
 	return result;
 }
