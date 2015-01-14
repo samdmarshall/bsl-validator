@@ -98,6 +98,10 @@ void bsl_scheduler_evaluate_statement(bsl_scheduler *scheduler, bsl_schedule_ite
 			break;
 		}
 		case bsl_statement_type_var: {
+			// create
+			
+			// assign
+			
 			break;
 		}
 		default: {

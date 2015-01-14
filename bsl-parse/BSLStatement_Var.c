@@ -60,7 +60,7 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 	
 	bsl_variable_parse_assign(&curr, context, &(var.variable));
 	
-	bsl_variable_set(&(var_symbol->u.value), &(var.variable));
+	var.scope = context->stack->active;
 	
 	// move current position
 	*token = curr;

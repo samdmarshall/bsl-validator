@@ -367,6 +367,7 @@ struct bsl_statement_func {
 };
 
 struct bsl_statement_var {
+	bsl_stack_scope *scope;
 	bsl_variable variable;
 };
 
