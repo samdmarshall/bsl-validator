@@ -9,6 +9,8 @@
 #include "BSLVariable.h"
 #include "BSLExecute.h"
 
+#include "BSLStatement_Func.h"
+
 bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 	switch (code) {
 		case BSLTokenCode_id_int:
@@ -140,6 +142,80 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 			}
 		}
 	}
+	
+	return var;
+}
+
+bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *context) {
+	bsl_variable *var = calloc(1, sizeof(bsl_variable));
+	
+	bsl_tkn_ir *curr = *item;
+	
+	if (var != NULL) {
+		
+		if (curr->next != NULL) {
+			curr = curr->next;
+			
+			var->type = bsl_variable_get_type(curr->token->code);
+			
+			switch (var->type) {
+				case bsl_variable_int: {
+					if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
+						var->u.i = atoi(curr->token->contents);
+					}
+					else {
+						// error
+						context->error = bsl_error_var_invalid_type_assignment;
+					}
+					break;
+				}
+				case bsl_variable_bool: {
+					if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
+						var->u.b = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
+					}
+					else {
+						// error
+						context->error = bsl_error_var_invalid_type_assignment;
+					}
+					break;
+				}
+				case bsl_variable_float: {
+					if (curr->token->code == BSLTokenCode_id_float) {
+						// what about if it starts with an 'f'
+						var->u.f = strtof(curr->token->contents, NULL);
+					}
+					else {
+						// error
+						context->error = bsl_error_var_invalid_type_assignment;
+					}
+					break;
+				}
+				case bsl_variable_string: {
+					if (curr->token->code == BSLTokenCode_id_string || (curr->token->code == BSLTokenCode_id_generic)) {
+						var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
+						strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
+					}
+					else if (curr->token->code == BSLTokenCode_id_generic) {
+						// look up variable name
+					}
+					else {
+						// error
+						context->error = bsl_error_var_invalid_type_assignment;
+					}
+					break;
+				}
+				default: {
+					// error
+					//context->error = bsl_error_var_invalid_type_assignment;
+					break;
+				}
+			}
+			
+		}
+		
+	}
+	
+	*item = curr;
 	
 	return var;
 }
@@ -336,6 +412,8 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 				case bsl_symbol_type_function: {
 					
 					// parse and call function
+					
+					bsl_statement_func func = bsl_statement_func_create(&curr, context);
 
 					switch (var.type) {
 						case bsl_variable_int: {
