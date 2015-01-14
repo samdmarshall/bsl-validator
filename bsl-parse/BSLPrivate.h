@@ -514,9 +514,12 @@ struct bsl_schedule_item {
 	uint32_t item_count;
 	
 	bsl_schedule_item *items;
-
+	
 	// something to evaluate
 	bsl_statement *statement;
+	
+	bsl_schedule_item *next;
+	bsl_schedule_item *prev;
 };
 
 #pragma mark -

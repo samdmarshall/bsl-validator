@@ -89,6 +89,10 @@ bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context) {
 			}
 			
 			curr = curr->prev;
+			
+			if (curr == NULL) {
+				break;
+			}
 		}
 	}
 	

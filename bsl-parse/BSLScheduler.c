@@ -9,6 +9,56 @@
 #include "BSLScheduler.h"
 #include "BSLCoreTimer.h"
 
+bsl_scheduler * bsl_scheduler_create(bsl_context *context) {
+	bsl_scheduler *scheduler = calloc(1, sizeof(bsl_scheduler));
+	scheduler->stack = calloc(1, sizeof(bsl_schedule_item));
+	scheduler->current = scheduler->stack;
+	
+	if (scheduler != NULL) {
+		
+		bsl_stack_scope *curr = context->stack->state;
+		
+		bsl_schedule_item *prev = NULL;
+		
+		while (curr != NULL) {
+			
+			bsl_symbol *symbol = curr->symbol;
+			
+			if (symbol != NULL) {
+				
+				switch (symbol->type) {
+					case bsl_symbol_type_variable: {
+						break;
+					}
+					case bsl_symbol_type_function: {
+						break;
+					}
+					case bsl_symbol_type_statement: {
+						scheduler->current->statement = &(symbol->u.expr);
+						break;
+					}
+					default: {
+						break;
+					}
+				}
+				
+				
+				scheduler->current->next = calloc(1, sizeof(bsl_schedule_item));
+				
+				scheduler->current->prev = prev;
+				
+				prev = scheduler->current;
+				
+				scheduler->current = scheduler->current->next;
+			}
+			
+			curr = curr->next;
+		}
+	}
+	
+	return scheduler;
+}
+
 void bsl_scheduler_run(bsl_scheduler *scheduler) {
 	struct time_interval interval = {0};
 	// once every 1/60th of a second

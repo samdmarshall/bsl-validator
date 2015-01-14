@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+bsl_scheduler * bsl_scheduler_create(bsl_context *context);
+
 void bsl_scheduler_run(bsl_scheduler *scheduler);
 
 uint8_t bsl_scheduler_update(void *context, struct time_interval interval);
