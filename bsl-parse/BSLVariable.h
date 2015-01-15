@@ -12,6 +12,8 @@
 #include "BSLPrivate.h"
 #include "BSLContext.h"
 
+char * bsl_variable_print(bsl_variable variable);
+
 bsl_variable * bsl_variable_create_type(bsl_variable_type type);
 
 bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type);

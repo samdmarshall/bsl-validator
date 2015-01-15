@@ -11,7 +11,7 @@
 
 #if USE_STD_LIB
 
-uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+uintptr_t* stdlib_parse(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	debug_printf("calling into stdlib -> %s(",(*context)->stack->active->symbol->u.func.name);
 	
 	int mismatch_arg = 0;
@@ -131,28 +131,28 @@ uintptr_t* stdlib_parse(bsl_context **context, bsl_func_rtype rtype, bsl_func_ar
 	}
 }
 
-uintptr_t* stdlib_multiply_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+uintptr_t* stdlib_multiply_int(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	int a = args[0].args[0].u.i;
 	int b = args[1].args[0].u.i;
 	debug_printf("\t%i * %i = %i\n",a,b,a*b);
 	return NULL;
 }
 
-uintptr_t* stdlib_multiply_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+uintptr_t* stdlib_multiply_float(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	float a = args[0].args[0].u.f;
 	float b = args[1].args[0].u.f;
 	debug_printf("\t%f * %f = %f\n",a,b,a*b);
 	return NULL;
 }
 
-uintptr_t* stdlib_divide_int(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+uintptr_t* stdlib_divide_int(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	int a = args[0].args[0].u.i;
 	int b = args[1].args[0].u.i;
 	debug_printf("\t%i / %i = %i\n",a,b,a/b);
 	return NULL;
 }
 
-uintptr_t* stdlib_divide_float(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+uintptr_t* stdlib_divide_float(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	float a = args[0].args[0].u.f;
 	float b = args[1].args[0].u.f;
 	debug_printf("\t%f / %f = %f\n",a,b,a/b);

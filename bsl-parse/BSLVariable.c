@@ -12,6 +12,47 @@
 
 #include "BSLStatement_Func.h"
 
+char * bsl_variable_print(bsl_variable variable) {
+	char *text = calloc(1024, sizeof(char));
+	uint32_t counter = 0;
+	
+	text[counter] = '[';
+	counter++;
+	
+	char *type = bsl_variable_get_type_name(variable.type);
+	
+	strncpy(&(text[counter]), type, strlen(type));
+	counter += strlen(type);
+	
+	text[counter] = ':';
+	counter++;
+	
+	switch (variable.type) {
+		case bsl_variable_int: {
+			snprintf(&(text[counter]), 1024-counter, "%i]",variable.u.i);
+			break;
+		}
+		case bsl_variable_bool: {
+			snprintf(&(text[counter]), 1024-counter, "%s]",(variable.u.b ? "true" : "false"));
+			break;
+		}
+		case bsl_variable_float: {
+			snprintf(&(text[counter]), 1024-counter, "%f]",variable.u.f);
+			break;
+		}
+		case bsl_variable_string: {
+			snprintf(&(text[counter]), 1024-counter, "%s]",variable.u.s);
+			break;
+		}
+		default: {
+			// error
+			break;
+		}
+	}
+	
+	return text;
+}
+
 bsl_variable * bsl_variable_create_type(bsl_variable_type type) {
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
 	

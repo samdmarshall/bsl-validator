@@ -76,7 +76,7 @@ int bsl_context_check_error(bsl_context *context) {
 		}
 	}
 	if (message[0] != 0) {
-		printf("%s\n",message);
+		printf("\n%s\n",message);
 		
 		bsl_context_print_stack(context);
 	}

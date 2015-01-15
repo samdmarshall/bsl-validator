@@ -11,6 +11,8 @@ func void main {
 	
 	var int has_lsi = chr_has_lsi(1);
 	
+	chr_has_lsi(1);
+	
 	if (my_save_point eq 0) 
 	{
 		dmsg "foo";

@@ -18,7 +18,10 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 	int result = 0;
 	
 	bsl_symbol *symbol = bsl_db_get_global(name, context);
+	
 	if (symbol != NULL) {
+		debug_printf("calling into [%s]\n",name);
+		
 		if (symbol->type == bsl_symbol_type_function) {
 			// setup state
 			

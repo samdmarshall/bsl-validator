@@ -112,7 +112,17 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		context->stack->active->scope_depth += 1;
 		
 		if (call_symbol->type == bsl_symbol_type_function) {
-			bsl_symbol_parse_call_symbol(&context, symbol, symbol->u.func.rtype, args, arg_count);
+			bsl_variable *result = bsl_symbol_parse_call_symbol(&context, symbol, symbol->u.func.rtype, args, arg_count);
+			
+			// the resulting value here is either always `void` or isn't stored so we can ignore the return value
+			if (result->type != bsl_variable_void) {
+				char *text = bsl_variable_print(*result);
+				debug_printf("\t\t\tfunction returned %s", text);
+				debug_printf("%s",", with no assignment\n");
+				free(text);
+			}
+			
+			bsl_variable_release(*result);
 		}
 		
 		
