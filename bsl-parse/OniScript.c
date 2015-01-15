@@ -79,6 +79,7 @@ void ScriptContextRelease(OniScriptContext *context) {
 	if (context->script_count > 1) {
 		closedir(context->scripts[1].fd->dir);
 	}
+	
 	for (uint32_t index = 0; index < context->script_count; index++) {
 		mem_buff_release(context->scripts[index].contents);
 		file_ref_release(context->scripts[index].fd);
