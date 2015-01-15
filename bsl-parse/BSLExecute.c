@@ -231,9 +231,17 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	bsl_variable *var = bsl_variable_create_type(bsl_variable_type_from_func_rtype(rtype));
 	
-	debug_printf("%s"," calling interpreted\n");
+	debug_printf("%s","\n\t\tcalling interpreted -> ");
 	
 	bsl_context *tmp = (*context);
+	
+	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
+	
+	if (mismatch_arg != 0) {
+		debug_printf(" -> error in %i total args!",mismatch_arg);
+	}
+	
+	debug_printf("%s","\n\n");
 	
 	bsl_function_interpreted interp = symbol->u.func.u.interp;
 	
