@@ -176,12 +176,12 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context) {
 	return func;
 }
 
-bsl_variable * oni_call_noop(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+bsl_variable * oni_call_noop(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	bsl_variable *var = bsl_variable_create_type(bsl_variable_type_from_func_rtype(rtype));
 	
 	debug_printf("%s","calling into oni -> ");
 	
-	int mismatch_arg = bsl_symbol_parse_evaluate(context, rtype, args, arg_count);
+	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 	
 	if (mismatch_arg != 0) {
 		debug_printf(" -> error in %i total args!",mismatch_arg);

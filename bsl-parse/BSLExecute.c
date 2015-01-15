@@ -228,14 +228,14 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 	}
 }
 
-bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	bsl_variable *var = bsl_variable_create_type(bsl_variable_type_from_func_rtype(rtype));
 	
 	debug_printf("%s"," calling interpreted\n");
 	
 	bsl_context *tmp = (*context);
 	
-	bsl_function_interpreted interp = tmp->stack->active->symbol->u.func.u.interp;
+	bsl_function_interpreted interp = symbol->u.func.u.interp;
 	
 	bsl_stack_item_advance(&(tmp->stack->active), tmp->stack->active->scope_level, tmp->stack->active->scope_depth);
 	
@@ -266,7 +266,7 @@ bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *s
 	
 	if (call != NULL && mismatch_arg == 0) {
 		debug_printf("%s"," -> ");
-		result = call(context, rtype, args, arg_count);
+		result = call(context, symbol, rtype, args, arg_count);
 	}
 	else {
 		debug_printf("%s"," -> error in symbol parse\n");

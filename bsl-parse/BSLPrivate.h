@@ -284,7 +284,7 @@ typedef enum bsl_func_type {
 } bsl_func_type;
 
 typedef uintptr_t* Pointer;
-typedef bsl_variable * (*FunctionPointer)(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+typedef bsl_variable * (*FunctionPointer)(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 typedef uint8_t (*FPCallback)(void *context, struct time_interval interval);
 
 struct bsl_interpreted_code {

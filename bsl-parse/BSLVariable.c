@@ -8,6 +8,7 @@
 
 #include "BSLVariable.h"
 #include "BSLExecute.h"
+#include "BSLSymbol.h"
 
 #include "BSLStatement_Func.h"
 
@@ -450,12 +451,24 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					// parse and call function
 					
 					bsl_statement_func func = bsl_statement_func_create(&curr, context);
+					
+					bsl_symbol *tmp = bsl_symbol_create(bsl_symbol_type_function);
+					tmp->u.func = func.function;
+					tmp->script = resolve_symbol->script;
+					tmp->line = resolve_symbol->line;
+					tmp->index = resolve_symbol->index;
+					resolve_symbol = tmp;
 
 					switch (var.type) {
 						case bsl_variable_int: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
 								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_int = value->u.i;
+								if (value != NULL) {
+									tmp_int = value->u.i;
+								}
+								else {
+									// error
+								}
 							}
 							else {
 								// error
@@ -466,7 +479,12 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						case bsl_variable_bool: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
 								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_bool = value->u.b;
+								if (value != NULL) {
+									tmp_bool = value->u.b;
+								}
+								else {
+									// error
+								}
 							}
 							else {
 								// error
@@ -478,7 +496,12 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_float) {
 								// what about if it starts with an 'f'
 								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_float = value->u.f;
+								if (value != NULL) {
+									tmp_float = value->u.f;
+								}
+								else {
+									// error
+								}
 							}
 							else {
 								// error
@@ -489,7 +512,12 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						case bsl_variable_string: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_string) {
 								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_str = value->u.s;
+								if (value != NULL) {
+									tmp_str = value->u.s;
+								}
+								else {
+									// error
+								}
 							}
 							else {
 								// error
