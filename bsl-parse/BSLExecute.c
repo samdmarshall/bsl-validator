@@ -228,7 +228,9 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 	}
 }
 
-uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	bsl_variable *var = bsl_variable_create_type(bsl_variable_type_from_func_rtype(rtype));
+	
 	debug_printf("%s"," calling interpreted\n");
 	
 	bsl_context *tmp = (*context);
@@ -239,15 +241,15 @@ uintptr_t* bsl_symbol_render_logic(bsl_context **context, bsl_func_rtype rtype, 
 	
 	bsl_execute_interpreted_code(interp.code, context);
 	
-	return NULL;
+	return var;
 }
 
-uintptr_t* bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol) {
+bsl_variable * bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol) {
 	return bsl_symbol_parse_call_symbol(context, symbol, symbol->u.func.rtype, symbol->u.func.args, symbol->u.func.arg_count);
 }
 
-uintptr_t* bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	uintptr_t* result = NULL;
+bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	bsl_variable *result = NULL;
 	
 	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 	
@@ -277,6 +279,6 @@ uintptr_t* bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbo
 	return result;
 }
 
-uintptr_t* bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+bsl_variable * bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	return bsl_symbol_parse_call_symbol(context, (*context)->stack->active->symbol, rtype, args, arg_count);
 }

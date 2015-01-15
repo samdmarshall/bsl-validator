@@ -12,6 +12,10 @@
 #include "BSLPrivate.h"
 #include "BSLContext.h"
 
+bsl_variable * bsl_variable_create_type(bsl_variable_type type);
+
+bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type);
+
 bsl_variable_type bsl_variable_get_type(bsl_token_code code);
 
 char * bsl_variable_get_type_name(bsl_variable_type type);

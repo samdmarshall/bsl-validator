@@ -28,8 +28,12 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			break;
 		}
 		
+		// check for parenthesis
+		
 		args[counter].arg_type_count = 1;
 		args[counter].args = bsl_variable_func_arg_parse(&curr, context);
+		
+		// check for commas
 		
 		counter++;
 	}

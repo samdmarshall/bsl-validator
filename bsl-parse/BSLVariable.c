@@ -11,6 +11,39 @@
 
 #include "BSLStatement_Func.h"
 
+bsl_variable * bsl_variable_create_type(bsl_variable_type type) {
+	bsl_variable *var = calloc(1, sizeof(bsl_variable));
+	
+	if (var != NULL) {
+		var->type = type;
+	}
+	
+	return var;
+}
+
+bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type) {
+	switch (type) {
+		case bsl_func_rtype_bool: {
+			return bsl_variable_bool;
+		}
+		case bsl_func_rtype_int: {
+			return bsl_variable_int;
+		}
+		case bsl_func_rtype_void: {
+			return bsl_variable_void;
+		}
+		case bsl_func_rtype_float: {
+			return bsl_variable_float;
+		}
+		case bsl_func_rtype_string: {
+			return bsl_variable_string;
+		}
+		default: {
+			return bsl_variable_None;
+		}
+	}
+}
+
 bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 	switch (code) {
 		case BSLTokenCode_id_int:
@@ -191,12 +224,15 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					break;
 				}
 				case bsl_variable_string: {
-					if (curr->token->code == BSLTokenCode_id_string || (curr->token->code == BSLTokenCode_id_generic)) {
+					int8_t is_symbol = 0;
+					
+					if (curr->token->code == BSLTokenCode_id_generic) {
+						// look up variable name
+					}
+					
+					if (curr->token->code == BSLTokenCode_id_string || is_symbol == 0) {
 						var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
 						strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
-					}
-					else if (curr->token->code == BSLTokenCode_id_generic) {
-						// look up variable name
 					}
 					else {
 						// error
@@ -418,8 +454,8 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					switch (var.type) {
 						case bsl_variable_int: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
-								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_int = 0;
+								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_int = value->u.i;
 							}
 							else {
 								// error
@@ -429,8 +465,8 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						}
 						case bsl_variable_bool: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_bool) {
-								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_bool = 0;
+								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_bool = value->u.b;
 							}
 							else {
 								// error
@@ -441,8 +477,8 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						case bsl_variable_float: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_int || resolve_symbol->u.func.rtype == bsl_func_rtype_float) {
 								// what about if it starts with an 'f'
-								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_float = 0.f;
+								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_float = value->u.f;
 							}
 							else {
 								// error
@@ -452,8 +488,8 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						}
 						case bsl_variable_string: {
 							if (resolve_symbol->u.func.rtype == bsl_func_rtype_string) {
-								uintptr_t *value = bsl_symbol_make_call(&context, resolve_symbol);
-								tmp_str = "";
+								bsl_variable *value = bsl_symbol_make_call(&context, resolve_symbol);
+								tmp_str = value->u.s;
 							}
 							else {
 								// error
