@@ -8,8 +8,10 @@
 
 #include "BSLStatement_Fork.h"
 
+#include "BSLStatement_Func.h"
+
 bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context) {
-	bsl_statement_fork fork = {};
+	bsl_statement_fork fork = {0};
 	
 	bsl_tkn_ir *curr = *token;
 	
@@ -21,7 +23,14 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 	
 	curr = curr->next;
 	
-	// do function on separate thread
+	if (curr != NULL) {
+		
+		fork.function = bsl_statement_func_create(&curr, context);
+
+	}
+	else {
+		// error
+	}
 	
 	// move current position
 	*token = curr;

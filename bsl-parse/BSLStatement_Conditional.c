@@ -129,12 +129,13 @@ if_loop:
 						}
 						
 						if (found_else == 1) {
+							
 							conditional.case_count += 1;
 							conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
 							
-							conditional.cond_case[conditional.case_count].code.expression_count = 0;
-							conditional.cond_case[conditional.case_count].code.expression = NULL;
-							conditional.cond_case[conditional.case_count].cond = NULL;
+							conditional.cond_case[conditional.case_count - 1].code.expression_count = 0;
+							conditional.cond_case[conditional.case_count - 1].code.expression = NULL;
+							conditional.cond_case[conditional.case_count - 1].cond = NULL;
 							
 							goto if_loop;
 						}

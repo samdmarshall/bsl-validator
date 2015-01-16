@@ -1,3 +1,7 @@
+func testing(int a) {
+	dmsg "hello from testing"
+}
+
 func void main {
 	sleep 30
 	dmsg "hello world";
@@ -25,4 +29,6 @@ func void main {
 	}
 	
 	sleep 40
+	
+	fork testing 6
 }
