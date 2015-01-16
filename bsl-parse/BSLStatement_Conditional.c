@@ -18,14 +18,14 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 	
 	bsl_tkn_ir *curr = *token;
 	
+	debug_printf("%s","conditional evaluation:\n");
+	
 if_loop:
 	{
 		bsl_statement_conditional_case *cond_case = &(conditional.cond_case[conditional.case_count - 1]);
 		cond_case->cond = calloc(1, sizeof(bsl_conditional));
 		
 		int result = 0;
-		
-		debug_printf("%s","conditional evaluation: ");
 
 		// parse logic expression
 		if (curr->token != NULL) { // check to make sure we have a token
@@ -81,12 +81,12 @@ if_loop:
 		}
 		
 		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
-		cond_case->code.expression_count = 0;
+		cond_case->code.expression_count = 1;
 		
 		int8_t found_else = 0;
 		
 		while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
-			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count]);
+			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
 			case_expr->scope_type = BSLScope_cond;
 			case_expr->scope_level = brace_scope;
 			
@@ -131,6 +131,11 @@ if_loop:
 						if (found_else == 1) {
 							conditional.case_count += 1;
 							conditional.cond_case = realloc(conditional.cond_case, sizeof(bsl_statement_conditional_case) * (conditional.case_count));
+							
+							conditional.cond_case[conditional.case_count].code.expression_count = 0;
+							conditional.cond_case[conditional.case_count].code.expression = NULL;
+							conditional.cond_case[conditional.case_count].cond = NULL;
+							
 							goto if_loop;
 						}
 						else {
@@ -151,8 +156,8 @@ if_loop:
 				cond_case->code.expression = realloc(cond_case->code.expression, sizeof(bsl_expression) * (cond_case->code.expression_count + 1));
 				cond_case->code.expression_count += 1;
 
-				cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = 0;
-				cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_invalid;
+				cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = 0; // FIXME
+				cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_invalid; // FIXME
 				cond_case->code.expression[cond_case->code.expression_count - 1].tokens = curr;
 				
 				while (curr->token != NULL) {
@@ -167,60 +172,6 @@ if_loop:
 			}
 			
 		}
-
-//				// smart advancing to next ir item
-//				if (found_brace == 1) {
-//					uint32_t track = *index;
-//					result = bsl_function_interp_expression_increment(&curr, interp, index);
-//					
-//					if (track != *index) {
-//						cond_case->code.expression = realloc(cond_case->code.expression, sizeof(bsl_expression) * (cond_case->code.expression_count + 1));
-//						cond_case->code.expression_count += 1;
-//						
-//						cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = 0;
-//						cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_invalid;
-//						cond_case->code.expression[cond_case->code.expression_count - 1].tokens = NULL;
-//					}
-//					
-//				}
-//				else {
-//					if (curr->next == NULL) {
-//						result = bsl_function_interp_expression_increment(&curr, interp, index);
-//						
-//						if (result == 0) {
-//							
-//							while (curr->token == NULL) {
-//								result = bsl_function_interp_expression_increment(&curr, interp, index);
-//								
-//								if (result == -1) {
-//									break;
-//								}
-//							}
-//							
-//							if (curr->token != NULL) {
-//								if (curr->token->code == BSLTokenCode_id_else) {
-//									// found else
-//									found_else = 1;
-//								}
-//								else {
-//									result = bsl_function_interp_expression_decrement(&curr, interp, index);
-//									break;
-//								}
-//							}
-//							else {
-//								// error
-//								break;
-//							}
-//						}
-//						else {
-//							break;
-//						}
-//					}
-//					else {
-//						curr = curr->next;
-//					}
-//				}
-//			}
 		
 	}
 	

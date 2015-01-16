@@ -166,14 +166,12 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 	
 	uint32_t index = 0;
 	
-	int result = 0;
-	
 	while (index < code.expression_count) {
 		bsl_expression expr = code.expression[index];
 		
 		bsl_tkn_ir *curr = expr.tokens;
 		
-		if (curr->token != NULL) {
+		if (curr != NULL && curr->token != NULL) {
 			
 			bsl_statement statement = bsl_statement_parse(&curr, tmp, code, &index);
 			

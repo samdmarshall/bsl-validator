@@ -16,10 +16,12 @@ func void main {
 	if (my_save_point eq 0) 
 	{
 		dmsg "foo";
+		dmsg "hello"
 	}
 	else 
 	{
 		dmsg "bar";
+		dmsg "world"
 	}
 	
 	sleep 40

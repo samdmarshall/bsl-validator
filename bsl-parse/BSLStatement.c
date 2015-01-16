@@ -234,6 +234,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
 				
+				debug_printf("%s","\t{\n");
+				
 				int8_t *case_eval = calloc(expr.u.conditional.case_count, sizeof(int8_t));
 				for (int8_t eval_index = 0; eval_index < expr.u.conditional.case_count; eval_index++) {
 					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[eval_index];
@@ -254,6 +256,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 						break;
 					}
 				}
+				
+				debug_printf("%s","\t}\n");
 				
 				break;
 			}
