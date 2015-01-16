@@ -1,5 +1,7 @@
 func testing(int a) {
 	dmsg "hello from testing"
+	
+	return;
 }
 
 func void main {

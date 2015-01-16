@@ -424,7 +424,7 @@ struct bsl_statement_conditional {
 };
 
 struct bsl_statement_return {
-	
+	bsl_variable *variable;
 };
 
 struct bsl_statement_iterate {

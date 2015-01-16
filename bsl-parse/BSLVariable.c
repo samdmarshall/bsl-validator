@@ -44,6 +44,10 @@ char * bsl_variable_print(bsl_variable variable) {
 			snprintf(&(text[counter]), 1024-counter, "%s]",variable.u.s);
 			break;
 		}
+		case bsl_variable_void: {
+			snprintf(&(text[counter]), 1024-counter, "%s]","NULL");
+			break;
+		}
 		default: {
 			// error
 			break;
@@ -128,7 +132,7 @@ char * bsl_variable_get_type_name(bsl_variable_type type) {
 		case bsl_variable_string: {
 			return "string";
 		}
-		case bsl_variable_None: {
+		case bsl_variable_void: {
 			return "void";
 		}
 		default: {
