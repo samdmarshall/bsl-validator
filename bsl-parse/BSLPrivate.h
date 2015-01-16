@@ -12,7 +12,9 @@
 #include "FileAccess.h"
 #include "cmap.h"
 #include "TimeUtil.h"
+
 #include <ctype.h>
+#include <math.h>
 
 typedef struct bsl_script bsl_script;
 

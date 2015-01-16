@@ -8,8 +8,6 @@
 
 #include "TimeUtil.h"
 
-#define kMicroseconds 1000000
-
 timeval_comp timeval_compare(struct timeval a, struct timeval b) {
 	if (a.tv_sec > b.tv_sec) {
 		return timeval_comp_gt;

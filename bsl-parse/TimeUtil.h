@@ -11,6 +11,8 @@
 
 #include <unistd.h>
 
+#define kMicroseconds 1000000
+
 typedef struct time_interval time_interval;
 
 struct time_interval {
