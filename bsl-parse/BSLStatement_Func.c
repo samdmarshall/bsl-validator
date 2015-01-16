@@ -53,6 +53,10 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		arg_count = symbol->u.func.arg_count;
 	}
 	
+	if (name != NULL) {
+		free(name);
+	}
+	
 	uint32_t counter = 0;
 	while (curr->token != NULL) {
 		if (curr->next == NULL) {

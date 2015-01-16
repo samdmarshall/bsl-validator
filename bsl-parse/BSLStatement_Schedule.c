@@ -40,6 +40,7 @@ bsl_statement_schedule bsl_statement_schedule_create(bsl_tkn_ir **token, bsl_con
 	}
 	else {
 		// error, could not find keyword
+		context->error = bsl_error_token_invalid_syntax;
 	}
 	
 	// time value

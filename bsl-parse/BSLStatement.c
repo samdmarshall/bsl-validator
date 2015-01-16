@@ -23,6 +23,100 @@
 #include "BSLStatement_Var.h"
 #include "BSLStatement_Func.h"
 
+int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted_code interp, uint32_t *index) {
+	
+	bsl_tkn_ir *curr = *token;
+	
+	if (curr->next == NULL) {
+		// check to make sure we aren't over-running
+		if ((*index) + 1 >= interp.expression_count) {
+			return -1;
+		}
+		// increasing index to next expression
+		(*index)++;
+		
+		// assign the current ir item to the start of the ir sequence in the next expression
+		curr = interp.expression[(*index)].tokens;
+		
+		if (curr == NULL) {
+			
+		}
+	}
+	else {
+		curr = curr->next;
+	}
+	
+	*token = curr;
+	
+	return 0;
+}
+
+int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_interpreted_code interp, uint32_t *index) {
+	
+	bsl_tkn_ir *curr = *token;
+	
+	if (curr->prev == NULL) {
+		// check to make sure we aren't over-running
+		if ((*index) == 0) {
+			return -1;
+		}
+		// increasing index to next expression
+		(*index)--;
+		
+		// assign the current ir item to the start of the ir sequence in the next expression
+		curr = interp.expression[(*index)].tokens;
+		
+		while (curr->next != NULL) {
+			curr = curr->next;
+		}
+	}
+	else {
+		curr = curr->prev;
+	}
+	
+	*token = curr;
+	
+	return 0;
+}
+
+int bsl_function_interp_expression_increment_token(bsl_tkn_ir **item, bsl_interpreted_code interp, uint32_t *index) {
+	bsl_tkn_ir *curr = *item;
+	
+	int result = bsl_function_interp_expression_increment(&curr, interp, index);
+	
+	while (curr->token == NULL) {
+		result = bsl_function_interp_expression_increment(&curr, interp, index);
+		
+		if (result == -1) {
+			break;
+		}
+	}
+	
+	*item = curr;
+	
+	return result;
+}
+
+int bsl_function_interp_expression_decrement_token(bsl_tkn_ir **item, bsl_interpreted_code interp, uint32_t *index) {
+	bsl_tkn_ir *curr = *item;
+	
+	int result = 0;
+	
+	while (curr->token != NULL) {
+		result = bsl_function_interp_expression_decrement(&curr, interp, index);
+		
+		if (result == -1) {
+			break;
+		}
+	}
+	
+	result = bsl_function_interp_expression_decrement(&curr, interp, index);
+	
+	*item = curr;
+	
+	return result;
+}
+
 bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement expr = {0};
 	expr.type = bsl_statement_type_invalid;
@@ -141,22 +235,22 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
 				
 				int8_t *case_eval = calloc(expr.u.conditional.case_count, sizeof(int8_t));
-				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
-					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[index];
+				for (int8_t eval_index = 0; eval_index < expr.u.conditional.case_count; eval_index++) {
+					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[eval_index];
 					
 					if (cond_case.cond->type == bsl_conditional_type_else) {
-						case_eval[index] = 1;
+						case_eval[eval_index] = 1;
 					}
 					else {
-						case_eval[index] = bsl_conditional_evaluation(cond_case.cond, &context);
+						case_eval[eval_index] = bsl_conditional_evaluation(cond_case.cond, &context);
 					}
 				}
 				
-				for (int8_t index = 0; index < expr.u.conditional.case_count; index++) {
+				for (int8_t exec_index = 0; exec_index < expr.u.conditional.case_count; exec_index++) {
 					
-					if (case_eval[index] == 1) {
+					if (case_eval[exec_index] == 1) {
 						
-						//bsl_execute_interpreted_code(expr.u.conditional.cond_case[index].code, &context);
+						bsl_execute_interpreted_code(expr.u.conditional.cond_case[exec_index].code, &context);
 						break;
 					}
 				}

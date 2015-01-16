@@ -166,6 +166,8 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 	
 	uint32_t index = 0;
 	
+	int result = 0;
+	
 	while (index < code.expression_count) {
 		bsl_expression expr = code.expression[index];
 		
