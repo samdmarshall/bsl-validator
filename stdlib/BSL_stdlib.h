@@ -11,7 +11,7 @@
 
 #include "BSLPrivate.h"
 
-#define USE_STD_LIB 1
+#define USE_STD_LIB 0
 
 #if USE_STD_LIB
 #define STDLIB_FUNC_DEC 
