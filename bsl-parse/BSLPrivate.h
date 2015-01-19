@@ -168,20 +168,21 @@ typedef enum bsl_token_code {
 typedef enum bsl_error {
 	bsl_error_none,
 	
-	bsl_error_token_invalid_string,
-	bsl_error_token_invalid_syntax,
+	bsl_error_token_invalid_string, // invalid string syntax
+	bsl_error_token_invalid_syntax, // syntax parsing error
 	
-	bsl_error_var_invalid_type_id,
-	bsl_error_var_invalid_type_assignment,
+	bsl_error_var_invalid_type_id, // invalid var type
+	bsl_error_var_invalid_type_assignment, // mismatch of data to var type
 	
-	bsl_error_invalid_identifier,
-	bsl_error_reserved_word,
-	bsl_error_invalid_scope,
-	bsl_error_invalid_parameter_type,
+	bsl_error_reserved_word, // use of a reserved keyword
 	
-	bsl_error_registered_symbol,
+	bsl_error_invalid_identifier, // unknown identifier
+	bsl_error_invalid_scope, // scope is not valid for current evaluation
+	bsl_error_invalid_parameter_type, // parameter type mismatch
 	
-	bsl_error_func_param_count,
+	bsl_error_registered_symbol, // symbol is already registered, duplicate
+	
+	bsl_error_func_param_count, // parameter count is greater than 8
 	
 	bsl_error_count
 } bsl_error;

@@ -56,24 +56,28 @@ int bsl_context_check_error(bsl_context *context) {
 		case bsl_error_none: {
 			break;
 		}
+		case bsl_error_registered_symbol: {
+			sprintf(message, "Duplicate symbol \"%s\", originally defined", name);
+			break;
+		}
 		case bsl_error_invalid_identifier: {
-			sprintf(message, "Invalid use of identifier \"%s\" at %s:%i", name, script_name, symbol->line);
+			sprintf(message, "Invalid use of identifier \"%s\"", name);
 			break;
 		}
 		case bsl_error_reserved_word: {
-			sprintf(message, "Use of reserved word at %s:%i", script_name, symbol->line);
+			sprintf(message, "Use of reserved word");
 			break;
 		}
 		case bsl_error_invalid_scope: {
-			sprintf(message, "Scoping error at %s:%i\n", script_name, symbol->line);
+			sprintf(message, "Scoping error");
 			break;
 		}
 		case bsl_error_func_param_count: {
-			sprintf(message, "Using more than 8 parameters in function signature at %s:%i\n", script_name, symbol->line);
+			sprintf(message, "Using more than 8 parameters in function signature");
 			break;
 		}
 		case bsl_error_invalid_parameter_type: {
-			sprintf(message, "Mismatch of passed parameter types to %s at %s:%i\n",name, script_name, symbol->line);
+			sprintf(message, "Mismatch of passed parameter types to \"%s\"",name);
 			break;
 		}
 		default: {
@@ -82,7 +86,7 @@ int bsl_context_check_error(bsl_context *context) {
 		}
 	}
 	if (message[0] != 0) {
-		printf("\n%s\n",message);
+		printf("\n%s at %s:%i\n",message, script_name, symbol->line);
 		
 		bsl_context_print_stack(context);
 	}

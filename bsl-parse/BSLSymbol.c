@@ -10,6 +10,37 @@
 #include "BSLVariable.h"
 #include "BSLFunction.h"
 
+void bsl_symbol_duplicate_description(bsl_symbol *parsed, bsl_symbol *original) {
+	char *parsed_name = "";
+	if (parsed->type == bsl_symbol_type_variable) {
+		parsed_name = parsed->u.value.name;
+	}
+	if (parsed->type == bsl_symbol_type_function) {
+		parsed_name = parsed->u.func.name;
+	}
+	
+	char *script_name = parsed->script->fd != NULL ? parsed->script->fd->name : "global";
+	
+	char *original_type = "";
+	if (original->type == bsl_symbol_type_function) {
+		original_type = "function";
+	}
+	if (original->type == bsl_symbol_type_variable) {
+		original_type = "variable";
+	}
+	
+	
+	char *original_name = "";
+	if (original->type == bsl_symbol_type_variable) {
+		original_name = original->u.value.name;
+	}
+	if (original->type == bsl_symbol_type_function) {
+		original_name = original->u.func.name;
+	}
+	
+	printf("\n\nFound symbol with name \"%s\" at %s:%i, name used by (%s) \"%s\" already\n", parsed_name, script_name, parsed->line, original_type, original_name);
+}
+
 char * bsl_symbol_get_name(bsl_symbol *symbol) {
 	char *result = calloc(1, sizeof(char));
 	

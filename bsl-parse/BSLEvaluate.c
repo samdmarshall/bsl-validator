@@ -41,23 +41,25 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 					else {
 						// error, already registered symbol
 						context->error = bsl_error_registered_symbol;
+						bsl_symbol_duplicate_description(var_symbol, symbol_test);
 					}
 					
 				}
 				else if (item_token->code == BSLTokenCode_id_func) {
 					bsl_function func = bsl_function_parse(&item, context);
 					
-					bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_function);
-					var_symbol->u.func = func;
-					bsl_symbol_update_info(var_symbol, curr->token->offset);
+					bsl_symbol *func_symbol = bsl_symbol_create(bsl_symbol_type_function);
+					func_symbol->u.func = func;
+					bsl_symbol_update_info(func_symbol, curr->token->offset);
 					
-					bsl_symbol *symbol_test = bsl_db_get_global(var_symbol->u.func.name, context);
+					bsl_symbol *symbol_test = bsl_db_get_global(func_symbol->u.func.name, context);
 					if (symbol_test == NULL) {
-						bsl_db_register_global(var_symbol->u.func.name, var_symbol, context);
+						bsl_db_register_global(func_symbol->u.func.name, func_symbol, context);
 					}
 					else {
 						// error, already registered symbol
 						context->error = bsl_error_registered_symbol;
+						bsl_symbol_duplicate_description(func_symbol, symbol_test);
 					}
 				}
 				else {
@@ -80,14 +82,20 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 				break;
 			}
 			case BSLScope_func: {
+				context->error = bsl_error_invalid_scope;
 				break;
 			}
 			case BSLScope_cond: {
+				context->error = bsl_error_invalid_scope;
 				break;
 			}
 			default: {
 				break;
 			}
+		}
+		
+		if (bsl_context_check_error(context) != bsl_error_none) {
+			break;
 		}
 		
 		if (item != NULL) {
