@@ -77,15 +77,16 @@ bsl_context * bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context) {
 						}
 					}
 				}
+				break;
 			}
 			case BSLScope_func: {
-//				break;
+				break;
 			}
 			case BSLScope_cond: {
-//				break;
+				break;
 			}
 			default: {
-//				break;
+				break;
 			}
 		}
 		
