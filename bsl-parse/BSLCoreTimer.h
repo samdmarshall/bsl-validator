@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+#define kMicrosecondsPerFrame 16666
+
 void bsl_core_timer_create(struct time_interval interval, FPCallback update_callback, void *context);
 
 #endif /* defined(__bsl_parse__BSLCoreTimer__) */

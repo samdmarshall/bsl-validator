@@ -8,7 +8,7 @@
 
 #include "BSLStatement_Sleep.h"
 #include "BSLVariable.h"
-#include <math.h>
+#include "BSLCoreTimer.h"
 
 bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *context) {
 	bsl_statement_sleep sleep = {};
@@ -60,7 +60,7 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 					sleep.total.tv_sec = floorf(time);
 					sleep.total.tv_usec = time * kMicroseconds;
 					
-					debug_printf("%li seconds, %i microseconds\n", sleep.total.tv_sec, sleep.total.tv_usec);
+					debug_printf("%li seconds, %i microseconds, %ld frames\n", sleep.total.tv_sec, sleep.total.tv_usec, (sleep.total.tv_sec * 60) + (sleep.total.tv_usec / kMicrosecondsPerFrame));
 
 				}
 				

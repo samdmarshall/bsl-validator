@@ -34,6 +34,10 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 		context->error = bsl_error_registered_symbol;
 	}
 	
+	char *var_text = bsl_variable_print(var.variable);
+	debug_printf("%s %s = %s\n", bsl_variable_get_type_name(var.variable.type), var.variable.name, var_text );
+	free(var_text);
+	
 	// move current position
 	*token = curr;
 	
@@ -61,6 +65,12 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 	bsl_variable_parse_assign(&curr, context, &(var.variable));
 	
 	var.scope = context->stack->active;
+	
+	char *var1_text = bsl_variable_print(context->stack->active->symbol->u.value);
+	char *var2_text = bsl_variable_print(var.variable);
+	debug_printf("%s %s -> %s\n", context->stack->active->symbol->u.value.name, var1_text, var2_text);
+	free(var1_text);
+	free(var2_text);
 	
 	// move current position
 	*token = curr;

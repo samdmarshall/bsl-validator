@@ -65,7 +65,7 @@ void bsl_scheduler_run(bsl_scheduler *scheduler) {
 	struct time_interval interval = {0};
 	// once every 1/60th of a second
 	interval.tv.tv_sec = 0;
-	interval.tv.tv_usec = 16666;
+	interval.tv.tv_usec = kMicrosecondsPerFrame;
 	// 60 times a second
 	interval.ips = 60;
 	
