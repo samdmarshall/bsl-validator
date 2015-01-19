@@ -187,7 +187,12 @@ bsl_variable * oni_call_noop(bsl_context **context, bsl_symbol *symbol, bsl_func
 		debug_printf(" -> error in %i total args!",mismatch_arg);
 	}
 	
-	debug_printf("%s","\n");
+	if ((*context)->stack->active->symbol->type == bsl_symbol_type_function) {
+		debug_printf("%s","\n");
+	}
+	if ((*context)->stack->active->symbol->type == bsl_symbol_type_variable) {
+		debug_printf("%s"," -> ");
+	}
 	
 	return var;
 }

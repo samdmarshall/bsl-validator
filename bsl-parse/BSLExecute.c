@@ -244,7 +244,17 @@ bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_symbol *symbol
 		debug_printf(" -> error in %i total args!",mismatch_arg);
 	}
 	
-	debug_printf("%s","\n\n");
+	if ((*context)->stack->active->symbol != NULL) {
+		if ((*context)->stack->active->symbol->type == bsl_symbol_type_function) {
+			debug_printf("%s","\n\n");
+		}
+		if ((*context)->stack->active->symbol->type == bsl_symbol_type_variable) {
+			debug_printf("%s"," -> ");
+		}
+	}
+	else {
+		debug_printf("%s","\n\n");
+	}
 	
 	bsl_function_interpreted interp = symbol->u.func.u.interp;
 	

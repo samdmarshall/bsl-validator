@@ -23,6 +23,8 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 	
 	var.variable = bsl_variable_parse(&curr, context);
 	
+	debug_printf("%s %s = ",bsl_variable_get_type_name(var.variable.type), var.variable.name);
+	
 	var_symbol->u.value = var.variable;
 	
 	bsl_symbol *symbol_test = bsl_stack_search_scope(var_symbol->u.value.name, context);
@@ -35,7 +37,7 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 	}
 	
 	char *var_text = bsl_variable_print(var.variable);
-	debug_printf("%s %s = %s\n", bsl_variable_get_type_name(var.variable.type), var.variable.name, var_text );
+	debug_printf("%s\n", var_text);
 	free(var_text);
 	
 	// move current position
@@ -62,14 +64,16 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 		var.variable.name = name;
 	}
 	
+	char *var1_text = bsl_variable_print(context->stack->active->symbol->u.value);
+	debug_printf("%s %s -> ", context->stack->active->symbol->u.value.name, var1_text);
+	free(var1_text);
+	
 	bsl_variable_parse_assign(&curr, context, &(var.variable));
 	
 	var.scope = context->stack->active;
 	
-	char *var1_text = bsl_variable_print(context->stack->active->symbol->u.value);
 	char *var2_text = bsl_variable_print(var.variable);
-	debug_printf("%s %s -> %s\n", context->stack->active->symbol->u.value.name, var1_text, var2_text);
-	free(var1_text);
+	debug_printf("%s\n", var2_text);
 	free(var2_text);
 	
 	// move current position
