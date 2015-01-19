@@ -560,7 +560,9 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 			};
 			name = Debug;
 		};
@@ -575,7 +577,9 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
+				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 			};
 			name = Release;
 		};
