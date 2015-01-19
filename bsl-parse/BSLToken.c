@@ -473,7 +473,7 @@ loop_parse:
 	}
 }
 
-void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_code code) {
+void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code) {
 	if (token->code == code) {
 		(*scope) += 1;
 	}
@@ -482,6 +482,7 @@ void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_c
 		case BSLTokenCode_ctl_lparen: {
 			if ((*scope) > 4) {
 				// expression too complex
+				context->error = bsl_error_invalid_scope;
 			}
 			break;
 		}
@@ -497,9 +498,14 @@ void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_c
 	}
 }
 
-void bsl_token_check_scope_decrease(int8_t *scope, bsl_token *token, bsl_token_code code) {
+void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code) {
 	if (token->code == code) {
 		(*scope) -= 1;
+	}
+	
+	if ((*scope) < 0) {
+		// error
+		context->error = bsl_error_invalid_scope;
 	}
 }
 
@@ -515,6 +521,10 @@ int check_token_error(bsl_token *token) {
 		}
 		case bsl_error_token_invalid_syntax: {
 			sprintf(message, "Invalid Syntax at %s:%i",token->offset.script->fd->name,token->offset.line);
+			break;
+		}
+		case bsl_error_invalid_scope: {
+			sprintf(message, "Scoping error at %s:%i",token->offset.script->fd->name,token->offset.line);
 			break;
 		}
 		default: {

@@ -95,8 +95,8 @@ int bsl_context_check_error(bsl_context *context) {
 }
 
 bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
-	bsl_token_check_scope_increase(&(context->scope_depth), item_token, BSLTokenCode_ctl_lbrace);
-	bsl_token_check_scope_decrease(&(context->scope_depth), item_token, BSLTokenCode_ctl_rbrace);
+	bsl_token_check_scope_increase(context, &(context->scope_depth), item_token, BSLTokenCode_ctl_lbrace);
+	bsl_token_check_scope_decrease(context, &(context->scope_depth), item_token, BSLTokenCode_ctl_rbrace);
 	
 	if (context->scope_depth < 0) {
 		// throw error

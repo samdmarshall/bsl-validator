@@ -17,7 +17,7 @@ bsl_token * read_token(mem_buff *text);
 // returns error type if there was a problem parsing a token
 int check_token_error(bsl_token *token);
 
-void bsl_token_check_scope_increase(int8_t *scope, bsl_token *token, bsl_token_code code);
-void bsl_token_check_scope_decrease(int8_t *scope, bsl_token *token, bsl_token_code code);
+void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code);
+void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code);
 
 #endif /* defined(__bsl_parse__BSLToken__) */

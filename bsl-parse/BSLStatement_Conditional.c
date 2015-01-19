@@ -52,8 +52,8 @@ if_loop:
 		while (curr != NULL && result == 0) {
 			
 			if (curr->token != NULL) {
-				bsl_token_check_scope_increase(&scope_tracker, curr->token, BSLTokenCode_ctl_lparen);
-				bsl_token_check_scope_decrease(&scope_tracker, curr->token, BSLTokenCode_ctl_rparen);
+				bsl_token_check_scope_increase(context, &scope_tracker, curr->token, BSLTokenCode_ctl_lparen);
+				bsl_token_check_scope_decrease(context, &scope_tracker, curr->token, BSLTokenCode_ctl_rparen);
 			}
 			
 			// add ir to conditional
@@ -75,7 +75,7 @@ if_loop:
 		int8_t brace_scope = 0;
 		
 		if (curr->token->code == BSLTokenCode_ctl_lbrace) {
-			bsl_token_check_scope_increase(&brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
+			bsl_token_check_scope_increase(context, &brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
 			found_brace = 1;
 			result = bsl_function_interp_expression_increment(&curr, interp, index);
 		}
@@ -92,8 +92,8 @@ if_loop:
 			
 			if (curr->token != NULL) {
 				// store expression
-				bsl_token_check_scope_increase(&brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
-				bsl_token_check_scope_decrease(&brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
+				bsl_token_check_scope_increase(context, &brace_scope, curr->token, BSLTokenCode_ctl_lbrace);
+				bsl_token_check_scope_decrease(context, &brace_scope, curr->token, BSLTokenCode_ctl_rbrace);
 			}
 			else {
 				
