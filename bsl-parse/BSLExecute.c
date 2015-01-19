@@ -43,7 +43,7 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 }
 
 int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	debug_printf("%s(",symbol->u.func.name);
+	debug_printf("%s %s(", bsl_variable_get_type_name(bsl_variable_type_from_func_rtype(rtype)), symbol->u.func.name);
 	
 	int mismatch_arg = 0;
 	
@@ -98,6 +98,7 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 		switch (matched_type) {
 			case 0: {
 				// not matched!
+				(*context)->error = bsl_error_invalid_parameter_type;
 				mismatch_arg++;
 				break;
 			}

@@ -177,6 +177,7 @@ typedef enum bsl_error {
 	bsl_error_invalid_identifier,
 	bsl_error_reserved_word,
 	bsl_error_invalid_scope,
+	bsl_error_invalid_parameter_type,
 	
 	bsl_error_registered_symbol,
 	
