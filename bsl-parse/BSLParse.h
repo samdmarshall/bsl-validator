@@ -30,4 +30,7 @@ bsl_tkn_ir * bsl_token_ir_jump_head(bsl_tkn_ir *token_ir);
 // returns total count from current token ir sequence item to end
 uint32_t bsl_token_ir_count(bsl_tkn_ir *token_ir);
 
+// moves current token ir sequence item by amount
+bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move);
+
 #endif /* defined(__bsl_parse__BSLParse__) */

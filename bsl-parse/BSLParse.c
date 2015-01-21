@@ -188,3 +188,25 @@ uint32_t bsl_token_ir_count(bsl_tkn_ir *token_ir) {
 	
 	return result;
 }
+
+bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move) {
+	bsl_tkn_ir *curr = token_ir;
+	
+	if (move > 0) {
+		while (curr != NULL && move != 0) {
+			move--;
+			curr = curr->next;
+		}
+	}
+	else if (move < 0) {
+		while (curr != NULL && move != 0) {
+			move++;
+			curr = curr->prev;
+		}
+	}
+	else {
+		// do nothing
+	}
+	
+	return curr;
+}
