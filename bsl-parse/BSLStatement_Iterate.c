@@ -25,15 +25,39 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	
 	// 'over' identifier
+	if (curr->token->code != BSLTokenCode_id_over) {
+		context->error = bsl_error_token_invalid_syntax;
+	}
+	
+	bsl_context_check_error(context);
+	
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	
 	// variable identifier
+	if (curr->token->code != BSLTokenCode_id_generic) {
+		context->error = bsl_error_token_invalid_syntax;
+	}
+	
+	bsl_context_check_error(context);
+	
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	
 	// 'using' identifier
+	if (curr->token->code != BSLTokenCode_id_using) {
+		context->error = bsl_error_token_invalid_syntax;
+	}
+	
+	bsl_context_check_error(context);
+	
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	
 	// variable identifier
+	if (curr->token->code != BSLTokenCode_id_generic) {
+		context->error = bsl_error_token_invalid_syntax;
+	}
+	
+	bsl_context_check_error(context);
+	
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 
 	
@@ -54,6 +78,8 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 			context->error = bsl_error_token_invalid_syntax;
 			return iterate;
 		}
+		
+		bsl_context_check_error(context);
 		
 		while (brace_scope != 0) {
 			if (curr->token != NULL) {
