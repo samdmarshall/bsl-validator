@@ -11,7 +11,7 @@
 #include "BSLVariable.h"
 
 bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *context) {
-	bsl_statement_func func = {};
+	bsl_statement_func func = {0};
 	
 	bsl_symbol *symbol = context->stack->active->symbol;
 	

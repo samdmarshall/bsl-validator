@@ -210,3 +210,39 @@ bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move) {
 	
 	return curr;
 }
+
+void bsl_token_ir_release_sequence(bsl_tkn_ir *sequence) {
+	bsl_tkn_ir *curr = sequence;
+	
+	while (curr != NULL) {
+		bsl_tkn_ir *temp = curr->next;
+		
+		bsl_token_ir_release(curr);
+		
+		curr = temp;
+	}
+}
+
+void bsl_token_ir_release(bsl_tkn_ir *token_ir) {
+	if (token_ir != NULL) {
+		
+		if (token_ir->token != NULL) {
+			free(token_ir->token);
+			
+			token_ir->token = NULL;
+		}
+		
+		if (token_ir->prev != NULL) {
+			token_ir->prev->next = NULL;
+		}
+		token_ir->prev = NULL;
+		
+		if (token_ir->next != NULL) {
+			token_ir->next->prev = NULL;
+		}
+		token_ir->next = NULL;
+		
+		free(token_ir);
+		token_ir = NULL;
+	}
+}

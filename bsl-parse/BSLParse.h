@@ -33,4 +33,7 @@ uint32_t bsl_token_ir_count(bsl_tkn_ir *token_ir);
 // moves current token ir sequence item by amount
 bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move);
 
+void bsl_token_ir_release_sequence(bsl_tkn_ir *sequence);
+void bsl_token_ir_release(bsl_tkn_ir *token_ir);
+
 #endif /* defined(__bsl_parse__BSLParse__) */

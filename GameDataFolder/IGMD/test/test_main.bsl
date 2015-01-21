@@ -49,4 +49,6 @@ func void main {
 	}
 	
 	sleep 20
+	
+	schedule foobar(5) at 5000
 }
