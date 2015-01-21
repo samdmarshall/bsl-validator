@@ -167,7 +167,6 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				case BSLTokenCode_id_string:
 				case BSLTokenCode_id_false:
 				case BSLTokenCode_id_true: {
-					printf("");
 					// create constant
 					expr.type = bsl_statement_type_var;
 					

@@ -17,7 +17,6 @@
 #include "BSL_stdlib.h"
 
 void bsl_db_register(char *name, bsl_symbol *symbol, cmap_str symtab) {
-	size_t size = cmap_str_count(symtab);
 	cmap_str_setObjectForKey(symtab, name, symbol);
 }
 
@@ -179,7 +178,6 @@ void bsl_db_release(bsl_database *db) {
 }
 
 bsl_symbol * bsl_db_lookup(char *name, cmap_str symtab) {
-	size_t count = cmap_str_count(symtab);
 	return cmap_str_objectForKey(symtab, name);
 }
 
@@ -212,12 +210,15 @@ void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context
 }
 
 void bsl_db_register_state(char *name, bsl_symbol *symbol, bsl_context *context) {
-	if (context->curr_scope == BSLScope_global) {
-		bsl_db_register_global(name, symbol, context);
-	}
-	else {
+//	if (context->curr_scope == BSLScope_global) {
+//		bsl_db_register_global(name, symbol, context);
+//	}
+//	else {
 		if (context->stack->active->symtab != NULL) {
 			bsl_db_register(name, symbol, context->stack->active->symtab);
 		}
-	}
+		else {
+			bsl_db_register_global(name, symbol, context);
+		}
+//	}
 }
