@@ -7,3 +7,21 @@
 //
 
 #include "BSLOperation.h"
+
+bsl_operation * bsl_operation_create() {
+	bsl_operation *op = calloc(1, sizeof(bsl_operation));
+	
+	if (op != NULL) {
+		
+	}
+	
+	return op;
+}
+
+void bsl_operation_release(bsl_operation *op) {
+	if (op != NULL) {
+		
+		
+		free(op);
+	}
+}

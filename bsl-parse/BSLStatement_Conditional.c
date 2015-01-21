@@ -9,7 +9,7 @@
 #include "BSLStatement_Conditional.h"
 #include "BSLToken.h"
 #include "BSLStatement.h"
-
+#include "BSLOperation.h"
 
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement_conditional conditional = {0};
@@ -33,10 +33,14 @@ if_loop:
 			if (curr->token->code == BSLTokenCode_id_if) {
 				
 				cond_case->cond->type = bsl_conditional_type_if;
+				
+				cond_case->cond->op = bsl_operation_create();
 			}
 			else if (curr->token->code == BSLTokenCode_id_else) {
 				
 				cond_case->cond->type = bsl_conditional_type_else;
+				
+				cond_case->cond->op = bsl_operation_create();
 			}
 			else {
 				// error
@@ -51,12 +55,17 @@ if_loop:
 		
 		while (curr != NULL && result == 0) {
 			
+			int8_t pre_check = scope_tracker;
+			
 			if (curr->token != NULL) {
 				bsl_token_check_scope_increase(context, &scope_tracker, curr->token, BSLTokenCode_ctl_lparen);
 				bsl_token_check_scope_decrease(context, &scope_tracker, curr->token, BSLTokenCode_ctl_rparen);
 			}
 			
 			// add ir to conditional
+			if (pre_check >= 1 && scope_tracker != 0) {
+				printf("");
+			}
 			
 			if (scope_tracker == 0) {
 				// end of scope, break from loop
@@ -185,7 +194,23 @@ if_loop:
 int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) {
 	int8_t result = 0;
 	
-	
+	switch (cond->type) {
+		case bsl_conditional_type_if: {
+			// evaluate operation
+			
+			
+			break;
+		}
+		case bsl_conditional_type_else: {
+			return 1;
+			break;
+		}
+		default: {
+			// error
+			(*context)->error = bsl_error_invalid_conditional;
+			break;
+		}
+	}
 	
 	return result;
 }

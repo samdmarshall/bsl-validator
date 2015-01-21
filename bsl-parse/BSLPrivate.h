@@ -81,10 +81,14 @@ typedef struct bsl_statement_var bsl_statement_var;
 #pragma mark -
 #pragma mark BSLScript
 
+#pragma mark bsl_script
+
 struct bsl_script {
 	file_ref *fd;
 	mem_buff *contents;
 };
+
+#pragma mark bsl_script_offset
 
 struct bsl_script_offset {
 	bsl_script *script;
@@ -95,6 +99,8 @@ struct bsl_script_offset {
 
 #pragma mark -
 #pragma mark BSLToken
+
+#pragma mark bsl_token_code
 
 typedef enum bsl_token_code {
 	BSLTokenCode_empty,
@@ -165,6 +171,8 @@ typedef enum bsl_token_code {
 	BSLTokenCode_Count
 } bsl_token_code;
 
+#pragma mark bsl_error
+
 typedef enum bsl_error {
 	bsl_error_none,
 	
@@ -179,6 +187,7 @@ typedef enum bsl_error {
 	bsl_error_invalid_identifier, // unknown identifier
 	bsl_error_invalid_scope, // scope is not valid for current evaluation
 	bsl_error_invalid_parameter_type, // parameter type mismatch
+	bsl_error_invalid_conditional, // conditional type error
 	
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 	
@@ -187,6 +196,8 @@ typedef enum bsl_error {
 	bsl_error_count
 } bsl_error;
 
+#pragma mark bsl_token
+
 struct bsl_token {
 	bsl_token_code code;
 	bsl_script_offset offset;
@@ -194,8 +205,7 @@ struct bsl_token {
 	bsl_error error;
 } __attribute__((packed));
 
-#pragma mark -
-#pragma mark BSLParse
+#pragma mark bsl_tkn_ir
 
 struct bsl_tkn_ir {
 	bsl_token *token;
@@ -207,6 +217,8 @@ struct bsl_tkn_ir {
 #pragma mark -
 #pragma mark BSLExpression
 
+#pragma mark bsl_scope_type
+
 typedef enum bsl_scope_type {
 	BSLScope_invalid,
 	
@@ -217,6 +229,8 @@ typedef enum bsl_scope_type {
 	BSLScope_Count
 } bsl_scope_type;
 
+#pragma mark bsl_expression
+
 struct bsl_expression {
 	bsl_scope_type scope_type;
 	int8_t scope_level;
@@ -224,14 +238,9 @@ struct bsl_expression {
 } __attribute__((packed));
 
 #pragma mark -
-#pragma mark BSLDatabase
-
-struct bsl_database {
-	cmap_str symtab;
-};
-
-#pragma mark -
 #pragma mark BSLVariable
+
+#pragma mark bsl_variable_type
 
 typedef enum bsl_variable_type {
 	bsl_variable_None,
@@ -244,6 +253,8 @@ typedef enum bsl_variable_type {
 	
 	bsl_variable_Count
 } bsl_variable_type;
+
+#pragma mark bsl_variable
 
 struct bsl_variable {
 	bsl_variable_type type;
@@ -260,11 +271,15 @@ struct bsl_variable {
 #pragma mark -
 #pragma mark BSLFunction
 
+#pragma mark bsl_func_arg
+
 struct bsl_func_arg {
 	bsl_variable *args;
 	uint8_t arg_type_count;
 	
 };
+
+#pragma mark bsl_func_rtype
 
 typedef enum bsl_func_rtype {
 	bsl_func_rtype_invalid,
@@ -278,6 +293,8 @@ typedef enum bsl_func_rtype {
 	bsl_func_rtype_Count
 } bsl_func_rtype;
 
+#pragma mark bsl_func_type
+
 typedef enum bsl_func_type {
 	bsl_func_type_invalid,
 	
@@ -287,23 +304,33 @@ typedef enum bsl_func_type {
 	bsl_func_type_Count
 } bsl_func_type;
 
+#pragma mark Pointer Types
+
 typedef uintptr_t* Pointer;
 typedef bsl_variable * (*FunctionPointer)(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 typedef uint8_t (*FPCallback)(void *context, struct time_interval interval);
+
+#pragma mark bsl_interpreted_code
 
 struct bsl_interpreted_code {
 	bsl_expression *expression;
 	uint32_t expression_count;
 };
 
+#pragma mark bsl_function_interpreted
+
 struct bsl_function_interpreted {
 	bsl_interpreted_code code;
 };
+
+#pragma mark bsl_function_compiled
 
 struct bsl_function_compiled {
 	FunctionPointer parse;
 	FunctionPointer call;
 };
+
+#pragma mark bsl_function
 
 struct bsl_function {
 	bsl_func_type type;
@@ -321,8 +348,15 @@ struct bsl_function {
 };
 
 #pragma mark -
-#pragma mark BSL Register Item
+#pragma mark BSLDatabase
 
+#pragma mark bsl_database
+
+struct bsl_database {
+	cmap_str symtab;
+};
+
+#pragma mark bsl_db_register_type
 
 typedef enum bsl_db_register_type {
 	bsl_db_register_type_invalid,
@@ -336,6 +370,8 @@ typedef enum bsl_db_register_type {
 	bsl_db_register_type_count
 } bsl_db_register_type;
 
+#pragma mark bsl_register_func_item
+
 struct bsl_register_func_item {
 	char *name;
 	bsl_db_register_type rtype;
@@ -345,6 +381,8 @@ struct bsl_register_func_item {
 	FunctionPointer call;
 };
 
+#pragma mark bsl_register_var_item
+
 struct bsl_register_var_item {
 	char *name;
 	bsl_db_register_type type;
@@ -352,6 +390,8 @@ struct bsl_register_var_item {
 
 #pragma mark -
 #pragma mark BSLStatement
+
+#pragma mark bsl_statement_type
 
 typedef enum bsl_statement_type {
 	bsl_statement_type_invalid,
@@ -368,35 +408,40 @@ typedef enum bsl_statement_type {
 	bsl_statement_type_count
 } bsl_statement_type;
 
+#pragma mark bsl_statement_func
 
 struct bsl_statement_func {
 	bsl_function function;
 };
+
+#pragma mark bsl_statement_var
 
 struct bsl_statement_var {
 	bsl_stack_scope *scope;
 	bsl_variable variable;
 };
 
+#pragma mark bsl_statement_fork
+
 struct bsl_statement_fork {
 	bsl_statement_func function;
 };
+
+#pragma mark bsl_statement_sleep
 
 struct bsl_statement_sleep {
 	struct timeval total;
 	struct timeval current;
 };
 
+#pragma mark bsl_statement_schedule
+
 struct bsl_statement_schedule {
 	bsl_statement_sleep sleep;
 	bsl_statement_fork fork;
 };
 
-struct bsl_operation {
-	// value 1
-	// operation
-	// value 2
-};
+#pragma mark bsl_conditional_type
 
 typedef enum bsl_conditional_type {
 	bsl_conditional_type_invalid,
@@ -407,6 +452,8 @@ typedef enum bsl_conditional_type {
 	bsl_conditional_type_count
 } bsl_conditional_type;
 
+#pragma mark bsl_conditional
+
 struct bsl_conditional {
 	bsl_conditional_type type;
 	
@@ -414,24 +461,34 @@ struct bsl_conditional {
 	uint8_t op_count;
 };
 
+#pragma mark bsl_statement_conditional_case
+
 struct bsl_statement_conditional_case {
 	bsl_conditional *cond;
 	
 	bsl_interpreted_code code;
 };
 
+#pragma mark bsl_statement_conditional
+
 struct bsl_statement_conditional {
 	bsl_statement_conditional_case *cond_case;
 	uint8_t case_count;
 };
 
+#pragma mark bsl_statement_return
+
 struct bsl_statement_return {
 	bsl_variable *variable;
 };
 
+#pragma mark bsl_statement_iterate
+
 struct bsl_statement_iterate {
 	
 };
+
+#pragma mark bsl_statement
 
 struct bsl_statement {
 	bsl_statement_type type;
@@ -449,7 +506,20 @@ struct bsl_statement {
 };
 
 #pragma mark -
+#pragma mark BSLOperation
+
+#pragma mark bsl_operation
+
+struct bsl_operation {
+	// value 1
+	// operation
+	// value 2
+};
+
+#pragma mark -
 #pragma mark BSLSymbol
+
+#pragma mark bsl_symbol_type
 
 typedef enum bsl_symbol_type {
 	bsl_symbol_type_invalid,
@@ -460,6 +530,8 @@ typedef enum bsl_symbol_type {
 	
 	bsl_symbol_type_Count
 } bsl_symbol_type;
+
+#pragma mark bsl_symbol
 
 struct bsl_symbol {
 	bsl_symbol_type type;
@@ -480,6 +552,8 @@ struct bsl_symbol {
 #pragma mark -
 #pragma mark BSLStack
 
+#pragma mark bsl_stack_scope
+
 struct bsl_stack_scope {
 	bsl_scope_type scope_level;
 	int8_t scope_depth;
@@ -492,6 +566,8 @@ struct bsl_stack_scope {
 	bsl_stack_scope *prev;
 };
 
+#pragma mark bsl_stack
+
 struct bsl_stack {
 	
 	bsl_stack_scope *active;
@@ -501,6 +577,8 @@ struct bsl_stack {
 
 #pragma mark -
 #pragma mark BSLContext
+
+#pragma mark bsl_context
 
 struct bsl_context {
 	bsl_scope_type curr_scope;
@@ -517,6 +595,8 @@ struct bsl_context {
 #pragma mark -
 #pragma mark BSLScheduleItem
 
+#pragma mark bsl_schedule_item
+
 struct bsl_schedule_item {
 	uint32_t item_count;
 	
@@ -530,6 +610,8 @@ struct bsl_schedule_item {
 
 #pragma mark -
 #pragma mark BSLScheduler
+
+#pragma mark bsl_scheduler
 
 struct bsl_scheduler {
 	uint32_t current_tick;

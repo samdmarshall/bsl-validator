@@ -11,5 +11,8 @@
 
 #include "BSLPrivate.h"
 
+bsl_operation * bsl_operation_create();
+
+void bsl_operation_release(bsl_operation *op);
 
 #endif /* defined(__bsl_parse__BSLOperation__) */

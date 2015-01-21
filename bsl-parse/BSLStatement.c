@@ -240,12 +240,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				for (int8_t eval_index = 0; eval_index < expr.u.conditional.case_count; eval_index++) {
 					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[eval_index];
 					
-					if (cond_case.cond->type == bsl_conditional_type_else) {
-						case_eval[eval_index] = 1;
-					}
-					else {
-						case_eval[eval_index] = bsl_conditional_evaluation(cond_case.cond, &context);
-					}
+					case_eval[eval_index] = bsl_conditional_evaluation(cond_case.cond, &context);
 				}
 				
 				for (int8_t exec_index = 0; exec_index < expr.u.conditional.case_count; exec_index++) {
@@ -253,6 +248,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 					if (case_eval[exec_index] == 1) {
 						
 						bsl_execute_interpreted_code(expr.u.conditional.cond_case[exec_index].code, &context);
+						
 						break;
 					}
 				}
