@@ -73,6 +73,7 @@ bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 		bsl_tkn_ir *initial = NULL;
 		
 		int expression_end = 0;
+		int8_t identifier_counter = 0;
 		int8_t paren_counter = 0;
 		
 		// end of expression when encountering any breaking behavior
@@ -90,14 +91,28 @@ bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context) {
 				memcpy(expr_curr->token, curr->token, sizeof(bsl_token));
 				
 				int next = 0;
-				if (initial->token->code != BSLTokenCode_id_if) {
+				
+				if (initial->token->code != BSLTokenCode_id_if && initial->token->code != BSLTokenCode_id_iterate) {
+					
 					next = bsl_expression_check_end(curr->next->token->code);
 				} else {
-					bsl_token_check_scope_increase(context, &paren_counter, curr->token, BSLTokenCode_ctl_lparen);
-					bsl_token_check_scope_decrease(context, &paren_counter, curr->token, BSLTokenCode_ctl_rparen);
 					
-					if (paren_counter == 0 && initial != curr) {
-						next = 1;
+					if (initial->token->code == BSLTokenCode_id_if) {
+						bsl_token_check_scope_increase(context, &paren_counter, curr->token, BSLTokenCode_ctl_lparen);
+						bsl_token_check_scope_decrease(context, &paren_counter, curr->token, BSLTokenCode_ctl_rparen);
+					
+						if (paren_counter == 0 && initial != curr) {
+							next = 1;
+						}
+					}
+					
+					if (initial->token->code == BSLTokenCode_id_iterate) {
+						if (identifier_counter == 4 && initial != curr) {
+							next = 1;
+						}
+						else {
+							identifier_counter++;
+						}
 					}
 				}
 				

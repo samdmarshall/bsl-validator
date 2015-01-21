@@ -485,7 +485,11 @@ struct bsl_statement_return {
 #pragma mark bsl_statement_iterate
 
 struct bsl_statement_iterate {
+	bsl_symbol *iter;
 	
+	bsl_symbol *collection;
+	
+	bsl_interpreted_code code;
 };
 
 #pragma mark bsl_statement
@@ -633,6 +637,16 @@ struct bsl_schedule_item {
 #pragma mark -
 #pragma mark BSLScheduler
 
+#pragma mark bsl_runtime_error
+
+typedef enum bsl_runtime_error {
+	bsl_runtime_error_invalid,
+	
+	bsl_runtime_error_invalid_sleep,
+	
+	bsl_runtime_error_count
+} bsl_runtime_error;
+
 #pragma mark bsl_scheduler
 
 struct bsl_scheduler {
@@ -643,6 +657,8 @@ struct bsl_scheduler {
 	bsl_schedule_item *stack;
 	
 	bsl_schedule_item *current;
+	
+	bsl_runtime_error error;
 };
 
 #endif

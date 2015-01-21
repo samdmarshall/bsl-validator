@@ -125,9 +125,11 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 	
 	debug_printf("%s","evaluate expression: ");
 	
+#if DEBUG
 	char *str = bsl_token_ir_copy_string(curr);
 	debug_printf(" < %s > \n\t",str);
 	free(str);
+#endif
 	
 	if (curr->token != NULL) {
 		
@@ -233,7 +235,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 			case BSLTokenCode_id_iterate: {
 				expr.type = bsl_statement_type_iterate;
 				
-				expr.u.iterate = bsl_statement_iterate_create(&curr, context);
+				expr.u.iterate = bsl_statement_iterate_create(&curr, context, interp, index);
 				
 				(*index)++;
 				

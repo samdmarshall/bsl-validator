@@ -128,6 +128,7 @@ void bsl_scheduler_evaluate_statement(bsl_scheduler *scheduler, bsl_schedule_ite
 				}
 				default: {
 					// error
+					scheduler->error = bsl_runtime_error_invalid_sleep;
 					break;
 				}
 			}

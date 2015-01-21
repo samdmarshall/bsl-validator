@@ -5,6 +5,7 @@ func testing(int a) {
 
 func int foobar(int a) {
 	return 0
+	dmsg "asfdsdfas";
 }
 
 var int my_save_point = 0;
@@ -42,4 +43,10 @@ func void main {
 	sleep 40
 	
 	fork testing 6
+	
+	iterate over a using b {
+		dmsg "hi";
+	}
+	
+	sleep 20
 }
