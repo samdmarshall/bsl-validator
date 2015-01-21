@@ -71,6 +71,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		}
 		
 		if (curr->next->token->code == BSLTokenCode_ctl_rparen) {
+			curr = curr->next;
 			break;
 		}
 		

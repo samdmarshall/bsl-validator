@@ -127,3 +127,64 @@ bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script) {
 	// return the ir item sequence
 	return token_ir;
 }
+
+// copy token ir sequence item
+bsl_tkn_ir * bsl_token_ir_copy(bsl_tkn_ir *token_ir) {
+	bsl_tkn_ir *new_ir = calloc(1, sizeof(bsl_tkn_ir));
+	
+	if (new_ir != NULL && token_ir != NULL) {
+		new_ir->prev = NULL;
+		new_ir->next = NULL;
+		
+		if (token_ir->token != NULL) {
+			new_ir->token = calloc(1, sizeof(bsl_token));
+			
+			memcpy(new_ir->token, token_ir->token, sizeof(bsl_token));
+		}
+	}
+	
+	return new_ir;
+}
+
+// append token ir sequence item to existing
+void bsl_token_ir_append(bsl_tkn_ir **token_ir, bsl_tkn_ir *append) {
+	bsl_tkn_ir *ir = (*token_ir);
+	
+	if (append != NULL) {
+		ir->next = bsl_token_ir_copy(append);
+		ir->next->prev = ir;
+	}
+	
+	*token_ir = ir->next;
+}
+
+bsl_tkn_ir * bsl_token_ir_jump_head(bsl_tkn_ir *token_ir) {
+	
+	bsl_tkn_ir *curr = token_ir;
+	
+	if (curr != NULL) {
+	
+		while (curr->prev != NULL) {
+		
+			curr = curr->prev;
+		}
+		
+	}
+	
+	return curr;
+}
+
+uint32_t bsl_token_ir_count(bsl_tkn_ir *token_ir) {
+	uint32_t result = 0;
+	
+	bsl_tkn_ir *curr = token_ir;
+	
+	while (curr != NULL) {
+		
+		result++;
+		
+		curr = curr->next;
+	}
+	
+	return result;
+}

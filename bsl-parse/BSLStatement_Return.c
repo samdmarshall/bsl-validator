@@ -18,6 +18,8 @@ bsl_statement_return bsl_statement_return_create(bsl_tkn_ir **token, bsl_context
 	
 	curr = curr->next;
 	
+	// return can start with a parenthesis, identifier, or logical NOT
+	
 	if (curr != NULL && curr->token != NULL) {
 		ret.variable = bsl_variable_create_from_token(curr->token, context);
 	}

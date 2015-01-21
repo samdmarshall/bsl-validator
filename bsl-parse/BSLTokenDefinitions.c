@@ -53,7 +53,7 @@ if (strncmp(token->contents, str(ident), csize(ident)) == 0) { \
 */
 bsl_token_code bsl_token_resolve_identifier(bsl_token *token) {
 	if (token->offset.length > 8 || token->offset.length < 2) {
-		return BSLTokenCode_id_generic;
+		return token->code;
 	}
 	else {
 		// NOTE: The following must be in alphabetical ordering

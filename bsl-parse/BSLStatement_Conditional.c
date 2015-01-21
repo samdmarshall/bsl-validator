@@ -10,6 +10,7 @@
 #include "BSLToken.h"
 #include "BSLStatement.h"
 #include "BSLOperation.h"
+#include "BSLParse.h"
 
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
 	bsl_statement_conditional conditional = {0};
@@ -33,14 +34,10 @@ if_loop:
 			if (curr->token->code == BSLTokenCode_id_if) {
 				
 				cond_case->cond->type = bsl_conditional_type_if;
-				
-				cond_case->cond->op = bsl_operation_create();
 			}
 			else if (curr->token->code == BSLTokenCode_id_else) {
 				
 				cond_case->cond->type = bsl_conditional_type_else;
-				
-				cond_case->cond->op = bsl_operation_create();
 			}
 			else {
 				// error
@@ -49,6 +46,9 @@ if_loop:
 		}
 		
 		result = bsl_function_interp_expression_increment(&curr, interp, index);
+		
+		// tracking tokens
+		bsl_tkn_ir *cond_tokens = NULL;
 		
 		// track the close scope
 		int8_t scope_tracker = 0;
@@ -64,7 +64,13 @@ if_loop:
 			
 			// add ir to conditional
 			if (pre_check >= 1 && scope_tracker != 0) {
-				printf("");
+				if (cond_tokens == NULL) {
+					cond_tokens = bsl_token_ir_copy(curr);
+				}
+				else {
+					bsl_token_ir_append(&cond_tokens, curr);
+				}
+				
 			}
 			
 			if (scope_tracker == 0) {
@@ -74,6 +80,12 @@ if_loop:
 
 			curr = curr->next;
 		}
+		
+		// reset position of ir tokens to use in conditional
+		cond_tokens = bsl_token_ir_jump_head(cond_tokens);
+		
+		// parse conditional tokens to operation
+		cond_case->cond->op = bsl_operation_create(context, cond_tokens);
 
 		// smart advancing past conditional to expressions
 		result = bsl_function_interp_expression_increment_token(&curr, interp, index);
@@ -202,7 +214,7 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) 
 			break;
 		}
 		case bsl_conditional_type_else: {
-			return 1;
+			result = 1;
 			break;
 		}
 		default: {

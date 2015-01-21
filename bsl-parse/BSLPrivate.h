@@ -508,12 +508,34 @@ struct bsl_statement {
 #pragma mark -
 #pragma mark BSLOperation
 
+#pragma mark bsl_operation_action
+
+typedef enum bsl_operation_action {
+	bsl_operation_action_invalid,
+	
+	bsl_operation_action_cmp_lt,
+	bsl_operation_action_cmp_le,
+	bsl_operation_action_cmp_eq,
+	bsl_operation_action_cmp_ne,
+	bsl_operation_action_cmp_ge,
+	bsl_operation_action_cmp_gt,
+	
+	bsl_operation_action_act_and,
+	bsl_operation_action_act_or,
+	bsl_operation_action_act_not,
+	
+	bsl_operation_action_count
+} bsl_operation_action;
+
 #pragma mark bsl_operation
 
 struct bsl_operation {
-	// value 1
-	// operation
-	// value 2
+	bsl_statement statement_r;
+	
+	// action
+	bsl_operation_action action;
+	
+	bsl_statement statement_l;
 };
 
 #pragma mark -

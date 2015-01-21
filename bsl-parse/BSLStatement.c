@@ -153,7 +153,34 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				
 				context->stack->active->symbol = result;
 			}
+			else {
+				printf("");
+			}
 			
+		}
+		else {
+			
+			switch (code) {
+				case BSLTokenCode_id_int:
+				case BSLTokenCode_id_float:
+				case BSLTokenCode_id_bool:
+				case BSLTokenCode_id_string:
+				case BSLTokenCode_id_false:
+				case BSLTokenCode_id_true: {
+					printf("");
+					// create constant
+					expr.type = bsl_statement_type_var;
+					
+					expr.u.var = bsl_statement_const_create(&curr, context);
+					
+					*item = curr;
+					
+					return expr;
+				}
+				default: {
+					break;
+				}
+			}
 		}
 		
 		switch (code) {
@@ -161,6 +188,17 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				expr.type = bsl_statement_type_func;
 				
 				expr.u.func = bsl_statement_func_create(&curr, context);
+				
+				if (curr->next != NULL) {
+					
+					if (curr->token != NULL) {
+						
+						if (curr->token->code == BSLTokenCode_ctl_rparen) {
+							
+							curr = curr->next;
+						}
+					}
+				}
 				
 				(*index)++;
 				

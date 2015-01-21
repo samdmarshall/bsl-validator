@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+bsl_statement_var bsl_statement_const_create(bsl_tkn_ir **token, bsl_context *context);
+
 bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *context);
 
 bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *context);

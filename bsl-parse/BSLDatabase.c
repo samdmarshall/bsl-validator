@@ -17,6 +17,7 @@
 #include "BSL_stdlib.h"
 
 void bsl_db_register(char *name, bsl_symbol *symbol, cmap_str symtab) {
+	size_t size = cmap_str_count(symtab);
 	cmap_str_setObjectForKey(symtab, name, symbol);
 }
 
@@ -178,6 +179,7 @@ void bsl_db_release(bsl_database *db) {
 }
 
 bsl_symbol * bsl_db_lookup(char *name, cmap_str symtab) {
+	size_t count = cmap_str_count(symtab);
 	return cmap_str_objectForKey(symtab, name);
 }
 

@@ -3,6 +3,12 @@ func testing(int a) {
 	return;
 }
 
+func int foobar(int a) {
+	return 0
+}
+
+var int my_save_point = 0;
+
 func void main {
 	sleep 30
 	dmsg "hello world";
@@ -27,6 +33,10 @@ func void main {
 	{
 		dmsg "bar";
 		dmsg "world"
+	}
+	
+	if (foobar(1) eq 0) {
+		dmsg "it works!";
 	}
 	
 	sleep 40

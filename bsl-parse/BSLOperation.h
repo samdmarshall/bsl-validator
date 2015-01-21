@@ -11,7 +11,7 @@
 
 #include "BSLPrivate.h"
 
-bsl_operation * bsl_operation_create();
+bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir);
 
 void bsl_operation_release(bsl_operation *op);
 
