@@ -138,7 +138,9 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 	debug_printf("%s %s -> ", context->stack->active->symbol->u.value.name, var1_text);
 	free(var1_text);
 	
-	bsl_variable_parse_assign(&curr, context, &(var.variable));
+	if (curr->next != NULL) {
+		bsl_variable_parse_assign(&curr, context, &(var.variable));
+	}
 	
 	var.scope = context->stack->active;
 	

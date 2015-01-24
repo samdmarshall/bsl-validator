@@ -57,6 +57,7 @@ typedef struct bsl_statement_schedule bsl_statement_schedule;
 
 typedef struct bsl_statement_fork bsl_statement_fork;
 
+typedef struct bsl_operation_statement bsl_operation_statement;
 typedef struct bsl_operation bsl_operation;
 typedef struct bsl_conditional bsl_conditional;
 typedef struct bsl_statement_conditional_case bsl_statement_conditional_case;
@@ -188,6 +189,8 @@ typedef enum bsl_error {
 	bsl_error_invalid_scope, // scope is not valid for current evaluation
 	bsl_error_invalid_parameter_type, // parameter type mismatch
 	bsl_error_invalid_conditional, // conditional type error
+	bsl_error_invalid_statement_in_conditional,
+	bsl_error_invalid_variable_type_in_conditional,
 	
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 	
@@ -534,13 +537,36 @@ typedef enum bsl_operation_action {
 #pragma mark bsl_operation
 
 struct bsl_operation {
-	bsl_tkn_ir *right_side;
+	bsl_operation_statement *right_side;
 	
 	// action
 	bsl_operation_action action;
 	
-	bsl_tkn_ir *left_side;
+	bsl_operation_statement *left_side;
 };
+
+#pragma mark bsl_operation_statement_type
+
+typedef enum bsl_operation_statement_type {
+	bsl_operation_statement_type_invalid,
+	
+	bsl_operation_statement_type_statement,
+	bsl_operation_statement_type_operation,
+	
+	bsl_operation_statement_type_count
+} bsl_operation_statement_type;
+
+#pragma mark bsl_operation_statement
+
+struct bsl_operation_statement {
+	bsl_operation_statement_type type;
+	
+	union {
+		bsl_operation op;
+		bsl_statement sm;
+	} u;
+};
+
 
 #pragma mark -
 #pragma mark BSLSymbol

@@ -13,6 +13,8 @@
 
 bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir);
 
+int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op);
+
 void bsl_operation_release(bsl_operation *op);
 
 #endif /* defined(__bsl_parse__BSLOperation__) */

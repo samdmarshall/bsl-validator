@@ -209,12 +209,13 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) 
 	switch (cond->type) {
 		case bsl_conditional_type_if: {
 			// evaluate operation
-			
+			result = bsl_operation_evaluation(context, cond->op);
 			
 			break;
 		}
 		case bsl_conditional_type_else: {
 			result = 1;
+			
 			break;
 		}
 		default: {
