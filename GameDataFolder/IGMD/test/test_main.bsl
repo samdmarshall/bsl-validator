@@ -51,4 +51,8 @@ func void main {
 	sleep 20
 	
 	schedule foobar(5) at 5000
+	
+	if (test eq 10 and my_save_point eq 0) {
+		dmsg "valid operations!"
+	}
 }

@@ -110,6 +110,18 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 					op->action = bsl_operation_action_cmp_ge;
 					break;
 				}
+				case BSLTokenCode_op_AND: {
+					op->action = bsl_operation_action_act_and;
+					break;
+				}
+				case BSLTokenCode_op_OR: {
+					op->action = bsl_operation_action_act_or;
+					break;
+				}
+				case BSLTokenCode_op_NOT: {
+					op->action = bsl_operation_action_act_not;
+					break;
+				}
 				default: {
 					break;
 				}
@@ -183,8 +195,35 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 	int8_t result = 0;
 	
+	int8_t is_two_statement = 0;
+	int8_t is_two_sided = 0;
 	
-	if (op->left_side->type == bsl_operation_statement_type_statement && op->right_side->type == bsl_operation_statement_type_statement) {
+	if (op->left_side != NULL && op->right_side != NULL) {
+		
+		is_two_sided = 1;
+		
+		if (op->left_side->type == bsl_operation_statement_type_statement && op->right_side->type == bsl_operation_statement_type_statement) {
+			
+			is_two_statement = 1;
+		}
+	}
+	
+	int8_t is_logic = 0;
+	
+	switch (op->action) {
+		case bsl_operation_action_act_and:
+		case bsl_operation_action_act_or:
+		case bsl_operation_action_act_not: {
+			is_logic = 1;
+			
+			break;
+		}
+		default: {
+			break;
+		}
+	}
+	
+	if (is_two_statement == 1 && is_logic != 1) {
 		
 		// ==================================
 		// Left Side
@@ -303,27 +342,44 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 			}
 		}
 	}
-	else {
+	else if (is_logic == 1) {
 		
+		int8_t left_side = bsl_operation_evaluation(context, &(op->left_side->u.op));
+		int8_t right_side = bsl_operation_evaluation(context, &(op->right_side->u.op));
 		
 		switch (op->action) {
-				
 			case bsl_operation_action_act_and: {
-				
+				if (is_two_sided == 1) {
+					if (left_side && right_side) {
+						result = 1;
+					}
+				}
 				break;
 			}
 			case bsl_operation_action_act_or: {
-				
+				if (is_two_sided == 1) {
+					if (left_side || right_side) {
+						result = 1;
+					}
+				}
 				break;
 			}
 			case bsl_operation_action_act_not: {
-				
+				if (is_two_sided == 0) {
+					if (!right_side) {
+						result = 1;
+					}
+				}
 				break;
 			}
 			default: {
 				break;
 			}
 		}
+	}
+	else {
+		// error
+		(*context)->error = bsl_error_invalid_conditional;
 	}
 	
 	return result;
