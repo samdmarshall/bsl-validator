@@ -152,7 +152,9 @@ void bsl_context_print_stack(bsl_context *context) {
 					printf("compiled func %s\n", name);
 				}
 				else {
-					printf("%s:%i func %s\n", script->fd->name, symbol->line,name);
+					if (strcmp(name, "") != 0) {
+						printf("%s:%i func %s\n", script->fd->name, symbol->line, name);
+					}
 				}
 				
 				free(name);
