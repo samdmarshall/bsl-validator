@@ -58,7 +58,7 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 					time = (time / 60.f);
 					
 					sleep.total.tv_sec = floorf(time);
-					sleep.total.tv_usec = time * kMicroseconds;
+					sleep.total.tv_usec = (time * kMicroseconds) - (sleep.total.tv_sec * kMicroseconds);
 					
 					debug_printf("%li seconds, %i microseconds, %ld frames\n", sleep.total.tv_sec, sleep.total.tv_usec, (sleep.total.tv_sec * 60) + (sleep.total.tv_usec / kMicrosecondsPerFrame));
 

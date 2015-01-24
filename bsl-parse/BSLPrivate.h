@@ -534,12 +534,12 @@ typedef enum bsl_operation_action {
 #pragma mark bsl_operation
 
 struct bsl_operation {
-	bsl_statement statement_r;
+	bsl_tkn_ir *right_side;
 	
 	// action
 	bsl_operation_action action;
 	
-	bsl_statement statement_l;
+	bsl_tkn_ir *left_side;
 };
 
 #pragma mark -
