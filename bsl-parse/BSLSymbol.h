@@ -21,4 +21,6 @@ void bsl_symbol_update_info(bsl_symbol *symbol, bsl_script_offset offset);
 
 void bsl_symbol_release(bsl_symbol *symbol);
 
+void bsl_symbol_print_frame(bsl_symbol *symbol);
+
 #endif /* defined(__bsl_parse__BSLSymbol__) */

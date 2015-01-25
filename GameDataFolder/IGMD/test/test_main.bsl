@@ -18,6 +18,7 @@ func void main2 {
 	testing(6)
 	
 	dmsg "hi"
+	
 }
 
 func void main {
@@ -77,6 +78,8 @@ func void main {
 	}
 	
 	sleep 20
+	
+	main2
 	
 	schedule foobar(5) at 5000
 }

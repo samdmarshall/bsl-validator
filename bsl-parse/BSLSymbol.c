@@ -9,6 +9,7 @@
 #include "BSLSymbol.h"
 #include "BSLVariable.h"
 #include "BSLFunction.h"
+#include "BSLScript.h"
 
 void bsl_symbol_duplicate_description(bsl_symbol *parsed, bsl_symbol *original) {
 	char *parsed_name = "";
@@ -109,4 +110,20 @@ void bsl_symbol_release(bsl_symbol *symbol) {
 		
 		free(symbol);
 	}
+}
+
+void bsl_symbol_print_frame(bsl_symbol *symbol) {
+	
+	bsl_script *script = symbol->script;
+	
+	if (script->fd != NULL) {
+		printf("%s:%i", script->fd->name, symbol->line);
+	}
+	else {
+		printf("compiled");
+	}
+	
+	char *func_line = bsl_script_copy_line(script, symbol->index);
+	printf(" -> \"%s\"\n", func_line);
+	free(func_line);
 }

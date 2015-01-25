@@ -129,12 +129,8 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 	bsl_symbol *var_symbol = bsl_stack_search_scope(name, context);
 	
 	if (var_symbol->type == bsl_symbol_type_variable) {
-		var.variable.type = var_symbol->u.value.type;
 		
-		var.variable.name = name;
-		
-		bsl_variable *symbol_variable = &(var_symbol->u.value);
-		bsl_variable_set(&(var.variable), symbol_variable);
+		memcpy(&(var.variable), &(var_symbol->u.value), sizeof(bsl_variable));
 	}
 	
 	char *var1_text = bsl_variable_print(var_symbol->u.value);
@@ -150,12 +146,6 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 		
 		bsl_db_register_state(var.variable.name, var_symbol, context);
 	}
-	
-//	var.scope = context->stack->active;
-	
-	char *var2_text = bsl_variable_print(var.variable);
-	debug_printf("%s\n", var2_text);
-	free(var2_text);
 	
 	// move current position
 	*token = curr;

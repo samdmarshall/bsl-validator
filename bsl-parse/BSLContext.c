@@ -64,6 +64,12 @@ int bsl_context_check_error(bsl_context *context) {
 			sprintf(message, "Duplicate symbol \"%s\", originally defined", name);
 			break;
 		}
+		case bsl_error_token_invalid_string: {
+			break;
+		}
+		case bsl_error_token_invalid_syntax: {
+			break;
+		}
 		case bsl_error_invalid_identifier: {
 			sprintf(message, "Invalid use of identifier \"%s\"", name);
 			break;
@@ -89,8 +95,8 @@ int bsl_context_check_error(bsl_context *context) {
 			break;
 		}
 	}
-	if (message[0] != 0) {
-		printf("\n%s at %s:%i\n",message, script_name, symbol->line);
+	if (message[0] != 0 && context->active_err == 0) {
+		printf("\n%s in %s:%i\n",message, script_name, symbol->line);
 		
 		bsl_context_print_stack(context);
 	}
@@ -134,12 +140,12 @@ void bsl_context_print_stack(bsl_context *context) {
 	
 	printf("Error: printing current stack...\n");
 	
-	uint8_t counter = -1;
+	int8_t counter = -1;
 	
 	while (counter < context->stack_pos) {
 		counter++;
 		
-		bsl_symbol *symbol = context->stack[context->stack_pos].symbol;
+		bsl_symbol *symbol = context->stack[counter].symbol;
 		
 		if (symbol != NULL) {
 			
@@ -162,16 +168,12 @@ void bsl_context_print_stack(bsl_context *context) {
 			
 			if (counter == context->stack_pos) {
 				
-				if (script->fd != NULL) {
-					printf("%s:%i", script->fd->name, symbol->line);
+				if (context->stack[counter].statement_count > 0) {
+					
+					symbol = &(context->stack[counter].statements[context->stack[counter].statement_count - 1]);
 				}
-				else {
-					printf("compiled");
-				}
-
-				char *line = bsl_script_copy_line(script, symbol->index);
-				printf(" -> \"%s\"\n", line);
-				free(line);
+				
+				bsl_symbol_print_frame(symbol);
 			}
 		}
 	}

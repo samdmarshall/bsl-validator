@@ -156,6 +156,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 			}
 			else {
 				printf("");
+				context->error = bsl_error_invalid_identifier;
 			}
 			
 		}
@@ -297,10 +298,14 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 			}
 			default: {
 				
-				debug_printf("%s","unknown: ");
-				
-				context->error = bsl_error_token_invalid_syntax;
 				// error
+				
+				if (context->error == bsl_error_none) {
+					debug_printf("%s","unknown: ");
+				
+					context->error = bsl_error_token_invalid_syntax;
+				}
+				
 				break;
 			}
 		}
