@@ -153,7 +153,6 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 					code = BSLTokenCode_type_var;
 				}
 				
-				context->stack->active->symbol = result;
 			}
 			else {
 				printf("");

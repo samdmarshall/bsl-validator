@@ -8,70 +8,48 @@
 
 #include "BSLStack.h"
 #include "BSLDatabase.h"
+#include "BSLSymbol.h"
 
-bsl_stack_scope * bsl_stack_scope_create() {
-	bsl_stack_scope *scope = calloc(1, sizeof(bsl_stack_scope));
+void bsl_stack_init(bsl_stack *stack_frame) {
+	stack_frame->symbol = NULL;
+	stack_frame->symtab = cmap_str_new();
 	
-	if (scope != NULL) {
-		scope->symtab = cmap_str_new();
-	}
-	
-	return scope;
+	stack_frame->statements = calloc(1, sizeof(bsl_symbol));
+	stack_frame->statement_count = 0;
 }
 
-void bsl_stack_scope_release(bsl_stack_scope *scope) {
-	if (scope != NULL) {
+void bsl_stack_release(bsl_stack *frame) {
+	if (frame != NULL) {
 		
-		if (scope->symtab != NULL) {
-			cmap_str_free(scope->symtab);
+		if (frame->statements != NULL) {
+			free(frame->statements);
 		}
 		
-		if (scope->next != NULL) {
-			bsl_stack_scope_release(scope->next);
+		frame->symbol = NULL;
+		
+		if (frame->symtab != NULL) {
+			cmap_str_free(frame->symtab);
 		}
 		
-		scope->prev->next = NULL;
-		
-		free(scope);
 	}
 }
 
-bsl_stack * bsl_stack_create() {
-	bsl_stack *stack = calloc(1, sizeof(bsl_stack));
+void bsl_stack_increment(bsl_context *context, bsl_symbol *symbol) {
 	
-	if (stack != NULL) {
-		stack->state = bsl_stack_scope_create();
-		stack->active = stack->state;
-	}
+	context->stack_pos += 1;
+	context->stack[context->stack_pos].symbol = symbol;
+}
+
+void bsl_stack_decrement(bsl_context *context) {
 	
-	return stack;
-}
-
-void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_t depth) {
-	// convenience call to advance the stack scope item sequence
-	bsl_stack_scope *item = *scope;
-	if (item != NULL) {
-		item->next = bsl_stack_scope_create();
-		item->next->scope_depth = depth;
-		item->next->scope_level = type;
-		item->next->prev = item;
-		
-		// passing next stack scope item back up out
-		*scope = item->next;
-	}
-	else {
-		*scope = item;
-	}
-}
-
-void bsl_stack_release(bsl_stack *stack) {
-	if (stack != NULL) {
-		if (stack->state != NULL) {
-			bsl_stack_scope_release(stack->state);
-		}
-		
-		free(stack);
-	}
+	bsl_stack *frame = &(context->stack[context->stack_pos]);
+	
+	bsl_stack_release(frame);
+	
+	bsl_stack_init(frame);
+	
+	context->stack_pos -= 1;
+	
 }
 
 bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context) {
@@ -79,21 +57,7 @@ bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context) {
 	
 	if (symbol == NULL) {
 		
-		bsl_stack_scope *curr = context->stack->active;
-		
-		while (curr->scope_depth == context->stack->active->scope_depth) {
-			symbol = bsl_db_get_symbol(name, curr->symtab);
-			
-			if (symbol != NULL) {
-				break;
-			}
-			
-			curr = curr->prev;
-			
-			if (curr == NULL) {
-				break;
-			}
-		}
+		symbol = bsl_db_get_symbol(name, context->stack[context->stack_pos].symtab);
 	}
 	
 	return symbol;

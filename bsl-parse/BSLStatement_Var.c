@@ -132,17 +132,26 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 		var.variable.type = var_symbol->u.value.type;
 		
 		var.variable.name = name;
+		
+		bsl_variable *symbol_variable = &(var_symbol->u.value);
+		bsl_variable_set(&(var.variable), symbol_variable);
 	}
 	
-	char *var1_text = bsl_variable_print(context->stack->active->symbol->u.value);
-	debug_printf("%s %s -> ", context->stack->active->symbol->u.value.name, var1_text);
+	char *var1_text = bsl_variable_print(var_symbol->u.value);
+	debug_printf("%s %s", var_symbol->u.value.name, var1_text);
 	free(var1_text);
 	
 	if (curr->next != NULL) {
+		debug_printf("%s", " -> ");
 		bsl_variable_parse_assign(&curr, context, &(var.variable));
+		
+		bsl_variable *symbol_variable = &(var_symbol->u.value);
+		bsl_variable_set(symbol_variable, &(var.variable));
+		
+		bsl_db_register_state(var.variable.name, var_symbol, context);
 	}
 	
-	var.scope = context->stack->active;
+//	var.scope = context->stack->active;
 	
 	char *var2_text = bsl_variable_print(var.variable);
 	debug_printf("%s\n", var2_text);

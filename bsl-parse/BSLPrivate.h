@@ -604,31 +604,22 @@ struct bsl_symbol {
 #pragma mark -
 #pragma mark BSLStack
 
-#pragma mark bsl_stack_scope
-
-struct bsl_stack_scope {
-	bsl_scope_type scope_level;
-	int8_t scope_depth;
-	
-	cmap_str symtab;
-	
-	bsl_symbol *symbol;
-	
-	bsl_stack_scope *next;
-	bsl_stack_scope *prev;
-};
-
 #pragma mark bsl_stack
 
 struct bsl_stack {
+	bsl_symbol *symbol;
 	
-	bsl_stack_scope *active;
+	cmap_str symtab;
 	
-	bsl_stack_scope *state;
+	// position tracking here
+	bsl_symbol *statements;
+	uint32_t statement_count;
 };
 
 #pragma mark -
 #pragma mark BSLContext
+
+#define kBSLStackFrameMaximum 64
 
 #pragma mark bsl_context
 
@@ -638,7 +629,8 @@ struct bsl_context {
 	
 	bsl_database *global;
 	
-	bsl_stack *stack;
+	bsl_stack stack[kBSLStackFrameMaximum];
+	uint8_t stack_pos;
 	
 	bsl_error error;
 	uint8_t active_err;

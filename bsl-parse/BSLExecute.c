@@ -25,13 +25,7 @@ int bsl_symbol_execute(char *name, bsl_context *context) {
 		if (symbol->type == bsl_symbol_type_function) {
 			// setup state
 			
-			context->stack->active->symbol = symbol;
-			
-			context->stack->active->scope_level	= BSLScope_func;
-			context->stack->active->scope_depth++;
-			
-			bsl_symbol_parse_call(&context, symbol->u.func.rtype, symbol->u.func.args, symbol->u.func.arg_count);
-			
+			bsl_symbol_make_call(&context, symbol);
 		}
 	}
 	else {
@@ -158,7 +152,7 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 }
 
 int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	return bsl_symbol_parse_evaluate_symbol(context, (*context)->stack->active->symbol, rtype, args, arg_count);
+	return bsl_symbol_parse_evaluate_symbol(context, (*context)->stack[(*context)->stack_pos].symbol, rtype, args, arg_count);
 }
 
 void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context) {
@@ -180,48 +174,17 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 			expr_statement->u.expr = statement;
 			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
 			
-			tmp->stack->active->symbol = expr_statement;
-			
-			bsl_scope_type type = BSLScope_invalid;
-			uint8_t depth = tmp->stack->active->scope_depth;
-			
-			switch (statement.type) {
-				case bsl_statement_type_conditional: {
-					type = BSLScope_cond;
-					break;
-				}
-				case bsl_statement_type_sleep: {
-					type = tmp->stack->active->scope_level;
-					break;
-				}
-				case bsl_statement_type_fork: {
-					type = tmp->stack->active->scope_level;
-					break;
-				}
-				case bsl_statement_type_schedule: {
-					type = tmp->stack->active->scope_level;
-					break;
-				}
-				case bsl_statement_type_iterate: {
-					type = tmp->stack->active->scope_level;
-					break;
-				}
-				case bsl_statement_type_return: {
-					type = tmp->stack->active->scope_level;
-					break;
-				}
-				case bsl_statement_type_func: {
-					type = BSLScope_func;
-					break;
-				}
-				default: {
-					break;
-				}
-			}
-			
-			bsl_stack_item_advance(&(tmp->stack->active), type, depth);
+			tmp->stack[tmp->stack_pos].statements = realloc(tmp->stack[tmp->stack_pos].statements, sizeof(bsl_symbol) * (tmp->stack[tmp->stack_pos].statement_count + 1));
+			memcpy(&(tmp->stack[tmp->stack_pos].statements[tmp->stack[tmp->stack_pos].statement_count]), expr_statement, sizeof(bsl_symbol));
+			tmp->stack[tmp->stack_pos].statement_count += 1;
 			
 			if (bsl_context_check_error(*context) != bsl_error_none) {
+				break;
+			}
+			
+			bsl_statement *current_statement = &(tmp->stack[tmp->stack_pos].statements[tmp->stack[tmp->stack_pos].statement_count - 1].u.expr);
+			
+			if (current_statement->type == bsl_statement_type_return) {
 				break;
 			}
 			
@@ -237,30 +200,16 @@ bsl_variable * bsl_symbol_render_logic(bsl_context **context, bsl_symbol *symbol
 	
 	debug_printf("%s","\n\t\tcalling interpreted -> ");
 	
-	bsl_context *tmp = (*context);
-	
 	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 	
 	if (mismatch_arg != 0) {
 		debug_printf(" -> error in %i total args!",mismatch_arg);
 	}
 	
-	if ((*context)->stack->active->symbol != NULL) {
-		if ((*context)->stack->active->symbol->type == bsl_symbol_type_function) {
-			debug_printf("%s","\n\n");
-		}
-		if ((*context)->stack->active->symbol->type == bsl_symbol_type_variable) {
-			debug_printf("%s"," -> ");
-		}
-	}
-	else {
-		debug_printf("%s","\n\n");
-	}
+	debug_printf("%s","\n\n");
 	
 	bsl_function_interpreted interp = symbol->u.func.u.interp;
-	
-	bsl_stack_item_advance(&(tmp->stack->active), tmp->stack->active->scope_level, tmp->stack->active->scope_depth);
-	
+		
 	bsl_execute_interpreted_code(interp.code, context);
 	
 	return var;
@@ -272,6 +221,8 @@ bsl_variable * bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol) {
 
 bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
 	bsl_variable *result = NULL;
+
+	bsl_stack_increment(*context, symbol);
 	
 	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 	
@@ -298,9 +249,11 @@ bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *s
 		bsl_context_check_error(*context);
 	}
 	
+	bsl_stack_decrement(*context);
+	
 	return result;
 }
 
 bsl_variable * bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	return bsl_symbol_parse_call_symbol(context, (*context)->stack->active->symbol, rtype, args, arg_count);
+	return bsl_symbol_parse_call_symbol(context, (*context)->stack[(*context)->stack_pos].symbol, rtype, args, arg_count);
 }

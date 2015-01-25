@@ -461,10 +461,10 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 				
 			}
 			
-			if (context->stack->active->symbol == NULL) {
-				context->stack->active->symbol = bsl_symbol_create(bsl_symbol_type_variable);
-				context->stack->active->symbol->u.value = var;
-				bsl_symbol_update_info(context->stack->active->symbol, (*item)->token->offset);
+			if (context->stack[context->stack_pos].symbol == NULL) {
+				context->stack[context->stack_pos].symbol = bsl_symbol_create(bsl_symbol_type_variable);
+				context->stack[context->stack_pos].symbol->u.value = var;
+				bsl_symbol_update_info(context->stack[context->stack_pos].symbol, (*item)->token->offset);
 			}
 		}
 		

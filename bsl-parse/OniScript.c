@@ -74,9 +74,9 @@ int EvaluateContext(OniScriptContext *context) {
 		// eval `main`
 		result = bsl_symbol_execute("main", eval_context);
 	
-		bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
+//		bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
 	
-		//bsl_scheduler_run(scheduler);
+//		bsl_scheduler_run(scheduler);
 	}
 	
 	return result;

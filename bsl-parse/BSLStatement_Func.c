@@ -13,7 +13,7 @@
 bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *context) {
 	bsl_statement_func func = {0};
 	
-	bsl_symbol *symbol = context->stack->active->symbol;
+	bsl_symbol *symbol = NULL;
 	
 	bsl_symbol *call_symbol = NULL;
 	
@@ -26,14 +26,12 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 	
 	char *name = NULL;
 	
-	if (symbol == NULL) {
-		if (name == NULL) {
-			name = calloc(curr->token->offset.length + 1, sizeof(char));
-			strncpy(name, curr->token->contents, sizeof(char) * curr->token->offset.length);
-		}
-		
-		symbol = bsl_db_get_state(name, context);
+	if (name == NULL) {
+		name = calloc(curr->token->offset.length + 1, sizeof(char));
+		strncpy(name, curr->token->contents, sizeof(char) * curr->token->offset.length);
 	}
+		
+	symbol = bsl_db_get_state(name, context);
 	
 	call_symbol = symbol;
 	
@@ -113,8 +111,8 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 	
 	if (symbol != NULL) {
 		
-		context->stack->active->scope_level	= BSLScope_func;
-		context->stack->active->scope_depth += 1;
+//		context->stack->active->scope_level	= BSLScope_func;
+//		context->stack->active->scope_depth += 1;
 		
 		if (call_symbol->type == bsl_symbol_type_function) {
 			bsl_variable *result = bsl_symbol_parse_call_symbol(&context, symbol, symbol->u.func.rtype, args, arg_count);
@@ -131,7 +129,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		}
 		
 		
-		context->stack->active->scope_depth -= 1;
+//		context->stack->active->scope_depth -= 1;
 	}
 
 	// move current position

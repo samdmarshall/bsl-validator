@@ -11,15 +11,13 @@
 
 #include "BSLPrivate.h"
 
-bsl_stack_scope * bsl_stack_scope_create();
+void bsl_stack_init(bsl_stack *stack_frame);
 
-void bsl_stack_scope_release(bsl_stack_scope *scope);
+void bsl_stack_release(bsl_stack *frame);
 
-bsl_stack * bsl_stack_create();
+void bsl_stack_increment(bsl_context *context, bsl_symbol *symbol);
 
-void bsl_stack_item_advance(bsl_stack_scope **scope, bsl_scope_type type, uint8_t depth);
-
-void bsl_stack_release(bsl_stack *stack);
+void bsl_stack_decrement(bsl_context *context);
 
 bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context);
 

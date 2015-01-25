@@ -16,44 +16,7 @@ bsl_scheduler * bsl_scheduler_create(bsl_context *context) {
 	
 	if (scheduler != NULL) {
 		
-		bsl_stack_scope *curr = context->stack->state;
 		
-		bsl_schedule_item *prev = NULL;
-		
-		while (curr != NULL) {
-			
-			bsl_symbol *symbol = curr->symbol;
-			
-			if (symbol != NULL) {
-				
-				switch (symbol->type) {
-					case bsl_symbol_type_variable: {
-						break;
-					}
-					case bsl_symbol_type_function: {
-						break;
-					}
-					case bsl_symbol_type_statement: {
-						scheduler->current->statement = &(symbol->u.expr);
-						break;
-					}
-					default: {
-						break;
-					}
-				}
-				
-				scheduler->current->item_count = 1;
-				scheduler->current->items = calloc(scheduler->current->item_count, sizeof(bsl_schedule_item));
-				
-				scheduler->current->parent = prev;
-				
-				prev = scheduler->current;
-				
-				scheduler->current = scheduler->current->items;
-			}
-			
-			curr = curr->next;
-		}
 	}
 	
 	scheduler->current = scheduler->stack;

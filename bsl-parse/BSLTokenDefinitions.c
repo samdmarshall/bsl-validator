@@ -11,19 +11,19 @@
 #define str(v) #v
 #define csize(v) sizeof(str(v))-1
 
-#define token_len(v, code) \
+#define token_len(v, code_block) \
 case v: { \
 	switch (token->contents[0]) { \
-		code \
+		code_block \
 		default: { \
-			return BSLTokenCode_id_generic; \
+			return token->code; \
 		} \
 	} \
 }
 
-#define key(v, code) \
+#define key(v, code_block) \
 case v: { \
-	code \
+	code_block \
 }
 
 #define word(ident,flag) \
