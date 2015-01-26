@@ -194,7 +194,8 @@ typedef enum bsl_error {
 	
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 	
-	bsl_error_func_param_count, // parameter count is greater than 8
+	bsl_error_func_param_count_max, // parameter count is greater than 8
+	bsl_error_func_param_count_overload,
 	
 	bsl_error_count
 } bsl_error;

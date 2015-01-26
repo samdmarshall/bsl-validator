@@ -17,4 +17,6 @@ void bsl_expression_release(bsl_expression *expression);
 
 bsl_expression * bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context);
 
+int bsl_expression_check_end(bsl_token_code code);
+
 #endif /* defined(__bsl_parse__BSLExpression__) */

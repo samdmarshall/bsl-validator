@@ -9,6 +9,7 @@
 #include "BSLStatement_Func.h"
 #include "BSLExecute.h"
 #include "BSLVariable.h"
+#include "BSLExpression.h"
 
 bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *context) {
 	bsl_statement_func func = {0};
@@ -109,11 +110,27 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		memcpy(args[index].args, symbol->u.func.args[index].args, sizeof(bsl_variable));
 	}
 	
+	// check if there are extra arguments
+	if (curr->next != NULL) {
+		
+		bsl_tkn_ir *tmp = curr->next;
+		
+		if (tmp->token != NULL) {
+			
+			bsl_token_code code = tmp->token->code;
+			
+			if (code != BSLTokenCode_ctl_rparen && bsl_expression_check_end(code) == 0) {
+				
+				context->error = bsl_error_func_param_count_overload;
+			}
+		}
+	}
+	
 	if (symbol != NULL) {
 		
 //		context->stack->active->scope_level	= BSLScope_func;
 //		context->stack->active->scope_depth += 1;
-		
+
 		if (call_symbol->type == bsl_symbol_type_function) {
 			bsl_variable *result = bsl_symbol_parse_call_symbol(&context, symbol, symbol->u.func.rtype, args, arg_count);
 			
@@ -127,7 +144,6 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			
 			bsl_variable_release(*result);
 		}
-		
 		
 //		context->stack->active->scope_depth -= 1;
 	}

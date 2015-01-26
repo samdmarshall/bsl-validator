@@ -51,7 +51,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// kills all the AI
 	{"chr_kill_all_ai", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// begins a cutscene
-	{"begin_cutscene", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"begin_cutscene", bsl_db_register_type_void, "(string flag)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// sets up an AI's neutral-interaction
 	{"ai2_neutralbehavior", bsl_db_register_type_void, "([ai_name:string | script_id:int], string behavior)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// debugging message
@@ -312,7 +312,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// forces an AI into inactive mode
 	{"ai2_inactive", bsl_db_register_type_void, "([ai_name:string | script_id:int])", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// function to start music playing
-	{"sound_music_start", bsl_db_register_type_void, "(string name)", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"sound_music_start", bsl_db_register_type_void, "(string name, float volume)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// shows the currently selected shooting skill
 	{"ai2_skill_show", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// jams a door in its current state
@@ -448,7 +448,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// sets the alert state of an AI
 	{"ai2_setalert", bsl_db_register_type_void, "([ai_name:string | script_id:int], string alarm)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// marks a point in a cutscene
-	{"cutscene_sync", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"cutscene_sync", bsl_db_register_type_void, "(string state)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// makes a character utter a vocalization
 	{"chr_vocalize", bsl_db_register_type_void, "([ai_name:string | script_id:int], string type)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// selects a shooting skill to edit

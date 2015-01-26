@@ -22,6 +22,7 @@ func void main2 {
 }
 
 func void main {
+	
 	sleep 30
 	dmsg "hello world";
 	

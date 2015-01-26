@@ -58,32 +58,35 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 				debug_printf("%s"," | ");
 			}
 			
-			if (args[param_index].arg_type_count > 0) {
-				switch (var_type) {
-					case bsl_variable_int: {
-						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
-						break;
-					}
-					case bsl_variable_float: {
-						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
-						break;
-					}
-					case bsl_variable_bool: {
-						matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
-						break;
-					}
-					case bsl_variable_string: {
-						matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
-						break;
-					}
-					default: {
-						break;
+			if (matched_type == 0) {
+				if (args[param_index].arg_type_count > 0) {
+					switch (var_type) {
+						case bsl_variable_int: {
+							matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+							break;
+						}
+						case bsl_variable_float: {
+							matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_float ? 1 : 0);
+							break;
+						}
+						case bsl_variable_bool: {
+							matched_type = (args[param_index].args[0].type == bsl_variable_int || args[param_index].args[0].type == bsl_variable_bool ? 1 : 0);
+							break;
+						}
+						case bsl_variable_string: {
+							matched_type = (args[param_index].args[0].type == bsl_variable_string ? 1 : 0);
+							break;
+						}
+						default: {
+							break;
+						}
 					}
 				}
+				else {
+					matched_type = 2;
+				}
 			}
-			else {
-				matched_type = 2;
-			}
+			
 		}
 		
 		debug_printf("%s","] = ");

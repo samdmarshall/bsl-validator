@@ -82,8 +82,12 @@ int bsl_context_check_error(bsl_context *context) {
 			sprintf(message, "Scoping error");
 			break;
 		}
-		case bsl_error_func_param_count: {
+		case bsl_error_func_param_count_max: {
 			sprintf(message, "Using more than 8 parameters in function signature");
+			break;
+		}
+		case bsl_error_func_param_count_overload: {
+			sprintf(message, "Cannot overload function arguments");
 			break;
 		}
 		case bsl_error_invalid_parameter_type: {
@@ -96,7 +100,12 @@ int bsl_context_check_error(bsl_context *context) {
 		}
 	}
 	if (message[0] != 0 && context->active_err == 0) {
-		printf("\n%s in %s:%i\n",message, script_name, symbol->line);
+		if (strcmp(script_name, "global") == 0) {
+			printf("\n%s\n", message);
+		}
+		else {
+			printf("\n%s in %s:%i\n", message, script_name, symbol->line);
+		}
 		
 		bsl_context_print_stack(context);
 	}
@@ -155,7 +164,7 @@ void bsl_context_print_stack(bsl_context *context) {
 			char *name = bsl_symbol_get_name(symbol);
 				
 			if (script->fd == NULL) {
-				printf("compiled func %s\n", name);
+				printf("compiled: func %s\n", name);
 			}
 			else {
 				

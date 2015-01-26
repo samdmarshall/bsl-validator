@@ -412,7 +412,7 @@ error_check:
 	{
 		if (count > 8) {
 			// throw error
-			context->error = bsl_error_func_param_count;
+			context->error = bsl_error_func_param_count_max;
 		}
 	}
 	

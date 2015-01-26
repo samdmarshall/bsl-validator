@@ -117,13 +117,14 @@ void bsl_symbol_print_frame(bsl_symbol *symbol) {
 	bsl_script *script = symbol->script;
 	
 	if (script->fd != NULL) {
-		printf("%s:%i", script->fd->name, symbol->line);
+		printf("%s:%i -> ", script->fd->name, symbol->line);
 	}
 	else {
-		printf("compiled");
+		char *symbol_name = bsl_symbol_get_name(symbol);
+		printf("compiled: %s", bsl_symbol_get_name(symbol));
 	}
 	
 	char *func_line = bsl_script_copy_line(script, symbol->index);
-	printf(" -> \"%s\"\n", func_line);
+	printf("%s\n", func_line);
 	free(func_line);
 }
