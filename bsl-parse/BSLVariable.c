@@ -244,7 +244,7 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -254,7 +254,7 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -265,7 +265,7 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -282,13 +282,13 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
 				default: {
 					// error
-					//context->error = bsl_error_var_invalid_type_assignment;
+					//context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					break;
 				}
 			}
@@ -491,7 +491,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 						}
 						default: {
 							// error
-							//context->error = bsl_error_var_invalid_type_assignment;
+							//context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							break;
 						}
 					}
@@ -523,7 +523,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							}
 							else {
 								// error
-								context->error = bsl_error_var_invalid_type_assignment;
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							}
 							break;
 						}
@@ -539,7 +539,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							}
 							else {
 								// error
-								context->error = bsl_error_var_invalid_type_assignment;
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							}
 							break;
 						}
@@ -556,7 +556,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							}
 							else {
 								// error
-								context->error = bsl_error_var_invalid_type_assignment;
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							}
 							break;
 						}
@@ -572,13 +572,13 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							}
 							else {
 								// error
-								context->error = bsl_error_var_invalid_type_assignment;
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							}
 							break;
 						}
 						default: {
 							// error
-							//context->error = bsl_error_var_invalid_type_assignment;
+							//context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 							break;
 						}
 					}
@@ -600,7 +600,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -610,7 +610,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -621,7 +621,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
@@ -632,13 +632,13 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					}
 					else {
 						// error
-						context->error = bsl_error_var_invalid_type_assignment;
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					}
 					break;
 				}
 				default: {
 					// error
-					//context->error = bsl_error_var_invalid_type_assignment;
+					//context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 					break;
 				}
 			}
@@ -666,7 +666,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 		}
 		default: {
 			// error
-			context->error = bsl_error_var_invalid_type_id;
+			context->error = bsl_error_var_invalid_type_id; // ERROR ASSIGNMENT
 			break;
 		}
 	}

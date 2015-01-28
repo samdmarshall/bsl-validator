@@ -231,7 +231,7 @@ loop_parse:
 								// finding if the current char value is a syntax error
 								if (curr_tmp == 0 || curr_tmp == '\n' || curr_tmp == '\r') {
 									// this is a syntax error
-									token->error = bsl_error_token_invalid_string;
+									token->error = bsl_error_token_invalid_string; // ERROR ASSIGNMENT
 									// leave the while loop
 									break;
 								}
@@ -482,7 +482,7 @@ void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_tok
 		case BSLTokenCode_ctl_lparen: {
 			if ((*scope) > 4) {
 				// expression too complex
-				context->error = bsl_error_invalid_scope;
+				context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
 			}
 			break;
 		}
@@ -505,7 +505,7 @@ void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_tok
 	
 	if ((*scope) < 0) {
 		// error
-		context->error = bsl_error_invalid_scope;
+		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
 	}
 }
 

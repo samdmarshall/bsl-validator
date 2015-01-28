@@ -119,7 +119,7 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 	
 	if (context->scope_depth < 0) {
 		// throw error
-		context->error = bsl_error_invalid_scope;
+		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
 	}
 	else {
 		switch (context->scope_depth) {
