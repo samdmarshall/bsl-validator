@@ -103,4 +103,32 @@ bsl_variable * stdlib_divide_float(bsl_context **context, bsl_symbol *symbol, bs
 	return variable;
 }
 
+bsl_variable * stdlib_print(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	__attribute__((unused)) bsl_context *local_context = *context;
+	__attribute__((unused)) bsl_symbol *local_symbol = symbol;
+	__attribute__((unused)) uint32_t local_args_counts = arg_count;
+	
+	char *string = args[0].args[0].u.s;
+	
+	bsl_variable_type var_type = bsl_variable_type_from_func_rtype(rtype);
+	
+	printf("%s",string);
+	
+	return variable;
+}
+
+bsl_variable * stdlib_println(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
+	__attribute__((unused)) bsl_context *local_context = *context;
+	__attribute__((unused)) bsl_symbol *local_symbol = symbol;
+	__attribute__((unused)) uint32_t local_args_counts = arg_count;
+	
+	char *string = args[0].args[0].u.s;
+	
+	bsl_variable_type var_type = bsl_variable_type_from_func_rtype(rtype);
+	
+	printf("%s\n",string);
+	
+	return variable;
+}
+
 #endif

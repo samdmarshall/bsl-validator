@@ -55,7 +55,7 @@ int EvaluateContext(OniScriptContext *context) {
 	for (uint32_t index = 0; index < context->script_count; index++) {
 		bsl_script *script = &(context->scripts[index]);
 		
-		printf("tokenizing script \"%s\"...",script->fd->name);
+		printf("Parsing script \"%s\"...",script->fd->name);
 		
 		bsl_tkn_ir *token_ir = bsl_token_ir_generate_from_script(script);
 		
