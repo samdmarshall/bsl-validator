@@ -121,7 +121,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			
 			if (code != BSLTokenCode_ctl_rparen && bsl_expression_check_end(code) == 0) {
 				
-				context->error = bsl_error_func_param_count_overload;
+				context->error = bsl_error_func_param_count_overload; // ERROR ASSIGNMENT
 			}
 		}
 	}

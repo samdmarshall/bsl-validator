@@ -95,7 +95,7 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 		switch (matched_type) {
 			case 0: {
 				// not matched!
-				(*context)->error = bsl_error_invalid_parameter_type;
+				(*context)->error = bsl_error_invalid_parameter_type; // ERROR ASSIGNMENT
 				mismatch_arg++;
 				break;
 			}

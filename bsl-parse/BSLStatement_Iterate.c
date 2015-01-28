@@ -26,7 +26,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	
 	// 'over' identifier
 	if (curr->token->code != BSLTokenCode_id_over) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	bsl_context_check_error(context);
@@ -35,7 +35,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	
 	// variable identifier
 	if (curr->token->code != BSLTokenCode_id_generic) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	bsl_context_check_error(context);
@@ -44,7 +44,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	
 	// 'using' identifier
 	if (curr->token->code != BSLTokenCode_id_using) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	bsl_context_check_error(context);
@@ -53,7 +53,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	
 	// variable identifier
 	if (curr->token->code != BSLTokenCode_id_generic) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	bsl_context_check_error(context);
@@ -75,7 +75,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 		result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 		
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax;
+			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 			return iterate;
 		}
 		

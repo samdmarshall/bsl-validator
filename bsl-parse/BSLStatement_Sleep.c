@@ -67,13 +67,13 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 			}
 			else {
 				// there is an error in parsing
-				context->error = bsl_error_token_invalid_syntax;
+				context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 			}
 		}
 	}
 	else {
 		// invalid syntax of `sleep`
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	// move current position

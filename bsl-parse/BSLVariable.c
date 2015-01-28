@@ -412,7 +412,7 @@ error_check:
 	{
 		if (count > 8) {
 			// throw error
-			context->error = bsl_error_func_param_count_max;
+			context->error = bsl_error_func_param_count_max; // ERROR ASSIGNMENT
 		}
 	}
 	
@@ -432,7 +432,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 	bsl_tkn_ir *curr = (*item)->next;
 	
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return;
 	}
 	
@@ -443,7 +443,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 		curr = curr->next;
 		
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax;
+			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 			return;
 		}
 		
@@ -684,7 +684,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 	bsl_tkn_ir *curr = (*item)->next;
 	
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return var;
 	}
 	
@@ -695,7 +695,7 @@ bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
 	curr = curr->next;
 	
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return var;
 	}
 	

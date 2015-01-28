@@ -41,7 +41,7 @@ if_loop:
 			}
 			else {
 				// error
-				context->error = bsl_error_token_invalid_syntax;
+				context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 			}
 		}
 		
@@ -220,7 +220,7 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) 
 		}
 		default: {
 			// error
-			(*context)->error = bsl_error_invalid_conditional;
+			(*context)->error = bsl_error_invalid_conditional; // ERROR ASSIGNMENT
 			break;
 		}
 	}

@@ -458,7 +458,7 @@ loop_parse:
 						}
 						default: { // other syntax
 							// syntax error
-							token->error = bsl_error_token_invalid_syntax;
+							token->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 							break;
 						}
 					}

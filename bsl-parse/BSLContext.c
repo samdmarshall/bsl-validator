@@ -187,57 +187,6 @@ void bsl_context_print_stack(bsl_context *context) {
 		}
 	}
 	
-//	bsl_stack_scope *error = context->stack->active->prev;
-//	
-//	int8_t print_scope = 0;
-//	
-//	bsl_stack_scope *curr = context->stack->state;
-//	
-//	while (curr->next != NULL) {
-//		
-//		bsl_symbol *symbol = curr->symbol;
-//		
-//		if (symbol != NULL) {
-//			
-//			bsl_script *script = symbol->script;
-//			
-//			if (print_scope != curr->scope_depth) {
-//				
-//				char *name = bsl_symbol_get_name(symbol);
-//				
-//				if (script->fd == NULL) {
-//					printf("compiled func %s\n", name);
-//				}
-//				else {
-//					if (strcmp(name, "") != 0) {
-//						printf("%s:%i func %s\n", script->fd->name, symbol->line, name);
-//					}
-//				}
-//				
-//				free(name);
-//				
-//				print_scope++;
-//			}
-//			
-//			if (curr == error) {
-//				
-//				if (script->fd != NULL) {
-//					printf("%s:%i", script->fd->name, symbol->line);
-//				}
-//				else {
-//					printf("compiled");
-//				}
-//				
-//				char *line = bsl_script_copy_line(script, error->symbol->index);
-//				printf(" -> \"%s\"\n", line);
-//				free(line);
-//			}
-//			
-//		}
-//		
-//		curr = curr->next;
-//	}
-	
 	context->active_err = 1;
 }
 

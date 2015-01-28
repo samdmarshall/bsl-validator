@@ -66,7 +66,7 @@ bsl_statement_schedule bsl_statement_schedule_create(bsl_tkn_ir **token, bsl_con
 	}
 	else {
 		// error, could not find keyword
-		context->error = bsl_error_token_invalid_syntax;
+		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 	}
 	
 	bsl_context_check_error(context);

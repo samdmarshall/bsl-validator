@@ -241,13 +241,13 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 		}
 		else {
 			// error
-			(*context)->error = bsl_error_invalid_statement_in_conditional;
+			(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
 			return result;
 		}
 		
 		if (left_side_var->type != bsl_variable_bool && left_side_var->type != bsl_variable_int) {
 			// error
-			(*context)->error = bsl_error_invalid_variable_type_in_conditional;
+			(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
 			return result;
 		}
 		
@@ -277,13 +277,13 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 		}
 		else {
 			// error
-			(*context)->error = bsl_error_invalid_statement_in_conditional;
+			(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
 			return result;
 		}
 		
 		if (right_side_var->type != bsl_variable_bool && right_side_var->type != bsl_variable_int) {
 			// error
-			(*context)->error = bsl_error_invalid_variable_type_in_conditional;
+			(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
 			return result;
 		}
 		
@@ -379,7 +379,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 	}
 	else {
 		// error
-		(*context)->error = bsl_error_invalid_conditional;
+		(*context)->error = bsl_error_invalid_conditional; // ERROR ASSIGNMENT
 	}
 	
 	return result;

@@ -55,28 +55,24 @@ int EvaluateContext(OniScriptContext *context) {
 	for (uint32_t index = 0; index < context->script_count; index++) {
 		bsl_script *script = &(context->scripts[index]);
 		
-		debug_printf("tokenizing script \"%s\"...",script->fd->name);
+		printf("tokenizing script \"%s\"...",script->fd->name);
 		
 		bsl_tkn_ir *token_ir = bsl_token_ir_generate_from_script(script);
 		
 		eval_context = bsl_evaluate_ir(token_ir, eval_context);
 		
 		if (bsl_context_check_error(eval_context) != bsl_error_none) {
-			break;
+			break; // ERROR ASSIGNMENT
 		}
 		else {
-			debug_printf("%s\n","[Success]");
+			printf("%s\n","[Success]");
 		}
 	}
 	
 	if (bsl_context_check_error(eval_context) == bsl_error_none) {
-		debug_printf("%s\n","===================");
+		printf("%s\n","===================");
 		// eval `main`
 		result = bsl_symbol_execute("main", eval_context);
-	
-//		bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
-	
-//		bsl_scheduler_run(scheduler);
 	}
 	
 	return result;
