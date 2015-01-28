@@ -32,10 +32,10 @@ STDLIB_FUNC_DEC bsl_variable * stdlib_divide_int(STDLIB_FUNC_ARG bsl_context **c
 STDLIB_FUNC_DEC bsl_variable * stdlib_divide_float(STDLIB_FUNC_ARG bsl_context **context, STDLIB_FUNC_ARG bsl_symbol *symbol, STDLIB_FUNC_ARG bsl_func_rtype rtype, STDLIB_FUNC_ARG bsl_func_arg *args, STDLIB_FUNC_ARG uint32_t arg_count) STDLIB_FUNC_IMP;
 
 static bsl_register_func_item STDLIB_FUNCTIONS[] = {
-	{"mul", bsl_db_register_type_int, "(int a, int b)", stdlib_parse, stdlib_multiply_int},
-	{"mulf", bsl_db_register_type_float, "(float a, float b)", stdlib_parse, stdlib_multiply_float},
-	{"div", bsl_db_register_type_int, "(int a, int b)", stdlib_parse, stdlib_divide_int},
-	{"divf", bsl_db_register_type_float, "(float a, float b)", stdlib_parse, stdlib_divide_float},
+	{"mul", bsl_db_register_type_int, "(int a, int b)", stdlib_multiply_int, stdlib_parse},
+	{"mulf", bsl_db_register_type_float, "(float a, float b)", stdlib_multiply_float, stdlib_parse},
+	{"div", bsl_db_register_type_int, "(int a, int b)", stdlib_divide_int, stdlib_parse},
+	{"divf", bsl_db_register_type_float, "(float a, float b)", stdlib_divide_float, stdlib_parse},
 	NULL
 };
 
