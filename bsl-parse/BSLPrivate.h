@@ -528,9 +528,9 @@ typedef enum bsl_operation_action {
 	bsl_operation_action_cmp_ge,
 	bsl_operation_action_cmp_gt,
 	
-	bsl_operation_action_act_and,
-	bsl_operation_action_act_or,
-	bsl_operation_action_act_not,
+	bsl_operation_action_op_AND,
+	bsl_operation_action_op_OR,
+	bsl_operation_action_op_NOT,
 	
 	bsl_operation_action_count
 } bsl_operation_action;

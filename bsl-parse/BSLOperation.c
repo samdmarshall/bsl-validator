@@ -22,6 +22,13 @@ case code: { \
 }
 
 
+#define TokenToOperatorCode(type) \
+case BSLTokenCode_ ## type : { \
+	op->action = bsl_operation_action_ ## type ; \
+	break; \
+}
+
+
 int32_t bsl_operation_find_highest_operator_index(bsl_tkn_ir *cond_ir) {
 	int32_t op = -1;
 	uint32_t index = -1;
@@ -86,42 +93,15 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 			}
 			
 			switch (curr->token->code) {
-				case BSLTokenCode_cmp_eq: {
-					op->action = bsl_operation_action_cmp_eq;
-					break;
-				}
-				case BSLTokenCode_cmp_ne: {
-					op->action = bsl_operation_action_cmp_ne;
-					break;
-				}
-				case BSLTokenCode_cmp_lt: {
-					op->action = bsl_operation_action_cmp_lt;
-					break;
-				}
-				case BSLTokenCode_cmp_gt: {
-					op->action = bsl_operation_action_cmp_gt;
-					break;
-				}
-				case BSLTokenCode_cmp_le: {
-					op->action = bsl_operation_action_cmp_le;
-					break;
-				}
-				case BSLTokenCode_cmp_ge: {
-					op->action = bsl_operation_action_cmp_ge;
-					break;
-				}
-				case BSLTokenCode_op_AND: {
-					op->action = bsl_operation_action_act_and;
-					break;
-				}
-				case BSLTokenCode_op_OR: {
-					op->action = bsl_operation_action_act_or;
-					break;
-				}
-				case BSLTokenCode_op_NOT: {
-					op->action = bsl_operation_action_act_not;
-					break;
-				}
+				TokenToOperatorCode(cmp_eq)
+				TokenToOperatorCode(cmp_ne)
+				TokenToOperatorCode(cmp_lt)
+				TokenToOperatorCode(cmp_gt)
+				TokenToOperatorCode(cmp_le)
+				TokenToOperatorCode(cmp_ge)
+				TokenToOperatorCode(op_AND)
+				TokenToOperatorCode(op_OR)
+				TokenToOperatorCode(op_NOT)
 				default: {
 					break;
 				}
@@ -192,6 +172,42 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 	return op;
 }
 
+int8_t bsl_operation_resolve_value(bsl_statement *statement, bsl_context **context, int *value) {
+	int8_t result = 0;
+	
+	bsl_variable *left_side_var = NULL;
+	
+	if (statement->type == bsl_statement_type_func) {
+		bsl_function func = statement->u.func.function;
+		bsl_symbol *symbol = bsl_db_get_state(func.name, *context);
+		left_side_var = bsl_symbol_parse_call_symbol(context, symbol, func.rtype, func.args, func.arg_count);
+	}
+	else if (statement->type == bsl_statement_type_var) {
+		left_side_var = &(statement->u.var.variable);
+	}
+	else {
+		// error
+		(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
+		return result;
+	}
+	
+	if (left_side_var->type != bsl_variable_bool && left_side_var->type != bsl_variable_int) {
+		// error
+		(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
+		return result;
+	}
+	
+	if (left_side_var->type == bsl_variable_bool) {
+		*value = left_side_var->u.b;
+	}
+	
+	if (left_side_var->type == bsl_variable_int) {
+		*value = left_side_var->u.i;
+	}
+	
+	return result;
+}
+
 int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 	int8_t result = 0;
 	
@@ -211,9 +227,9 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 	int8_t is_logic = 0;
 	
 	switch (op->action) {
-		case bsl_operation_action_act_and:
-		case bsl_operation_action_act_or:
-		case bsl_operation_action_act_not: {
+		case bsl_operation_action_op_AND:
+		case bsl_operation_action_op_OR:
+		case bsl_operation_action_op_NOT: {
 			is_logic = 1;
 			
 			break;
@@ -229,72 +245,24 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 		// Left Side
 		
 		bsl_statement *left_side_statement = &(op->left_side->u.sm);
-		bsl_variable *left_side_var = NULL;
-		
-		if (left_side_statement->type == bsl_statement_type_func) {
-			bsl_function func = left_side_statement->u.func.function;
-			bsl_symbol *symbol = bsl_db_get_state(func.name, *context);
-			left_side_var = bsl_symbol_parse_call_symbol(context, symbol, func.rtype, func.args, func.arg_count);
-		}
-		else if (left_side_statement->type == bsl_statement_type_var) {
-			left_side_var = &(left_side_statement->u.var.variable);
-		}
-		else {
-			// error
-			(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
-			return result;
-		}
-		
-		if (left_side_var->type != bsl_variable_bool && left_side_var->type != bsl_variable_int) {
-			// error
-			(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
-			return result;
-		}
-		
 		int left_value = 0;
 		
-		if (left_side_var->type == bsl_variable_bool) {
-			left_value = left_side_var->u.b;
-		}
+		result = bsl_operation_resolve_value(left_side_statement, context, &left_value);
 		
-		if (left_side_var->type == bsl_variable_int) {
-			left_value = left_side_var->u.i;
+		if ((*context)->error != bsl_error_none) {
+			return result;
 		}
 		
 		// ==================================
 		// Right Side
 		
 		bsl_statement *right_side_statement = &(op->right_side->u.sm);
-		bsl_variable *right_side_var = NULL;
-		
-		if (right_side_statement->type == bsl_statement_type_func) {
-			bsl_function func = right_side_statement->u.func.function;
-			bsl_symbol *symbol = bsl_db_get_state(func.name, *context);
-			right_side_var = bsl_symbol_parse_call_symbol(context, symbol, func.rtype, func.args, func.arg_count);
-		}
-		else if (right_side_statement->type == bsl_statement_type_var) {
-			right_side_var = &(right_side_statement->u.var.variable);
-		}
-		else {
-			// error
-			(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
-			return result;
-		}
-		
-		if (right_side_var->type != bsl_variable_bool && right_side_var->type != bsl_variable_int) {
-			// error
-			(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
-			return result;
-		}
-		
 		int right_value = 0;
 		
-		if (right_side_var->type == bsl_variable_bool) {
-			right_value = right_side_var->u.b;
-		}
+		result = bsl_operation_resolve_value(right_side_statement, context, &right_value);
 		
-		if (right_side_var->type == bsl_variable_int) {
-			right_value = right_side_var->u.i;
+		if ((*context)->error != bsl_error_none) {
+			return result;
 		}
 		
 		// ==================================
@@ -348,7 +316,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 		int8_t right_side = bsl_operation_evaluation(context, &(op->right_side->u.op));
 		
 		switch (op->action) {
-			case bsl_operation_action_act_and: {
+			case bsl_operation_action_op_AND: {
 				if (is_two_sided == 1) {
 					if (left_side && right_side) {
 						result = 1;
@@ -356,7 +324,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 				}
 				break;
 			}
-			case bsl_operation_action_act_or: {
+			case bsl_operation_action_op_OR: {
 				if (is_two_sided == 1) {
 					if (left_side || right_side) {
 						result = 1;
@@ -364,7 +332,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op) {
 				}
 				break;
 			}
-			case bsl_operation_action_act_not: {
+			case bsl_operation_action_op_NOT: {
 				if (is_two_sided == 0) {
 					if (!right_side) {
 						result = 1;

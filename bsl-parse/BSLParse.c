@@ -130,40 +130,50 @@ bsl_tkn_ir * bsl_token_ir_generate_from_script(bsl_script *script) {
 
 // copy token ir sequence item
 bsl_tkn_ir * bsl_token_ir_copy(bsl_tkn_ir *token_ir) {
+	// allocate new ir token sequence
 	bsl_tkn_ir *new_ir = calloc(1, sizeof(bsl_tkn_ir));
 	
+	// check that the new token sequence is non-null and the item to copy is non-null
 	if (new_ir != NULL && token_ir != NULL) {
+		// clear the previous and next item pointers
 		new_ir->prev = NULL;
 		new_ir->next = NULL;
 		
+		// check to make sure the sequence item to copy has a token
 		if (token_ir->token != NULL) {
+			// allocate the new token object
 			new_ir->token = calloc(1, sizeof(bsl_token));
-			
+			// copy the existing token
 			memcpy(new_ir->token, token_ir->token, sizeof(bsl_token));
 		}
 	}
-	
+	// return copied token sequence item
 	return new_ir;
 }
 
 // append token ir sequence item to existing
 void bsl_token_ir_append(bsl_tkn_ir **token_ir, bsl_tkn_ir *append) {
 	bsl_tkn_ir *ir = (*token_ir);
-	
+	// check that the item to append isn't null
 	if (append != NULL) {
+		// perform a copy of the item to append and set it to the next token sequence item
 		ir->next = bsl_token_ir_copy(append);
+		// fix up the assigned token sequence item to have a parent
 		ir->next->prev = ir;
 	}
 	
+	// set the referenced token sequence item to be the one that was appended
 	*token_ir = ir->next;
 }
 
 bsl_tkn_ir * bsl_token_ir_jump_head(bsl_tkn_ir *token_ir) {
-	
+	// get the current token sequence item
 	bsl_tkn_ir *curr = token_ir;
 	
+	// make sure it isn't null
 	if (curr != NULL) {
 	
+		// while the previous item in the sequence isn't pointing to null, jump to that
 		while (curr->prev != NULL) {
 		
 			curr = curr->prev;
@@ -171,34 +181,38 @@ bsl_tkn_ir * bsl_token_ir_jump_head(bsl_tkn_ir *token_ir) {
 		
 	}
 	
+	// this should return the head of the sequence
 	return curr;
 }
 
 uint32_t bsl_token_ir_count(bsl_tkn_ir *token_ir) {
+	// initial count is zero
 	uint32_t result = 0;
-	
+	// get the current position in the sequence
 	bsl_tkn_ir *curr = token_ir;
 	
+	// while the item in the sequence isn't null
 	while (curr != NULL) {
-		
+		// increase the token sequence item counter
 		result++;
-		
+		// move to the next item in the sequence
 		curr = curr->next;
 	}
-	
+	// return total item count from starting position
 	return result;
 }
 
 bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move) {
+	// get the initial position in the token sequence
 	bsl_tkn_ir *curr = token_ir;
-	
-	if (move > 0) {
+	// based on the index
+	if (move > 0) { // move forward
 		while (curr != NULL && move != 0) {
 			move--;
 			curr = curr->next;
 		}
 	}
-	else if (move < 0) {
+	else if (move < 0) { // move backward
 		while (curr != NULL && move != 0) {
 			move++;
 			curr = curr->prev;
@@ -206,8 +220,9 @@ bsl_tkn_ir * bsl_token_ir_move(bsl_tkn_ir *token_ir, int8_t move) {
 	}
 	else {
 		// do nothing
+		// the passed move counter was zero so, don't move
 	}
-	
+	// return the item based on the relative move position
 	return curr;
 }
 

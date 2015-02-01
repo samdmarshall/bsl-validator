@@ -210,15 +210,10 @@ void bsl_db_register_global(char *name, bsl_symbol *symbol, bsl_context *context
 }
 
 void bsl_db_register_state(char *name, bsl_symbol *symbol, bsl_context *context) {
-//	if (context->curr_scope == BSLScope_global) {
-//		bsl_db_register_global(name, symbol, context);
-//	}
-//	else {
-		if (context->stack[context->stack_pos].symtab != NULL) {
-			bsl_db_register(name, symbol, context->stack[context->stack_pos].symtab);
-		}
-		else {
-			bsl_db_register_global(name, symbol, context);
-		}
-//	}
+	if (context->stack[context->stack_pos].symtab != NULL) {
+		bsl_db_register(name, symbol, context->stack[context->stack_pos].symtab);
+	}
+	else {
+		bsl_db_register_global(name, symbol, context);
+	}
 }
