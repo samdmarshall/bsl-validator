@@ -60,6 +60,27 @@ int32_t bsl_operation_find_highest_operator_index(bsl_tkn_ir *cond_ir) {
 	return highest;
 }
 
+bsl_operation_statement * bsl_operation_parse_op_side(bsl_context *context, bsl_tkn_ir *token) {
+	
+	bsl_interpreted_code code = {0};
+	uint32_t index = 0;
+	
+	bsl_operation_statement *side = calloc(1, sizeof(bsl_operation_statement));
+	int32_t is_op = bsl_operation_find_highest_operator_index(token);
+	
+	if (is_op == -1) {
+		side->type = bsl_operation_statement_type_statement;
+		side->u.sm = bsl_statement_parse(&token, context, code, &index);
+	}
+	else {
+		side->type = bsl_operation_statement_type_operation;
+		bsl_operation *parsed_op = bsl_operation_create(context, token);
+		memcpy(&(side->u.op), parsed_op, sizeof(bsl_operation));
+	}
+	
+	return side;
+}
+
 bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) {
 	bsl_operation *op = calloc(1, sizeof(bsl_operation));
 	
@@ -131,34 +152,9 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 				right_side = bsl_token_ir_jump_head(right_side);
 			}
 			
-			bsl_interpreted_code code = {0};
-			uint32_t index = 0;
+			op->left_side = bsl_operation_parse_op_side(context, left_side);
 			
-			op->left_side = calloc(1, sizeof(bsl_operation_statement));
-			int32_t is_ls_op = bsl_operation_find_highest_operator_index(left_side);
-			
-			if (is_ls_op == -1) {
-				op->left_side->type = bsl_operation_statement_type_statement;
-				op->left_side->u.sm = bsl_statement_parse(&left_side, context, code, &index);
-			}
-			else {
-				op->left_side->type = bsl_operation_statement_type_operation;
-				bsl_operation *parsed_op = bsl_operation_create(context, left_side);
-				memcpy(&(op->left_side->u.op), parsed_op, sizeof(bsl_operation));
-			}
-			
-			op->right_side = calloc(1, sizeof(bsl_operation_statement));
-			int32_t is_rs_op = bsl_operation_find_highest_operator_index(right_side);
-			
-			if (is_rs_op == -1) {
-				op->right_side->type = bsl_operation_statement_type_statement;
-				op->right_side->u.sm = bsl_statement_parse(&right_side, context, code, &index);
-			}
-			else {
-				op->right_side->type = bsl_operation_statement_type_operation;
-				bsl_operation *parsed_op = bsl_operation_create(context, right_side);
-				memcpy(&(op->right_side->u.op), parsed_op, sizeof(bsl_operation));
-			}
+			op->right_side = bsl_operation_parse_op_side(context, right_side);
 
 		}
 		else {
