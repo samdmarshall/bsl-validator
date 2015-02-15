@@ -1,10 +1,21 @@
-*.pyc
+### git ###
+.gitignore*
+
+### OS X ###
 .DS_Store
-*.txt
-*.sh
-build/
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace/xcuserdata/
+
+### C ###
+*.o
+
+### Clang Format ###
+.clang-format
+
+### Python ###
+*.pyc
+dist/
+*.egg-info
+
+### Xcode ###
 build/
 *.pbxuser
 !default.pbxuser
@@ -20,3 +31,5 @@ xcuserdata
 DerivedData
 *.xcuserstate
 
+### Hopper ###
+*.hop

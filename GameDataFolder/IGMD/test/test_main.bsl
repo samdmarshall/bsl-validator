@@ -83,4 +83,6 @@ func void main {
 	main2
 	
 	schedule foobar(5) at 5000
+	
+	div 10 0
 }

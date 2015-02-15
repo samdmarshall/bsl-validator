@@ -11,34 +11,57 @@
 
 #if USE_STD_LIB
 
+#include <math.h>
+#include <float.h>
+
+#define FloatEquals(a,b) ((float)fabs((a) - (b)) < FLT_EPSILON)
+
 bsl_variable * stdlib_divide_int(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	__attribute__((unused)) bsl_context *local_context = *context;
 	__attribute__((unused)) bsl_symbol *local_symbol = symbol;
-	__attribute__((unused)) uint32_t local_args_counts = arg_count;
-	
-	int a = args[0].args[0].u.i;
-	int b = args[1].args[0].u.i;
 	
 	bsl_variable_type var_type = bsl_variable_type_from_func_rtype(rtype);
 	
 	bsl_variable *variable = bsl_variable_create_type(var_type);
-	variable->u.i = a / b;
+	
+	int a = 0;
+	int b = 0;
+	
+	if (arg_count == 2) {
+		a = args[0].args[0].u.i;
+		b = args[1].args[0].u.i;
+	}
+	
+	if (b != 0) {
+		variable->u.i = a / b;
+	}
+	else {
+		(*context)->error = bsl_error_unsafe_evaluation;
+	}
 	
 	return variable;
 }
 
 bsl_variable * stdlib_divide_float(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	__attribute__((unused)) bsl_context *local_context = *context;
 	__attribute__((unused)) bsl_symbol *local_symbol = symbol;
-	__attribute__((unused)) uint32_t local_args_counts = arg_count;
-	
-	float a = args[0].args[0].u.f;
-	float b = args[1].args[0].u.f;
 	
 	bsl_variable_type var_type = bsl_variable_type_from_func_rtype(rtype);
 	
 	bsl_variable *variable = bsl_variable_create_type(var_type);
-	variable->u.f = a / b;
+	
+	float a = 0;
+	float b = 0;
+	
+	if (arg_count == 2) {
+		a = args[0].args[0].u.f;
+		b = args[1].args[0].u.f;
+	}
+	
+	if (FloatEquals(b,0)) {
+		variable->u.f = a / b;
+	}
+	else {
+		(*context)->error = bsl_error_unsafe_evaluation;
+	}
 	
 	return variable;
 }

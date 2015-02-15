@@ -167,7 +167,7 @@
 		22E328D61A4F7E1D00E01700 /* BSLSymbol.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLSymbol.c; sourceTree = "<group>"; };
 		22E328D71A4F7E1D00E01700 /* BSLSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLSymbol.h; sourceTree = "<group>"; };
 		22E328D91A4F907900E01700 /* BSLTokenDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSLTokenDefinitions.h; sourceTree = "<group>"; };
-		22E328DC1A50622E00E01700 /* BSLTokenDefinitions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BSLTokenDefinitions.c; path = "../../bsl-parse/BSLTokenDefinitions.c"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22E328DC1A50622E00E01700 /* BSLTokenDefinitions.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLTokenDefinitions.c; sourceTree = "<group>"; };
 		22E328DE1A506C5300E01700 /* BSLVariable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLVariable.c; sourceTree = "<group>"; };
 		22E328DF1A506C5300E01700 /* BSLVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLVariable.h; sourceTree = "<group>"; };
 		22E328E11A506C6400E01700 /* BSLFunction.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLFunction.c; sourceTree = "<group>"; };

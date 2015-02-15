@@ -94,6 +94,10 @@ int bsl_context_check_error(bsl_context *context) {
 			sprintf(message, "Mismatch of passed parameter types to \"%s\"",name);
 			break;
 		}
+		case bsl_error_unsafe_evaluation: {
+			sprintf(message, "Unsafe evaluation!");
+			break;
+		}
 		default: {
 			sprintf(message, "Unknown Error Code <%i>",context->error);
 			break;
