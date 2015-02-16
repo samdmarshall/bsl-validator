@@ -17,6 +17,7 @@
 
 STDLIB_FUNC_DEC bsl_variable * stdlib_parse(STDLIB_FUNC_ARG bsl_context **context, STDLIB_FUNC_ARG bsl_symbol *symbol, STDLIB_FUNC_ARG bsl_func_rtype rtype, STDLIB_FUNC_ARG bsl_func_arg *args, STDLIB_FUNC_ARG uint32_t arg_count) STDLIB_FUNC_IMP;
 
+// clang-format off
 
 static bsl_register_func_item STDLIB_FUNCTIONS[] = {
 	{"mul", bsl_db_register_type_int, "(int a, int b)", stdlib_multiply_int, stdlib_parse},
@@ -28,6 +29,8 @@ static bsl_register_func_item STDLIB_FUNCTIONS[] = {
 	{"println", bsl_db_register_type_void, "(string a)", stdlib_println, stdlib_parse},
 	NULL
 };
+
+// clang-format on
 
 #endif
 

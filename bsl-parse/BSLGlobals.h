@@ -16,6 +16,8 @@
 #include "BSLFunction.h"
 #include "BSLExecute.h"
 
+// clang-format off
+
 static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// Kills any temporary particles
 	{"particle_temp_kill", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
@@ -1040,5 +1042,7 @@ static bsl_register_var_item GLOBAL_VARIABLES[] = {
 	// end of list
 	NULL
 };
+
+// clang-format on
 
 #endif

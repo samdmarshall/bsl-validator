@@ -256,7 +256,3 @@ bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *s
 	
 	return result;
 }
-
-bsl_variable * bsl_symbol_parse_call(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count) {
-	return bsl_symbol_parse_call_symbol(context, (*context)->stack[(*context)->stack_pos].symbol, rtype, args, arg_count);
-}

@@ -12,6 +12,8 @@
 #include "BSLContext.h"
 #include "BSLExecute.h"
 
+// clang-format off
+
 #define OperatorCompareCode(code, value, op) \
 case code: { \
 	if (op < value) { \
@@ -28,6 +30,8 @@ case BSLTokenCode_ ## type : { \
 	break; \
 }
 
+// clang-format on
+
 
 int32_t bsl_operation_find_highest_operator_index(bsl_tkn_ir *cond_ir) {
 	int32_t op = -1;
@@ -39,6 +43,7 @@ int32_t bsl_operation_find_highest_operator_index(bsl_tkn_ir *cond_ir) {
 	while (curr != NULL) {
 		index++;
 		
+		// clang-format off
 		switch (curr->token->code) {
 			OperatorCompareCode(BSLTokenCode_op_AND, 20, op)
 			OperatorCompareCode(BSLTokenCode_op_OR, 20, op)
@@ -53,6 +58,7 @@ int32_t bsl_operation_find_highest_operator_index(bsl_tkn_ir *cond_ir) {
 				break;
 			}
 		}
+		// clang-format on
 		
 		curr = curr->next;
 	}
@@ -113,6 +119,7 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 				left_side = bsl_token_ir_jump_head(left_side);
 			}
 			
+			// clang-format off
 			switch (curr->token->code) {
 				TokenToOperatorCode(cmp_eq)
 				TokenToOperatorCode(cmp_ne)
@@ -127,6 +134,7 @@ bsl_operation * bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir) 
 					break;
 				}
 			}
+			// clang-format on
 
 			bsl_tkn_ir *right_side = NULL;
 			

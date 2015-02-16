@@ -8,6 +8,8 @@
 
 #include "BSLTokenDefinitions.h"
 
+// clang-format off
+
 #define str(v) #v
 #define csize(v) sizeof(str(v))-1
 
@@ -151,3 +153,5 @@ bsl_token_code bsl_token_resolve_identifier(bsl_token *token) {
 		}
 	}
 }
+
+// clang-format on
