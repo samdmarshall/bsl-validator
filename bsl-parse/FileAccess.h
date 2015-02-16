@@ -24,7 +24,7 @@ struct file_ref {
 	DIR *dir;
 };
 
-file_ref * file_ref_create(struct dirent *ent, DIR *dir);
+file_ref *file_ref_create(struct dirent *ent, DIR *dir);
 
 void file_ref_release(file_ref *ref);
 
@@ -39,9 +39,9 @@ struct mem_buff {
 	int32_t offset;
 };
 
-mem_buff * mem_buff_copy(char *buff, size_t length);
+mem_buff *mem_buff_copy(char *buff, size_t length);
 
-mem_buff * mem_buff_create(char *path);
+mem_buff *mem_buff_create(char *path);
 
 void mem_buff_release(mem_buff *buff);
 

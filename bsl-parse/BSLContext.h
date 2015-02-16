@@ -12,11 +12,11 @@
 #include "BSLPrivate.h"
 #include "BSLDatabase.h"
 
-bsl_context * bsl_context_create();
+bsl_context *bsl_context_create();
 
 int bsl_context_check_error(bsl_context *context);
 
-bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token);
+bsl_context *bsl_context_update(bsl_context *context, bsl_token *item_token);
 
 void bsl_context_print_stack(bsl_context *context);
 

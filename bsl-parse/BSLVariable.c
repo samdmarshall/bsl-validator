@@ -12,40 +12,41 @@
 
 #include "BSLStatement_Func.h"
 
-char * bsl_variable_print(bsl_variable variable) {
+char *bsl_variable_print(bsl_variable variable)
+{
 	char *text = calloc(1024, sizeof(char));
 	uint32_t counter = 0;
-	
+
 	text[counter] = '[';
 	counter++;
-	
+
 	char *type = bsl_variable_get_type_name(variable.type);
-	
+
 	strncpy(&(text[counter]), type, strlen(type));
 	counter += strlen(type);
-	
+
 	text[counter] = ':';
 	counter++;
-	
+
 	switch (variable.type) {
 		case bsl_variable_int: {
-			snprintf(&(text[counter]), 1024-counter, "%i]",variable.u.i);
+			snprintf(&(text[counter]), 1024 - counter, "%i]", variable.u.i);
 			break;
 		}
 		case bsl_variable_bool: {
-			snprintf(&(text[counter]), 1024-counter, "%s]",(variable.u.b ? "true" : "false"));
+			snprintf(&(text[counter]), 1024 - counter, "%s]", (variable.u.b ? "true" : "false"));
 			break;
 		}
 		case bsl_variable_float: {
-			snprintf(&(text[counter]), 1024-counter, "%f]",variable.u.f);
+			snprintf(&(text[counter]), 1024 - counter, "%f]", variable.u.f);
 			break;
 		}
 		case bsl_variable_string: {
-			snprintf(&(text[counter]), 1024-counter, "%s]",variable.u.s);
+			snprintf(&(text[counter]), 1024 - counter, "%s]", variable.u.s);
 			break;
 		}
 		case bsl_variable_void: {
-			snprintf(&(text[counter]), 1024-counter, "%s]","NULL");
+			snprintf(&(text[counter]), 1024 - counter, "%s]", "NULL");
 			break;
 		}
 		default: {
@@ -53,21 +54,23 @@ char * bsl_variable_print(bsl_variable variable) {
 			break;
 		}
 	}
-	
+
 	return text;
 }
 
-bsl_variable * bsl_variable_create_type(bsl_variable_type type) {
+bsl_variable *bsl_variable_create_type(bsl_variable_type type)
+{
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
-	
+
 	if (var != NULL) {
 		var->type = type;
 	}
-	
+
 	return var;
 }
 
-bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type) {
+bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type)
+{
 	switch (type) {
 		case bsl_func_rtype_bool: {
 			return bsl_variable_bool;
@@ -90,7 +93,8 @@ bsl_variable_type bsl_variable_type_from_func_rtype(bsl_func_rtype type) {
 	}
 }
 
-bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
+bsl_variable_type bsl_variable_get_type(bsl_token_code code)
+{
 	switch (code) {
 		case BSLTokenCode_id_int:
 		case BSLTokenCode_type_int: {
@@ -118,7 +122,8 @@ bsl_variable_type bsl_variable_get_type(bsl_token_code code) {
 	}
 }
 
-char * bsl_variable_get_type_name(bsl_variable_type type) {
+char *bsl_variable_get_type_name(bsl_variable_type type)
+{
 	switch (type) {
 		case bsl_variable_int: {
 			return "int";
@@ -142,17 +147,18 @@ char * bsl_variable_get_type_name(bsl_variable_type type) {
 	}
 }
 
-bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *context) {
+bsl_variable *bsl_variable_create_from_token(bsl_token *token, bsl_context *context)
+{
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
-	
+
 	if (var != NULL) {
-		
+
 		int tmp_int = 0;
 		float tmp_float = 0.f;
 		int8_t tmp_bool = 0;
 		char *tmp_str = calloc(token->offset.length + 1, sizeof(char));
 		strncpy(tmp_str, token->contents, token->offset.length);
-		
+
 		bsl_symbol *test_symbol = bsl_db_get_global(tmp_str, context);
 		if (test_symbol != NULL) {
 			// this is a symbol
@@ -163,7 +169,7 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 		}
 		else {
 			var->type = bsl_variable_get_type(token->code);
-			
+
 			switch (var->type) {
 				case bsl_variable_int: {
 					char *f = strnstr(token->contents, "f", sizeof(char[token->offset.length]));
@@ -196,7 +202,7 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 					break;
 				}
 			}
-			
+
 			switch (var->type) {
 				case bsl_variable_int: {
 					var->u.i = tmp_int;
@@ -221,22 +227,23 @@ bsl_variable * bsl_variable_create_from_token(bsl_token *token, bsl_context *con
 			}
 		}
 	}
-	
+
 	return var;
 }
 
-bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *context) {
+bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *context)
+{
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
-	
+
 	bsl_tkn_ir *curr = *item;
-	
+
 	if (var != NULL) {
-		
+
 		if (curr->next != NULL) {
 			curr = curr->next;
-			
+
 			var->type = bsl_variable_get_type(curr->token->code);
-			
+
 			switch (var->type) {
 				case bsl_variable_int: {
 					if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
@@ -271,11 +278,11 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 				}
 				case bsl_variable_string: {
 					int8_t is_symbol = 0;
-					
+
 					if (curr->token->code == BSLTokenCode_id_generic) {
 						// look up variable name
 					}
-					
+
 					if (curr->token->code == BSLTokenCode_id_string || is_symbol == 0) {
 						var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
 						strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
@@ -292,28 +299,28 @@ bsl_variable * bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *conte
 					break;
 				}
 			}
-			
 		}
-		
 	}
-	
+
 	*item = curr;
-	
+
 	return var;
 }
 
-uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args) {
+uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args)
+{
 	bsl_variable var = {0};
 	uint32_t count = 0;
-	
+
 	bsl_func_arg *args = (*f_args);
-	
+
 	if (args == NULL) {
 		args = calloc(1, sizeof(bsl_func_arg));
 	}
-	
+
 	bsl_func_arg *tmp_arg = NULL;
-	
+
+// clang-format off
 start:
 	{
 		args = realloc(args, sizeof(bsl_func_arg) * (count + 1));
@@ -407,7 +414,9 @@ start:
 		}
 		
 	}
-	
+// clang-format on
+
+// clang-format off
 error_check:
 	{
 		if (count > 8) {
@@ -415,61 +424,62 @@ error_check:
 			context->error = bsl_error_func_param_count_max; // ERROR ASSIGNMENT
 		}
 	}
-	
+	// clang-format on
+
 	*f_args = args;
-	
+
 	return count;
 }
 
-void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_variable *variable) {
+void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_variable *variable)
+{
 	bsl_variable var = *variable;
 	int tmp_int = 0;
 	float tmp_float = 0.f;
 	int8_t tmp_bool = 0;
 	char *tmp_str = NULL;
-	
+
 	// moving to the type identifier
 	bsl_tkn_ir *curr = (*item)->next;
-	
+
 	if (curr == NULL || curr->token == NULL) {
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return;
 	}
-	
+
 	if (curr->token->code == BSLTokenCode_op_assign) {
 		// the identifier is an assignment, value should be stored.
-		
+
 		// going to value identifier
 		curr = curr->next;
-		
+
 		if (curr == NULL || curr->token == NULL) {
 			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 			return;
 		}
-		
+
 		int8_t is_symbol = 0;
 		bsl_symbol *resolve_symbol = NULL;
-		
+
 		if (curr->token->code == BSLTokenCode_id_generic) {
 			char *name = calloc(curr->token->offset.length + 1, sizeof(char));
 			strncpy(name, curr->token->contents, curr->token->offset.length * sizeof(char));
-			
+
 			resolve_symbol = bsl_db_get_state(name, context);
-			
+
 			if (resolve_symbol != NULL) {
 				is_symbol = 1;
-				
 			}
-			
+
 			if (context->stack[context->stack_pos].symbol == NULL) {
 				context->stack[context->stack_pos].symbol = bsl_symbol_create(bsl_symbol_type_variable);
 				context->stack[context->stack_pos].symbol->u.value = var;
 				bsl_symbol_update_info(context->stack[context->stack_pos].symbol, (*item)->token->offset);
 			}
 		}
-		
+
 		if (is_symbol == 1) {
-			
+
 			switch (resolve_symbol->type) {
 				case bsl_symbol_type_variable: {
 					switch (var.type) {
@@ -498,11 +508,11 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					break;
 				}
 				case bsl_symbol_type_function: {
-					
+
 					// parse and call function
-					
+
 					bsl_statement_func func = bsl_statement_func_create(&curr, context);
-					
+
 					bsl_symbol *tmp = bsl_symbol_create(bsl_symbol_type_function);
 					tmp->u.func = func.function;
 					tmp->script = resolve_symbol->script;
@@ -582,17 +592,16 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 							break;
 						}
 					}
-					
+
 					break;
 				}
 				default: {
 					break;
 				}
 			}
-			
 		}
 		else {
-			
+
 			switch (var.type) {
 				case bsl_variable_int: {
 					if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
@@ -643,10 +652,10 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 				}
 			}
 		}
-		
+
 		curr = curr->next;
 	}
-	
+
 	switch (var.type) {
 		case bsl_variable_int: {
 			var.u.i = tmp_int;
@@ -670,77 +679,79 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 			break;
 		}
 	}
-	
+
 	// end of evaluation line
 	*item = curr;
-	
+
 	*variable = var;
 }
 
-bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context) {
+bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context)
+{
 	bsl_variable var = {0};
-	
+
 	// moving to the type identifier
 	bsl_tkn_ir *curr = (*item)->next;
-	
+
 	if (curr == NULL || curr->token == NULL) {
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return var;
 	}
-	
+
 	// getting variable type
 	var.type = bsl_variable_get_type(curr->token->code);
-	
+
 	// moving to the name identifier
 	curr = curr->next;
-	
+
 	if (curr == NULL || curr->token == NULL) {
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return var;
 	}
-	
+
 	// copying the name;
 	var.name = calloc(curr->token->offset.length + 1, sizeof(char));
 	strncpy(var.name, curr->token->contents, curr->token->offset.length);
-	
+
 	// next identifier
 	bsl_variable_parse_assign(&curr, context, &var);
-	
+
 	// end of evaluation line
 	*item = curr;
-	
+
 	return var;
 }
 
-void bsl_variable_set(bsl_variable *variable, bsl_variable *value) {
+void bsl_variable_set(bsl_variable *variable, bsl_variable *value)
+{
 	if (variable->type == value->type) {
-		debug_printf("assigning var [%s:",variable->name);
+		debug_printf("assigning var [%s:", variable->name);
 		switch (variable->type) {
 			case bsl_variable_int: {
-				debug_printf("int] [%i -> ",variable->u.i);
+				debug_printf("int] [%i -> ", variable->u.i);
 				variable->u.i = value->u.i;
-				debug_printf("%i]\n",variable->u.i);
+				debug_printf("%i]\n", variable->u.i);
 				break;
 			}
 			case bsl_variable_bool: {
-				debug_printf("bool] [%i -> ",variable->u.b);
+				debug_printf("bool] [%i -> ", variable->u.b);
 				variable->u.b = value->u.b;
-				debug_printf("%i]\n",variable->u.i);
+				debug_printf("%i]\n", variable->u.i);
 				break;
 			}
 			case bsl_variable_float: {
-				debug_printf("float] [%f -> ",variable->u.f);
+				debug_printf("float] [%f -> ", variable->u.f);
 				variable->u.f = value->u.f;
-				debug_printf("%f]\n",variable->u.f);
+				debug_printf("%f]\n", variable->u.f);
 				break;
 			}
 			case bsl_variable_string: {
-				debug_printf("string] [%s -> ",variable->u.s);
+				debug_printf("string] [%s -> ", variable->u.s);
 				if (variable->u.s != NULL) {
 					free(variable->u.s);
 				}
 				variable->u.s = value->u.s;
-				debug_printf("%s]\n",variable->u.s);
+				debug_printf("%s]\n", variable->u.s);
 				break;
 			}
 			default: {
@@ -754,11 +765,12 @@ void bsl_variable_set(bsl_variable *variable, bsl_variable *value) {
 	}
 }
 
-void bsl_variable_release(bsl_variable variable) {
+void bsl_variable_release(bsl_variable variable)
+{
 	if (variable.name) {
 		free(variable.name);
 	}
-	
+
 	if (variable.type == bsl_variable_string) {
 		if (variable.u.s != NULL) {
 			free(variable.u.s);

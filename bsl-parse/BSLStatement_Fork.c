@@ -10,30 +10,30 @@
 
 #include "BSLStatement_Func.h"
 
-bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context) {
+bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context)
+{
 	bsl_statement_fork fork = {0};
-	
+
 	bsl_tkn_ir *curr = *token;
-	
-	debug_printf("%s","fork: ");
-	
+
+	debug_printf("%s", "fork: ");
+
 	if (curr->next == NULL) {
 		// error
 	}
-	
-	curr = curr->next;
-	
-	if (curr != NULL) {
-		
-		fork.function = bsl_statement_func_create(&curr, context);
 
+	curr = curr->next;
+
+	if (curr != NULL) {
+
+		fork.function = bsl_statement_func_create(&curr, context);
 	}
 	else {
 		// error
 	}
-	
+
 	// move current position
 	*token = curr;
-	
+
 	return fork;
 }

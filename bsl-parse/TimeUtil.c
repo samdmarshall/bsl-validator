@@ -8,7 +8,8 @@
 
 #include "TimeUtil.h"
 
-timeval_comp timeval_compare(struct timeval a, struct timeval b) {
+timeval_comp timeval_compare(struct timeval a, struct timeval b)
+{
 	if (a.tv_sec > b.tv_sec) {
 		return timeval_comp_gt;
 	}
@@ -28,21 +29,23 @@ timeval_comp timeval_compare(struct timeval a, struct timeval b) {
 	}
 }
 
-void timeval_add(struct timeval *a, struct timeval b) {
+void timeval_add(struct timeval *a, struct timeval b)
+{
 	struct timeval value = *a;
 	value.tv_usec += b.tv_usec;
-	
+
 	while (value.tv_usec % kMicroseconds > 1) {
 		value.tv_usec -= kMicroseconds;
 		value.tv_sec += 1;
 	}
 	value.tv_sec += b.tv_sec;
-	
+
 	*a = value;
 }
-void timeval_sub(struct timeval *a, struct timeval b) {
+void timeval_sub(struct timeval *a, struct timeval b)
+{
 	struct timeval value = *a;
-	
+
 	if (value.tv_usec < b.tv_usec) {
 		if (value.tv_sec > 0) {
 			value.tv_sec -= 1;
@@ -50,7 +53,7 @@ void timeval_sub(struct timeval *a, struct timeval b) {
 		}
 	}
 	value.tv_usec -= b.tv_usec;
-	
+
 	if (value.tv_sec < b.tv_sec) {
 		value.tv_sec = 0;
 		value.tv_usec = 0;
@@ -58,6 +61,6 @@ void timeval_sub(struct timeval *a, struct timeval b) {
 	else {
 		value.tv_sec -= b.tv_sec;
 	}
-	
+
 	*a = value;
 }

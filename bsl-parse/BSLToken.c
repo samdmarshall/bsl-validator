@@ -10,22 +10,24 @@
 #include "BSLTokenDefinitions.h"
 
 // This is used to take raw text and generate a token from it
-bsl_token * read_token(mem_buff *text) {
+bsl_token *read_token(mem_buff *text)
+{
 	// make sure that we don't over-run the text buffer, return NULL to signal it to stop
 	if (text->offset < text->length) {
-		
+
 		// allocating the token
 		bsl_token *token = calloc(1, sizeof(bsl_token));
-		
+
 		// ensure that allocation was successful
 		if (token != NULL) {
-			
+
 			// no errors in parsing so far
 			token->error = bsl_error_none;
-			
+
 			// placeholder for the initial position of the loop
 			char *initial = NULL;
-			
+
+		// clang-format off
 			// this is a goto loop due to the unique nature of whitespace
 loop_parse:
 			{
@@ -464,8 +466,9 @@ loop_parse:
 					}
 				}
 			}
+			// clang-format on
 		}
-		
+
 		return token;
 	}
 	else {
@@ -473,11 +476,12 @@ loop_parse:
 	}
 }
 
-void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code) {
+void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code)
+{
 	if (token->code == code) {
 		(*scope) += 1;
 	}
-	
+
 	switch (code) {
 		case BSLTokenCode_ctl_lparen: {
 			if ((*scope) > 4) {
@@ -498,43 +502,45 @@ void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_tok
 	}
 }
 
-void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code) {
+void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code)
+{
 	if (token->code == code) {
 		(*scope) -= 1;
 	}
-	
+
 	if ((*scope) < 0) {
 		// error
 		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
 	}
 }
 
-int check_token_error(bsl_token *token) {
+int check_token_error(bsl_token *token)
+{
 	char message[1024] = {0};
 	switch (token->error) {
 		case bsl_error_none: {
 			break;
 		}
 		case bsl_error_token_invalid_string: {
-			sprintf(message, "Invalid string constant at %s:%i",token->offset.script->fd->name,token->offset.line);
+			sprintf(message, "Invalid string constant at %s:%i", token->offset.script->fd->name, token->offset.line);
 			break;
 		}
 		case bsl_error_token_invalid_syntax: {
-			sprintf(message, "Invalid Syntax at %s:%i",token->offset.script->fd->name,token->offset.line);
+			sprintf(message, "Invalid Syntax at %s:%i", token->offset.script->fd->name, token->offset.line);
 			break;
 		}
 		case bsl_error_invalid_scope: {
-			sprintf(message, "Scoping error at %s:%i",token->offset.script->fd->name,token->offset.line);
+			sprintf(message, "Scoping error at %s:%i", token->offset.script->fd->name, token->offset.line);
 			break;
 		}
 		default: {
-			sprintf(message, "Unknown Error Code <%i>",token->error);
+			sprintf(message, "Unknown Error Code <%i>", token->error);
 			break;
 		}
 	}
 	if (message[0] != 0) {
-		printf("%s\n",message);
+		printf("%s\n", message);
 	}
-	
+
 	return token->error;
 }

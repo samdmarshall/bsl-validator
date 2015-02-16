@@ -19,8 +19,8 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 
 int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 
-bsl_variable * bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol);
+bsl_variable *bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol);
 
-bsl_variable * bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
+bsl_variable *bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);
 
 #endif /* defined(__bsl_parse__BSLExecute__) */

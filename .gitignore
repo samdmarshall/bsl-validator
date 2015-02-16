@@ -1,14 +1,8 @@
-### git ###
-.gitignore*
-
 ### OS X ###
 .DS_Store
 
 ### C ###
 *.o
-
-### Clang Format ###
-.clang-format
 
 ### Python ###
 *.pyc

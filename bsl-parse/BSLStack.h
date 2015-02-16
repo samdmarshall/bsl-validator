@@ -19,6 +19,6 @@ void bsl_stack_increment(bsl_context *context, bsl_symbol *symbol);
 
 void bsl_stack_decrement(bsl_context *context);
 
-bsl_symbol * bsl_stack_search_scope(char *name, bsl_context *context);
+bsl_symbol *bsl_stack_search_scope(char *name, bsl_context *context);
 
 #endif /* defined(__bsl_parse__BSLStack__) */

@@ -13,9 +13,9 @@
 
 void bsl_symbol_duplicate_description(bsl_symbol *parsed, bsl_symbol *original);
 
-char * bsl_symbol_get_name(bsl_symbol *symbol);
+char *bsl_symbol_get_name(bsl_symbol *symbol);
 
-bsl_symbol * bsl_symbol_create(bsl_symbol_type type);
+bsl_symbol *bsl_symbol_create(bsl_symbol_type type);
 
 void bsl_symbol_update_info(bsl_symbol *symbol, bsl_script_offset offset);
 

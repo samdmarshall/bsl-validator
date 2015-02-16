@@ -19,7 +19,10 @@
 #define STDLIB_FUNC_ARG
 #else
 #define STDLIB_FUNC_DEC static
-#define STDLIB_FUNC_IMP { return NULL; }
+#define STDLIB_FUNC_IMP \
+	{                   \
+		return NULL;    \
+	}
 #define STDLIB_FUNC_ARG __attribute__((unused))
 #endif
 

@@ -18,8 +18,7 @@ struct OniScriptContext {
 	uint32_t script_count;
 };
 
-
-OniScriptContext * LoadScriptsFromLevelPath(char *path);
+OniScriptContext *LoadScriptsFromLevelPath(char *path);
 
 int EvaluateContext(OniScriptContext *context);
 

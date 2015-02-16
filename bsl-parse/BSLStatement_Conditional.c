@@ -12,15 +12,17 @@
 #include "BSLOperation.h"
 #include "BSLParse.h"
 
-bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index) {
+bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index)
+{
 	bsl_statement_conditional conditional = {0};
 	conditional.cond_case = calloc(1, sizeof(bsl_statement_conditional_case));
 	conditional.case_count = 1;
-	
+
 	bsl_tkn_ir *curr = *token;
-	
-	debug_printf("%s","conditional evaluation:\n");
-	
+
+	debug_printf("%s", "conditional evaluation:\n");
+
+// clang-format off
 if_loop:
 	{
 		bsl_statement_conditional_case *cond_case = &(conditional.cond_case[conditional.case_count - 1]);
@@ -196,26 +198,29 @@ if_loop:
 		}
 		
 	}
-	
+
+	// clang-format on
+
 	// move current position
 	*token = curr;
-	
+
 	return conditional;
 }
 
-int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) {
+int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context)
+{
 	int8_t result = 0;
-	
+
 	switch (cond->type) {
 		case bsl_conditional_type_if: {
 			// evaluate operation
 			result = bsl_operation_evaluation(context, cond->op);
-			
+
 			break;
 		}
 		case bsl_conditional_type_else: {
 			result = 1;
-			
+
 			break;
 		}
 		default: {
@@ -224,6 +229,6 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context) 
 			break;
 		}
 	}
-	
+
 	return result;
 }

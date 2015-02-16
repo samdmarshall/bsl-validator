@@ -12,50 +12,52 @@
 #include "BSLSymbol.h"
 #include "BSLToken.h"
 
-bsl_context * bsl_context_create() {
+bsl_context *bsl_context_create()
+{
 	bsl_context *context = calloc(1, sizeof(bsl_context));
-	
+
 	if (context != NULL) {
 		context->global = bsl_db_create();
-		
+
 		// register defaults
 		for (uint8_t index = 0; index < kBSLStackFrameMaximum; index++) {
 			bsl_stack *stack = &(context->stack[index]);
 			bsl_stack_init(stack);
 		}
-		
+
 		context->stack_pos = -1;
 	}
-	
+
 	return context;
 }
 
-int bsl_context_check_error(bsl_context *context) {
+int bsl_context_check_error(bsl_context *context)
+{
 	char message[1024] = {0};
-	
+
 	bsl_symbol *symbol = context->stack[context->stack_pos].symbol;
-	
+
 	if (symbol == NULL) {
-		
+
 		if (context->error != bsl_error_none) {
-			
+
 			bsl_context_print_stack(context);
 		}
-		
+
 		return context->error;
 	}
-	
+
 	char *name = "";
-	
+
 	if (symbol->type == bsl_symbol_type_variable) {
 		name = symbol->u.value.name;
 	}
 	if (symbol->type == bsl_symbol_type_function) {
 		name = symbol->u.func.name;
 	}
-	
+
 	char *script_name = symbol->script->fd != NULL ? symbol->script->fd->name : "global";
-	
+
 	switch (context->error) {
 		case bsl_error_none: {
 			break;
@@ -91,7 +93,7 @@ int bsl_context_check_error(bsl_context *context) {
 			break;
 		}
 		case bsl_error_invalid_parameter_type: {
-			sprintf(message, "Mismatch of passed parameter types to \"%s\"",name);
+			sprintf(message, "Mismatch of passed parameter types to \"%s\"", name);
 			break;
 		}
 		case bsl_error_unsafe_evaluation: {
@@ -99,7 +101,7 @@ int bsl_context_check_error(bsl_context *context) {
 			break;
 		}
 		default: {
-			sprintf(message, "Unknown Error Code <%i>",context->error);
+			sprintf(message, "Unknown Error Code <%i>", context->error);
 			break;
 		}
 	}
@@ -110,17 +112,18 @@ int bsl_context_check_error(bsl_context *context) {
 		else {
 			printf("\n%s in %s:%i\n", message, script_name, symbol->line);
 		}
-		
+
 		bsl_context_print_stack(context);
 	}
-	
+
 	return context->error;
 }
 
-bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
+bsl_context *bsl_context_update(bsl_context *context, bsl_token *item_token)
+{
 	bsl_token_check_scope_increase(context, &(context->scope_depth), item_token, BSLTokenCode_ctl_lbrace);
 	bsl_token_check_scope_decrease(context, &(context->scope_depth), item_token, BSLTokenCode_ctl_rbrace);
-	
+
 	if (context->scope_depth < 0) {
 		// throw error
 		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
@@ -141,70 +144,72 @@ bsl_context * bsl_context_update(bsl_context *context, bsl_token *item_token) {
 			}
 		}
 	}
-	
+
 	return context;
 }
 
-void bsl_context_print_stack(bsl_context *context) {
-	
+void bsl_context_print_stack(bsl_context *context)
+{
+
 	if (context->active_err == 1) {
 		return;
 	}
-	
+
 	printf("Error: printing current stack...\n");
-	
+
 	int8_t counter = -1;
-	
+
 	while (counter < context->stack_pos) {
 		counter++;
-		
+
 		bsl_symbol *symbol = context->stack[counter].symbol;
-		
+
 		if (symbol != NULL) {
-			
+
 			bsl_script *script = symbol->script;
-			
-			
+
 			char *name = bsl_symbol_get_name(symbol);
-				
+
 			if (script->fd == NULL) {
 				printf("compiled: func %s\n", name);
 			}
 			else {
-				
+
 				if (strcmp(name, "") != 0) {
 					printf("%s:%i func %s\n", script->fd->name, symbol->line, name);
 				}
 			}
-				
+
 			free(name);
-			
+
 			if (counter == context->stack_pos) {
-				
+
 				if (context->stack[counter].statement_count > 0) {
-					
+
 					symbol = &(context->stack[counter].statements[context->stack[counter].statement_count - 1]);
 				}
-				
+
 				bsl_symbol_print_frame(symbol);
 			}
 		}
 	}
-	
+
 	context->active_err = 1;
 }
 
-void bsl_context_reset_error_state(bsl_context *context) {
-	
+void bsl_context_reset_error_state(bsl_context *context)
+{
+
 	context->active_err = 0;
 }
 
-void bsl_context_release(bsl_context *context) {
+void bsl_context_release(bsl_context *context)
+{
 	if (context) {
 		if (context->global) {
 			bsl_db_release(context->global);
 		}
-		
+
 		free(context);
 	}
 }
