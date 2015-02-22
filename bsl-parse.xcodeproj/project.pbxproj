@@ -577,6 +577,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_STATIC_ANALYZER_MODE = shallow;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
@@ -588,9 +589,11 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
+				LD_GENERATE_MAP_FILE = YES;
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 			};
 			name = Debug;
 		};
@@ -598,6 +601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY = YES;
+				CLANG_STATIC_ANALYZER_MODE = shallow;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
@@ -605,9 +609,11 @@
 				GCC_WARN_SHADOW = YES;
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
+				LD_GENERATE_MAP_FILE = YES;
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
+				RUN_CLANG_STATIC_ANALYZER = NO;
 			};
 			name = Release;
 		};
@@ -688,14 +694,20 @@
 		22E328AC1A4F028F00E01700 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_STATIC_ANALYZER_MODE = deep;
+				LD_GENERATE_MAP_FILE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Debug;
 		};
 		22E328AD1A4F028F00E01700 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_STATIC_ANALYZER_MODE = deep;
+				LD_GENERATE_MAP_FILE = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
 			};
 			name = Release;
 		};

@@ -279,13 +279,8 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 					break;
 				}
 				case bsl_variable_string: {
-					int8_t is_symbol = 0;
 
-					if (curr->token->code == BSLTokenCode_id_generic) {
-						// look up variable name
-					}
-
-					if (curr->token->code == BSLTokenCode_id_string || is_symbol == 0) {
+					if (curr->token->code == BSLTokenCode_id_string || curr->token->code == BSLTokenCode_id_generic) {
 						var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
 						strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
 					}
@@ -322,7 +317,7 @@ uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_ar
 
 	bsl_func_arg *tmp_arg = NULL;
 
-// clang-format off
+	// clang-format off
 start:
 	{
 		args = realloc(args, sizeof(bsl_func_arg) * (count + 1));
@@ -408,7 +403,6 @@ start:
 			tmp_arg->arg_type_count = 1;
 			
 			curr = curr->next;
-			
 			while (curr->token->code == BSLTokenCode_id_newline) {
 				curr = curr->next;
 			}
@@ -443,9 +437,9 @@ start:
 		}
 		
 	}
-// clang-format on
+	// clang-format on
 
-// clang-format off
+	// clang-format off
 error_check:
 	{
 		if (count > 8) {
