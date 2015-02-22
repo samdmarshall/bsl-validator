@@ -67,6 +67,10 @@ bsl_context *bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context)
 						// skip comments
 						while (curr->token->code != BSLTokenCode_id_newline) {
 							curr = curr->next;
+							// check to ensure that
+							if (curr == NULL) {
+								break;
+							}
 						}
 					}
 					else if (item_token->code == BSLTokenCode_id_newline) {

@@ -63,6 +63,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			break;
 		}
 
+		// this should only be relevant at the start of a function, add check
 		if (curr->next->token->code == BSLTokenCode_ctl_lparen) {
 			curr = curr->next;
 		}
@@ -72,6 +73,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			curr = curr->next;
 		}
 
+		// this is the end of the function arguments, advance and exit loop
 		if (curr->next->token->code == BSLTokenCode_ctl_rparen) {
 			curr = curr->next;
 			break;

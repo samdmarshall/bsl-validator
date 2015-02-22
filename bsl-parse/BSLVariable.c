@@ -100,6 +100,8 @@ bsl_variable_type bsl_variable_get_type(bsl_token_code code)
 		case BSLTokenCode_type_int: {
 			return bsl_variable_int;
 		}
+		case BSLTokenCode_id_true:
+		case BSLTokenCode_id_false:
 		case BSLTokenCode_id_bool:
 		case BSLTokenCode_type_bool: {
 			return bsl_variable_bool;
@@ -644,6 +646,24 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
 						tmp_bool = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
 					}
+					else if (curr->token->code == BSLTokenCode_id_int) {
+						int value = atoi(curr->token->contents);
+						
+						switch (value) {
+							case 0: {
+								tmp_bool = 0;
+								break;
+							}
+							case 1: {
+								tmp_bool = 1;
+								break;
+							}
+							default: {
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+								break;
+							}
+						}
+					}
 					else {
 						// error
 						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
@@ -651,7 +671,7 @@ void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_vari
 					break;
 				}
 				case bsl_variable_float: {
-					if (curr->token->code == BSLTokenCode_id_float) {
+					if (curr->token->code == BSLTokenCode_id_float || curr->token->code == BSLTokenCode_id_int) {
 						// what about if it starts with an 'f'
 						tmp_float = strtof(curr->token->contents, NULL);
 					}

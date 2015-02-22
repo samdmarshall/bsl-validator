@@ -18,7 +18,7 @@ func void level_start(void)
 # set counter values
 
 	neuro_counter = 3
-	end_counter = 2
+#	end_counter = 2
 	kerr_counter = 3
 
 	############# SAVE GAME SCRIPTS #############

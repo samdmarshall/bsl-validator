@@ -121,7 +121,10 @@ bsl_expression *bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context)
 						}
 					}
 				}
-
+				
+				expr_curr->prev = expr_prev;
+				expr_prev = expr_curr;
+				
 				if (next == 0) {
 					expr_curr->next = calloc(1, sizeof(bsl_tkn_ir));
 				}
@@ -131,9 +134,6 @@ bsl_expression *bsl_expression_parse(bsl_tkn_ir **item, bsl_context *context)
 					continue;
 				}
 
-				expr_curr->prev = expr_prev;
-
-				expr_prev = expr_curr;
 				expr_curr = expr_curr->next;
 
 				curr = curr->next;
