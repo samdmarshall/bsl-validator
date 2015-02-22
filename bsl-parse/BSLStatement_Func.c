@@ -63,7 +63,9 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 			break;
 		}
 
-		// do not need to advance for open paren, handled by `bsl_variable_func_arg_parse`
+		if (curr->next->token->code == BSLTokenCode_ctl_lparen) {
+			curr = curr->next;
+		}
 
 		if (curr->next->token->code == BSLTokenCode_ctl_comma) {
 			// check for commas

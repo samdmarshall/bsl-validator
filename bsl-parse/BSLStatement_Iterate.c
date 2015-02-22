@@ -75,7 +75,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 		result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+			context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
 			return iterate;
 		}
 

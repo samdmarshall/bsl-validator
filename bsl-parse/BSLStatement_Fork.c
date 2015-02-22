@@ -18,10 +18,6 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 
 	debug_printf("%s", "fork: ");
 
-	if (curr->next == NULL) {
-		// error
-	}
-
 	curr = curr->next;
 
 	if (curr != NULL) {
@@ -30,6 +26,7 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 	}
 	else {
 		// error
+		context->error = bsl_error_missing_identifier;
 	}
 
 	// move current position

@@ -18,10 +18,6 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 
 	debug_printf("%s", "sleep: ");
 
-	if (curr->next == NULL) {
-		// parse error
-	}
-
 	// advance to sleep value
 	curr = curr->next;
 
@@ -66,13 +62,13 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 			}
 			else {
 				// there is an error in parsing
-				context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
 			}
 		}
 	}
 	else {
 		// invalid syntax of `sleep`
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
 	}
 
 	// move current position

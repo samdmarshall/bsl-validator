@@ -35,7 +35,11 @@ int bsl_context_check_error(bsl_context *context)
 {
 	char message[1024] = {0};
 
-	bsl_symbol *symbol = context->stack[context->stack_pos].symbol;
+	bsl_symbol *symbol = NULL;
+	
+	if (context->stack_pos > -1) {
+		symbol = context->stack[context->stack_pos].symbol;
+	}
 
 	if (symbol == NULL) {
 
@@ -84,6 +88,10 @@ int bsl_context_check_error(bsl_context *context)
 			sprintf(message, "Scoping error");
 			break;
 		}
+		case bsl_error_missing_identifier: {
+			sprintf(message, "Missing identifier");
+			break;
+		}
 		case bsl_error_func_param_count_max: {
 			sprintf(message, "Using more than 8 parameters in function signature");
 			break;
@@ -105,6 +113,7 @@ int bsl_context_check_error(bsl_context *context)
 			break;
 		}
 	}
+	
 	if (message[0] != 0 && context->active_err == 0) {
 		if (strcmp(script_name, "global") == 0) {
 			printf("\n%s\n", message);

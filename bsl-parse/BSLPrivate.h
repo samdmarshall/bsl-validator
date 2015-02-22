@@ -190,6 +190,8 @@ typedef enum bsl_error {
 	bsl_error_invalid_conditional,	// conditional type error
 	bsl_error_invalid_statement_in_conditional,
 	bsl_error_invalid_variable_type_in_conditional,
+	
+	bsl_error_missing_identifier,
 
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 
@@ -629,7 +631,7 @@ struct bsl_context {
 	bsl_database *global;
 
 	bsl_stack stack[kBSLStackFrameMaximum];
-	uint8_t stack_pos;
+	int8_t stack_pos;
 
 	bsl_error error;
 	uint8_t active_err;

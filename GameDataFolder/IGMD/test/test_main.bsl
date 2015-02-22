@@ -1,4 +1,6 @@
-func testing(int a) {
+func void 
+testing(int a) 
+{
 	dmsg "hello from testing"
 	return;
 }
@@ -84,5 +86,5 @@ func void main {
 	
 	schedule foobar(5) at 5000
 	
-	div 10 0
+	#div 10 0
 }

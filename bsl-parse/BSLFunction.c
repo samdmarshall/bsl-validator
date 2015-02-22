@@ -24,6 +24,11 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return func;
 	}
+	
+	// if the function definition is split over multiple lines, advance
+	while (curr->token->code == BSLTokenCode_id_newline) {
+		curr = curr->next;
+	}
 
 	// seems that there isn't support for return types
 	if (curr->token->code != BSLTokenCode_id_generic) {
@@ -75,6 +80,11 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return func;
 	}
+	
+	// if the function definition is split over multiple lines, advance
+	while (curr->token->code != BSLTokenCode_id_generic) {
+		curr = curr->next;
+	}
 
 	// moving to the function name
 	if (curr->token->code == BSLTokenCode_id_generic) {
@@ -89,6 +99,10 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
 		return func;
 	}
+	
+	while (curr->token->code == BSLTokenCode_id_newline) {
+		curr = curr->next;
+	}
 
 	// moving to the args
 	if (curr->token->code == BSLTokenCode_ctl_lparen) {
@@ -99,6 +113,9 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 
 		// advancing to next token
 		curr = curr->next;
+		while (curr->token->code == BSLTokenCode_id_newline) {
+			curr = curr->next;
+		}
 
 		if (curr == NULL || curr->token == NULL) {
 			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
@@ -113,6 +130,10 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 
 			if (curr->token->code == BSLTokenCode_id_void) {
 				curr = curr->next;
+				while (curr->token->code == BSLTokenCode_id_newline) {
+					curr = curr->next;
+				}
+
 			}
 			else {
 				func.args = realloc(func.args, sizeof(bsl_func_arg) * (func.arg_count + 1));

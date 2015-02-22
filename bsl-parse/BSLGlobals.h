@@ -117,7 +117,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// Writes all particles used on this level to a text file
 	{"p3_writeusedparticles", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// Sends a command to environmental particles with a given tag
-	{"particle", bsl_db_register_type_void, "()", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"particle", bsl_db_register_type_void, "(string tag, string command, string event_name)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// disables collision for a character
 	{"chr_nocollision", bsl_db_register_type_void, "([ai_name:string | script_id:int], int on_off)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// toggles camera Jello(tm) mode
@@ -205,7 +205,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// Sets the location of any character to the camera location
 	{"chr_location_settocamera", bsl_db_register_type_void, "(int chr_index)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// sets part of the HUD to flash or not flash
-	{"ui_flash_element", bsl_db_register_type_void, "(element_name:string fill:int)", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"ui_flash_element", bsl_db_register_type_void, "(string element_name, int fill)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// Sets the location of the player character
 	{"goto", bsl_db_register_type_void, "(float loc_x, float loc_y, float loc_z)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// win this level
@@ -262,7 +262,7 @@ static bsl_register_func_item GLOBAL_FUNCTIONS[] = {
 	// puts the camera in orbit mode
 	{"cm_orbit_block", bsl_db_register_type_void, "(float speed, float stopangle)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// Triggers an event on all P3 particles of a specified class
-	{"p3_callevent", bsl_db_register_type_void, "(particle_class:string event_index:int)", bsl_symbol_parse_call_symbol, oni_call_noop},
+	{"p3_callevent", bsl_db_register_type_void, "(string particle_class, int event_index)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// shows a trigger
 	{"trig_show", bsl_db_register_type_void, "(int trigger_id)", bsl_symbol_parse_call_symbol, oni_call_noop},
 	// sets up an animation for an object

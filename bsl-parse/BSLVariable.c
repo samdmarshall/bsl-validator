@@ -338,6 +338,10 @@ start:
 			// advancing to next token
 			curr = curr->next;
 			
+			while (curr->token->code == BSLTokenCode_id_newline) {
+				curr = curr->next;
+			}
+			
 			while (curr->token->code != BSLTokenCode_ctl_rbracket) {
 				
 				while (curr->token->code == BSLTokenCode_bar) {
@@ -355,9 +359,15 @@ start:
 				
 				// colon
 				curr = curr->next;
+				while (curr->token->code == BSLTokenCode_id_newline) {
+					curr = curr->next;
+				}
 				
 				// advance to var type
 				curr = curr->next;
+				while (curr->token->code == BSLTokenCode_id_newline) {
+					curr = curr->next;
+				}
 
 				// getting variable type
 				tmp_arg->args[tmp_arg->arg_type_count].type = bsl_variable_get_type(curr->token->code);
@@ -365,9 +375,17 @@ start:
 				tmp_arg->arg_type_count++;
 				
 				curr = curr->next;
+				while (curr->token->code == BSLTokenCode_id_newline) {
+					curr = curr->next;
+				}
+
 			}
 			
 			curr = curr->next;
+			while (curr->token->code == BSLTokenCode_id_newline) {
+				curr = curr->next;
+			}
+
 		}
 		else {
 			
@@ -375,6 +393,10 @@ start:
 			var.type = bsl_variable_get_type(curr->token->code);
 			
 			curr = curr->next;
+			
+			while (curr->token->code == BSLTokenCode_id_newline) {
+				curr = curr->next;
+			}
 			
 			var.name = calloc(curr->token->offset.length + 1, sizeof(char));
 			strncpy(var.name, curr->token->contents, curr->token->offset.length);
@@ -384,6 +406,11 @@ start:
 			tmp_arg->arg_type_count = 1;
 			
 			curr = curr->next;
+			
+			while (curr->token->code == BSLTokenCode_id_newline) {
+				curr = curr->next;
+			}
+
 		}
 
 		if (tmp_arg->arg_type_count > 0) {
