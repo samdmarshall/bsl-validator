@@ -137,17 +137,23 @@ if_loop:
 				if (curr->token->code == BSLTokenCode_ctl_rbrace) {
 					result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 					
-					if (curr->token != NULL) {
+					if (result == 0 && curr->token != NULL) {
 						
 						if (curr->token->code == BSLTokenCode_id_else) {
 							found_else = 1;
 							
 							// check for next if
 							result = bsl_function_interp_expression_increment_token(&curr, interp, index);
+							if (result != 0) {
+								printf("");
+							}
 							
 							if (curr->token->code != BSLTokenCode_id_if) {
 								
 								result = bsl_function_interp_expression_decrement_token(&curr, interp, index);
+								if (result != 0) {
+									printf("");
+								}
 							}
 						}
 						

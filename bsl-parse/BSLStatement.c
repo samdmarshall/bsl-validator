@@ -40,6 +40,7 @@ int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted
 		curr = interp.expression[(*index)].tokens;
 
 		if (curr == NULL) {
+			printf("");
 		}
 	}
 	else {
@@ -292,6 +293,8 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 						break;
 					}
 				}
+
+				free(case_eval);
 
 				debug_printf("%s", "\t}\n");
 

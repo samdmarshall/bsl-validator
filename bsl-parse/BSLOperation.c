@@ -83,6 +83,7 @@ bsl_operation_statement *bsl_operation_parse_op_side(bsl_context *context, bsl_t
 		side->type = bsl_operation_statement_type_operation;
 		bsl_operation *parsed_op = bsl_operation_create(context, token);
 		memcpy(&(side->u.op), parsed_op, sizeof(bsl_operation));
+		bsl_operation_release(parsed_op);
 	}
 
 	return side;
@@ -119,6 +120,16 @@ bsl_operation *bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir)
 
 			if (left_side != NULL) {
 				left_side = bsl_token_ir_jump_head(left_side);
+			}
+
+			if (curr == NULL) {
+				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+				return op;
+			}
+
+			if (curr->token == NULL) {
+				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+				return op;
 			}
 
 			// clang-format off

@@ -36,6 +36,7 @@ void bsl_core_timer_create(struct time_interval interval, FPCallback update_call
 
 	if (result < 0) {
 		/* Handle other errors here. See select man page. */
+		printf("error: %i\n", select_errno);
 	}
 	else {
 		/* Successful invocation of select(). */

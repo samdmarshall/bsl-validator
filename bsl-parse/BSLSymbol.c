@@ -127,7 +127,7 @@ void bsl_symbol_print_frame(bsl_symbol *symbol)
 	else {
 		char *symbol_name = bsl_symbol_get_name(symbol);
 		printf("compiled: %s", symbol_name);
-		free(symbol);
+		free(symbol_name);
 	}
 
 	char *func_line = bsl_script_copy_line(script, symbol->index);
