@@ -341,7 +341,7 @@ bsl_variable *bsl_variable_create_from_token(bsl_token *token, bsl_context *cont
 	return var;
 }
 
-bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *context)
+bsl_variable *bsl_variable_parse_token(bsl_tkn_ir **item, bsl_context *context)
 {
 	bsl_variable *var = calloc(1, sizeof(bsl_variable));
 
@@ -349,78 +349,74 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 
 	if (var != NULL) {
 
-		if (curr->next != NULL) {
-			curr = curr->next;
+		var->type = bsl_variable_get_type(curr->token->code);
 
-			var->type = bsl_variable_get_type(curr->token->code);
-
-			switch (var->type) {
-				case bsl_variable_int: {
-					if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
-						var->u.i = atoi(curr->token->contents);
-					}
-					else {
-						// error
-						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-					}
-					break;
+		switch (var->type) {
+			case bsl_variable_int: {
+				if (curr->token->code == BSLTokenCode_id_int || curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
+					var->u.i = atoi(curr->token->contents);
 				}
-				case bsl_variable_bool: {
-					if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
-						var->u.b = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
-					}
-					else if (curr->token->code == BSLTokenCode_id_int) {
-						int value = atoi(curr->token->contents);
+				else {
+					// error
+					context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+				}
+				break;
+			}
+			case bsl_variable_bool: {
+				if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
+					var->u.b = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
+				}
+				else if (curr->token->code == BSLTokenCode_id_int) {
+					int value = atoi(curr->token->contents);
 
-						switch (value) {
-							case 0: {
-								var->u.b = 0;
-								break;
-							}
-							case 1: {
-								var->u.b = 1;
-								break;
-							}
-							default: {
-								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-								break;
-							}
+					switch (value) {
+						case 0: {
+							var->u.b = 0;
+							break;
+						}
+						case 1: {
+							var->u.b = 1;
+							break;
+						}
+						default: {
+							context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+							break;
 						}
 					}
-					else {
-						// error
-						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-					}
-					break;
 				}
-				case bsl_variable_float: {
-					if (curr->token->code == BSLTokenCode_id_float || curr->token->code == BSLTokenCode_id_int) {
-						// what about if it starts with an 'f'
-						var->u.f = strtof(curr->token->contents, NULL);
-					}
-					else {
-						// error
-						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-					}
-					break;
-				}
-				case bsl_variable_string: {
-
-					if (curr->token->code == BSLTokenCode_id_string || curr->token->code == BSLTokenCode_id_generic) {
-						var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
-						strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
-					}
-					else {
-						// error
-						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-					}
-					break;
-				}
-				default: {
+				else {
 					// error
-					//context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
-					break;
+					context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
 				}
+				break;
+			}
+			case bsl_variable_float: {
+				if (curr->token->code == BSLTokenCode_id_float || curr->token->code == BSLTokenCode_id_int) {
+					// what about if it starts with an 'f'
+					var->u.f = strtof(curr->token->contents, NULL);
+				}
+				else {
+					// error
+					context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+				}
+				break;
+			}
+			case bsl_variable_string: {
+
+				if (curr->token->code == BSLTokenCode_id_string || curr->token->code == BSLTokenCode_id_generic) {
+					var->u.s = calloc(curr->token->offset.length + 1, sizeof(char));
+					strncpy(var->u.s, curr->token->contents, curr->token->offset.length);
+				}
+				else {
+					// error
+					context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+				}
+				break;
+			}
+			default: {
+				// error
+				context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+				break;
 			}
 		}
 	}
@@ -428,6 +424,20 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 	*item = curr;
 
 	return var;
+}
+
+bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *context)
+{
+	bsl_tkn_ir *curr = *item;
+
+	// advance an item
+	curr = curr->next;
+
+	bsl_variable *variable = bsl_variable_parse_token(&curr, context);
+
+	*item = curr;
+
+	return variable;
 }
 
 uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args)
