@@ -23,9 +23,11 @@ bsl_statement_var bsl_statement_const_create(bsl_tkn_ir **token, bsl_context *co
 	memcpy(&(constant.variable), variable, sizeof(bsl_variable));
 	free(variable);
 
+#if DEBUG
 	char *var_text = bsl_variable_print(constant.variable);
 	debug_printf("%s\n", var_text);
 	free(var_text);
+#endif
 
 	*token = curr->next;
 
@@ -60,9 +62,11 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 		bsl_context_check_error(context);
 	}
 
+#if DEBUG
 	char *var_text = bsl_variable_print(var.variable);
 	debug_printf("%s\n", var_text);
 	free(var_text);
+#endif
 
 	// move current position
 	*token = curr;
@@ -88,9 +92,11 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 		memcpy(&(var.variable), &(var_symbol->u.value), sizeof(bsl_variable));
 	}
 
+#if DEBUG
 	char *var1_text = bsl_variable_print(var_symbol->u.value);
 	debug_printf("%s %s", var_symbol->u.value.name, var1_text);
 	free(var1_text);
+#endif
 
 	if (curr->next != NULL) {
 		debug_printf("%s", " -> ");

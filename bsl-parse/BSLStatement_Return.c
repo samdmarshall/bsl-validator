@@ -29,9 +29,11 @@ bsl_statement_return bsl_statement_return_create(bsl_tkn_ir **token, bsl_context
 	}
 
 	// return value, stop evaluating
+#if DEBUG
 	char *text = bsl_variable_print(*(ret.variable));
 	debug_printf("value %s\n", text);
 	free(text);
+#endif
 
 	// move current position
 	*token = curr;

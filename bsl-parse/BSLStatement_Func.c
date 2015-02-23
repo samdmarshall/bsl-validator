@@ -171,10 +171,12 @@ void bsl_statement_func_action(bsl_context **context, bsl_statement *statement, 
 	if (bsl_context_check_error(*context) == bsl_error_none) {
 		// the resulting value here is either always `void` or isn't stored so we can ignore the return value
 		if (result->type != bsl_variable_void) {
+#if DEBUG
 			char *text = bsl_variable_print(*result);
 			debug_printf("\t\t\tfunction returned %s", text);
 			debug_printf("%s", ", with no assignment\n");
 			free(text);
+#endif
 		}
 	}
 
