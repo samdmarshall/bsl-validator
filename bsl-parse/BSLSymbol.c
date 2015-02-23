@@ -11,6 +11,15 @@
 #include "BSLFunction.h"
 #include "BSLScript.h"
 
+bsl_script_offset bsl_script_offset_from_symbol(bsl_symbol *symbol)
+{
+	bsl_script_offset offset = {
+		.script = symbol->script,
+		.line = symbol->line,
+		.index = symbol->index};
+	return offset;
+}
+
 void bsl_symbol_duplicate_description(bsl_symbol *parsed, bsl_symbol *original)
 {
 	char *parsed_name = "";

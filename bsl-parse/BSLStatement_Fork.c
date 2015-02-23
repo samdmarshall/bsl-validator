@@ -34,3 +34,12 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 
 	return fork;
 }
+
+void bsl_statement_fork_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
+{
+	bsl_statement *func_statement = calloc(1, sizeof(bsl_statement));
+	func_statement->type = bsl_statement_type_func;
+	func_statement->u.func = statement->u.fork.function;
+	bsl_statement_func_action(context, func_statement, offset);
+	free(func_statement);
+}

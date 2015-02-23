@@ -92,6 +92,14 @@ int bsl_context_check_error(bsl_context *context)
 			sprintf(message, "Missing identifier");
 			break;
 		}
+		case bsl_error_missing_initializer: {
+			sprintf(message, "Missing function 'main'");
+			break;
+		}
+		case bsl_error_invalid_sleep_use: {
+			sprintf(message, "Cannot use 'sleep' in functions that return a value");
+			break;
+		}
 		case bsl_error_func_param_count_max: {
 			sprintf(message, "Using more than 8 parameters in function signature");
 			break;
@@ -186,6 +194,17 @@ void bsl_context_print_stack(bsl_context *context)
 
 				if (strcmp(name, "") != 0) {
 					printf("%s:%i func %s\n", script->fd->name, symbol->line, name);
+
+					unsigned long name_length = strlen(script->fd->name);
+					char *name_space = calloc(1 + name_length, sizeof(char));
+					memset(name_space, ' ', sizeof(char[name_length]));
+
+					bsl_stack *current_stack = &(context->stack[counter]);
+					int calling_line = current_stack->statements[(current_stack->statement_count - 1)].line;
+
+					printf("%s:%i\n", name_space, calling_line);
+
+					free(name_space);
 				}
 			}
 

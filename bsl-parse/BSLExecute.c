@@ -14,6 +14,13 @@
 #include "BSLSymbol.h"
 #include "BSLStack.h"
 
+#include "BSLStatement_Conditional.h"
+#include "BSLStatement_Func.h"
+#include "BSLStatement_Schedule.h"
+#include "BSLStatement_Fork.h"
+#include "BSLStatement_Sleep.h"
+#include "BSLStatement_Iterate.h"
+
 int bsl_symbol_execute(char *name, bsl_context *context)
 {
 	int result = 0;
@@ -21,16 +28,25 @@ int bsl_symbol_execute(char *name, bsl_context *context)
 	bsl_symbol *symbol = bsl_db_get_global(name, context);
 
 	if (symbol != NULL) {
-		debug_printf("calling into [%s]\n", name);
 
 		if (symbol->type == bsl_symbol_type_function) {
+			debug_printf("calling into [%s]\n", name);
 			// setup state
 
 			bsl_symbol_make_call(&context, symbol);
 		}
+		else {
+			// "main" has to be a function
+
+			context->error = bsl_error_missing_initializer;
+
+			result = -1;
+		}
 	}
 	else {
 		// could not locate symbol
+		context->error = bsl_error_missing_initializer;
+
 		result = -1;
 	}
 
@@ -191,6 +207,34 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 
 			if (current_statement->type == bsl_statement_type_return) {
 				break;
+			}
+
+			bsl_script_offset offset = bsl_script_offset_from_symbol(expr_statement);
+
+			switch (current_statement->type) {
+				case bsl_statement_type_conditional: {
+					bsl_statement_conditional_action(context, current_statement, offset);
+					break;
+				}
+				case bsl_statement_type_func: {
+					bsl_statement_func_action(context, current_statement, offset);
+					break;
+				}
+				case bsl_statement_type_schedule: {
+					bsl_statement_schedule_action(context, current_statement, offset);
+					break;
+				}
+				case bsl_statement_type_fork: {
+					bsl_statement_fork_action(context, current_statement, offset);
+					break;
+				}
+				case bsl_statement_type_sleep: {
+					bsl_statement_sleep_action(context, current_statement, offset);
+					break;
+				}
+				default: {
+					break;
+				}
 			}
 		}
 		else {

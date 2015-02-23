@@ -190,8 +190,10 @@ typedef enum bsl_error {
 	bsl_error_invalid_conditional,	// conditional type error
 	bsl_error_invalid_statement_in_conditional,
 	bsl_error_invalid_variable_type_in_conditional,
-	
-	bsl_error_missing_identifier,
+
+	bsl_error_missing_identifier,  // missing expected token identifier in sequence
+	bsl_error_missing_initializer, // missing "main" function
+	bsl_error_invalid_sleep_use,   // cannot use "sleep" in a function that has a return type
 
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 

@@ -10,6 +10,7 @@
 #include "BSLContext.h"
 #include "BSLStatement_Func.h"
 #include "BSLStatement_Sleep.h"
+#include "BSLStatement_Fork.h"
 #include "BSLParse.h"
 
 bsl_statement_schedule bsl_statement_schedule_create(bsl_tkn_ir **token, bsl_context *context)
@@ -75,4 +76,19 @@ bsl_statement_schedule bsl_statement_schedule_create(bsl_tkn_ir **token, bsl_con
 	*token = curr;
 
 	return schedule;
+}
+
+void bsl_statement_schedule_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
+{
+	bsl_statement *sleep_statement = calloc(1, sizeof(bsl_statement));
+	sleep_statement->type = bsl_statement_type_sleep;
+	sleep_statement->u.sleep = statement->u.schedule.sleep;
+	bsl_statement_sleep_action(context, sleep_statement, offset);
+	free(sleep_statement);
+
+	bsl_statement *fork_statement = calloc(1, sizeof(bsl_statement));
+	fork_statement->type = bsl_statement_type_fork;
+	fork_statement->u.fork = statement->u.schedule.fork;
+	bsl_statement_fork_action(context, fork_statement, offset);
+	free(fork_statement);
 }

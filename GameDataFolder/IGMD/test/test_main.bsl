@@ -10,6 +10,11 @@ func int foobar(int a) {
 	dmsg "asfdsdfas";
 }
 
+func int error_test (int a) {
+	dmsg "this should be ok"
+	return 5;
+}
+
 var int my_save_point = 0;
 
 func void main2 {
@@ -84,7 +89,7 @@ func void main {
 	
 	main2
 	
-	schedule foobar(5) at 5000
+	schedule error_test(5) at 5000
 	
 	#div 10 0
 }

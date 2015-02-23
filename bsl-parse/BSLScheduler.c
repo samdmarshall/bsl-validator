@@ -11,6 +11,8 @@
 
 bsl_scheduler *bsl_scheduler_create(bsl_context *context)
 {
+	__attribute__((unused)) bsl_context *local_context = context;
+
 	bsl_scheduler *scheduler = calloc(1, sizeof(bsl_scheduler));
 	scheduler->stack = calloc(1, sizeof(bsl_schedule_item));
 	scheduler->current = scheduler->stack;

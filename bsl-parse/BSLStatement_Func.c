@@ -10,6 +10,7 @@
 #include "BSLExecute.h"
 #include "BSLVariable.h"
 #include "BSLExpression.h"
+#include "BSLSymbol.h"
 
 bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *context)
 {
@@ -131,23 +132,6 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		}
 	}
 
-	if (symbol != NULL) {
-
-		if (call_symbol->type == bsl_symbol_type_function) {
-			bsl_variable *result = bsl_symbol_parse_call_symbol(&context, symbol, symbol->u.func.rtype, args, arg_count);
-
-			// the resulting value here is either always `void` or isn't stored so we can ignore the return value
-			if (result->type != bsl_variable_void) {
-				char *text = bsl_variable_print(*result);
-				debug_printf("\t\t\tfunction returned %s", text);
-				debug_printf("%s", ", with no assignment\n");
-				free(text);
-			}
-
-			bsl_variable_release(*result);
-		}
-	}
-
 	// move current position
 	*token = curr;
 
@@ -164,4 +148,36 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 	func.function.name = symbol->u.func.name;
 
 	return func;
+}
+
+void bsl_statement_func_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
+{
+	bsl_symbol *call_symbol = bsl_symbol_create(bsl_symbol_type_function);
+	call_symbol->u.func = statement->u.func.function;
+	bsl_symbol_update_info(call_symbol, offset);
+
+	bsl_symbol *resolve_symbol = bsl_db_get_state(statement->u.func.function.name, *context);
+	if (resolve_symbol->type == bsl_symbol_type_function) {
+		// check if interpreted
+		if (resolve_symbol->u.func.type == bsl_func_type_interp) {
+			// update the positioning for storing the next frame
+			call_symbol->script = resolve_symbol->script;
+			call_symbol->line = resolve_symbol->line;
+			call_symbol->index = resolve_symbol->index;
+		}
+	}
+
+	bsl_variable *result = bsl_symbol_make_call(context, call_symbol);
+
+	if (bsl_context_check_error(*context) == bsl_error_none) {
+		// the resulting value here is either always `void` or isn't stored so we can ignore the return value
+		if (result->type != bsl_variable_void) {
+			char *text = bsl_variable_print(*result);
+			debug_printf("\t\t\tfunction returned %s", text);
+			debug_printf("%s", ", with no assignment\n");
+			free(text);
+		}
+	}
+
+	bsl_variable_release(*result);
 }

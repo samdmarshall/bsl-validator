@@ -76,3 +76,11 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 
 	return sleep;
 }
+
+void bsl_statement_sleep_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
+{
+	__attribute__((unused)) bsl_context *local_context = *context;
+	__attribute__((unused)) bsl_statement *local_statement = statement;
+	__attribute__((unused)) bsl_script_offset local_offset = offset;
+	printf("");
+}

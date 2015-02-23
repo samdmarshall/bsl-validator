@@ -259,6 +259,16 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 
 				(*index)++;
 
+				bsl_symbol *current_func = context->stack[context->stack_pos].symbol;
+
+				if (current_func->type == bsl_symbol_type_function) {
+					// check the current symbol
+					if (current_func->u.func.rtype != bsl_func_rtype_void) {
+						// BSL will not allow sleep statements in functions that have a return type
+						context->error = bsl_error_invalid_sleep_use; // ERROR ASSIGNMENT
+					}
+				}
+
 				break;
 			}
 			case BSLTokenCode_id_fork: {
@@ -274,29 +284,6 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				expr.type = bsl_statement_type_conditional;
 
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
-
-				debug_printf("%s", "\t{\n");
-
-				int8_t *case_eval = calloc(expr.u.conditional.case_count, sizeof(int8_t));
-				for (int8_t eval_index = 0; eval_index < expr.u.conditional.case_count; eval_index++) {
-					bsl_statement_conditional_case cond_case = expr.u.conditional.cond_case[eval_index];
-
-					case_eval[eval_index] = bsl_conditional_evaluation(cond_case.cond, &context);
-				}
-
-				for (int8_t exec_index = 0; exec_index < expr.u.conditional.case_count; exec_index++) {
-
-					if (case_eval[exec_index] == 1) {
-
-						bsl_execute_interpreted_code(expr.u.conditional.cond_case[exec_index].code, &context);
-
-						break;
-					}
-				}
-
-				free(case_eval);
-
-				debug_printf("%s", "\t}\n");
 
 				break;
 			}

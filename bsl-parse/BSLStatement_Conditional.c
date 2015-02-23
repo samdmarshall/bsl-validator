@@ -11,6 +11,7 @@
 #include "BSLStatement.h"
 #include "BSLOperation.h"
 #include "BSLParse.h"
+#include "BSLExecute.h"
 
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index)
 {
@@ -237,4 +238,31 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context)
 	}
 
 	return result;
+}
+
+void bsl_statement_conditional_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
+{
+	__attribute__((unused)) bsl_script_offset local_offset = offset;
+	debug_printf("%s", "\t{\n");
+
+	int8_t *case_eval = calloc(statement->u.conditional.case_count, sizeof(int8_t));
+	for (int8_t eval_index = 0; eval_index < statement->u.conditional.case_count; eval_index++) {
+		bsl_statement_conditional_case cond_case = statement->u.conditional.cond_case[eval_index];
+
+		case_eval[eval_index] = bsl_conditional_evaluation(cond_case.cond, context);
+	}
+
+	for (int8_t exec_index = 0; exec_index < statement->u.conditional.case_count; exec_index++) {
+
+		if (case_eval[exec_index] == 1) {
+
+			bsl_execute_interpreted_code(statement->u.conditional.cond_case[exec_index].code, context);
+
+			break;
+		}
+	}
+
+	free(case_eval);
+
+	debug_printf("%s", "\t}\n");
 }

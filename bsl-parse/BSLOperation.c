@@ -179,8 +179,6 @@ bsl_operation *bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir)
 		}
 		else {
 			// this is a terminating else
-
-			printf("");
 		}
 	}
 

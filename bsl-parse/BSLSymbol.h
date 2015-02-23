@@ -11,6 +11,8 @@
 
 #include "BSLPrivate.h"
 
+bsl_script_offset bsl_script_offset_from_symbol(bsl_symbol *symbol);
+
 void bsl_symbol_duplicate_description(bsl_symbol *parsed, bsl_symbol *original);
 
 char *bsl_symbol_get_name(bsl_symbol *symbol);

@@ -13,4 +13,6 @@
 
 bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context);
 
+void bsl_statement_fork_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset);
+
 #endif /* defined(__bsl_parse__BSLStatement_Fork__) */
