@@ -12,6 +12,8 @@
 #include "BSLPrivate.h"
 #include "BSLContext.h"
 
+int8_t bsl_variable_is_type_compatible(bsl_variable_type def, bsl_variable_type arg_type);
+
 char *bsl_variable_print(bsl_variable variable);
 
 bsl_variable *bsl_variable_create_type(bsl_variable_type type);

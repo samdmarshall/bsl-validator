@@ -36,6 +36,24 @@ bsl_statement_var bsl_statement_const_create(bsl_tkn_ir **token, bsl_context *co
 			if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
 				constant.variable.u.b = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
 			}
+			else if (curr->token->code == BSLTokenCode_id_int) {
+				int value = atoi(curr->token->contents);
+
+				switch (value) {
+					case 0: {
+						constant.variable.u.b = 0;
+						break;
+					}
+					case 1: {
+						constant.variable.u.b = 1;
+						break;
+					}
+					default: {
+						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+						break;
+					}
+				}
+			}
 			else {
 				// error
 				context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
@@ -43,7 +61,7 @@ bsl_statement_var bsl_statement_const_create(bsl_tkn_ir **token, bsl_context *co
 			break;
 		}
 		case bsl_variable_float: {
-			if (curr->token->code == BSLTokenCode_id_float) {
+			if (curr->token->code == BSLTokenCode_id_float || curr->token->code == BSLTokenCode_id_int) {
 				// what about if it starts with an 'f'
 				constant.variable.u.f = strtof(curr->token->contents, NULL);
 			}

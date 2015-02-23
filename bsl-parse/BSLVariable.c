@@ -12,6 +12,114 @@
 
 #include "BSLStatement_Func.h"
 
+int8_t bsl_variable_is_type_compatible(bsl_variable_type def, bsl_variable_type arg_type)
+{
+	int8_t result = -1;
+
+	switch (def) {
+		case bsl_variable_int: {
+			switch (arg_type) {
+				case bsl_variable_int:
+				case bsl_variable_bool: {
+					result = 1;
+					break;
+				}
+				case bsl_variable_string:
+				case bsl_variable_float:
+				case bsl_variable_void: {
+					result = 0;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			break;
+		}
+		case bsl_variable_bool: {
+			switch (arg_type) {
+				case bsl_variable_int:
+				case bsl_variable_bool: {
+					result = 1;
+					break;
+				}
+				case bsl_variable_string:
+				case bsl_variable_float:
+				case bsl_variable_void: {
+					result = 0;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			break;
+		}
+		case bsl_variable_string: {
+			switch (arg_type) {
+				case bsl_variable_int:
+				case bsl_variable_bool:
+				case bsl_variable_float:
+				case bsl_variable_void: {
+					result = 0;
+					break;
+				}
+				case bsl_variable_string: {
+					result = 1;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			break;
+		}
+		case bsl_variable_float: {
+			switch (arg_type) {
+				case bsl_variable_int:
+				case bsl_variable_bool:
+				case bsl_variable_float: {
+					result = 1;
+					break;
+				}
+				case bsl_variable_string:
+				case bsl_variable_void: {
+					result = 0;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			break;
+		}
+		case bsl_variable_void: {
+			switch (arg_type) {
+				case bsl_variable_int:
+				case bsl_variable_bool:
+				case bsl_variable_string:
+				case bsl_variable_float: {
+					result = 0;
+					break;
+				}
+				case bsl_variable_void: {
+					result = 1;
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+			break;
+		}
+		default: {
+			break;
+		}
+	}
+
+	return result;
+}
+
 char *bsl_variable_print(bsl_variable variable)
 {
 	char *text = calloc(1024, sizeof(char));
@@ -261,6 +369,24 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 					if (curr->token->code == BSLTokenCode_id_false || curr->token->code == BSLTokenCode_id_true) {
 						var->u.b = (curr->token->code == BSLTokenCode_id_true ? 1 : 0);
 					}
+					else if (curr->token->code == BSLTokenCode_id_int) {
+						int value = atoi(curr->token->contents);
+
+						switch (value) {
+							case 0: {
+								var->u.b = 0;
+								break;
+							}
+							case 1: {
+								var->u.b = 1;
+								break;
+							}
+							default: {
+								context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
+								break;
+							}
+						}
+					}
 					else {
 						// error
 						context->error = bsl_error_var_invalid_type_assignment; // ERROR ASSIGNMENT
@@ -268,7 +394,7 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 					break;
 				}
 				case bsl_variable_float: {
-					if (curr->token->code == BSLTokenCode_id_float) {
+					if (curr->token->code == BSLTokenCode_id_float || curr->token->code == BSLTokenCode_id_int) {
 						// what about if it starts with an 'f'
 						var->u.f = strtof(curr->token->contents, NULL);
 					}

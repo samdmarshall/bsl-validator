@@ -18,8 +18,6 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 
 	bsl_symbol *symbol = NULL;
 
-	bsl_symbol *call_symbol = NULL;
-
 	bsl_tkn_ir *curr = *token;
 
 	debug_printf("%s", "function call: ");
@@ -35,8 +33,6 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 	}
 
 	symbol = bsl_db_get_state(name, context);
-
-	call_symbol = symbol;
 
 	if (symbol->type == bsl_symbol_type_variable) {
 		if (name == NULL) {
@@ -95,13 +91,16 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 		for (uint32_t type_index = 0; type_index < symbol->u.func.args[counter].arg_type_count; type_index++) {
 			bsl_variable parameter_definition = symbol->u.func.args[counter].args[type_index];
 
-			if (parameter_definition.type == args[counter].args->type) {
+			int8_t type_compatible = bsl_variable_is_type_compatible(parameter_definition.type, args[counter].args->type);
+			if (type_compatible == 1) {
 				args[counter].args->name = parameter_definition.name;
+				break;
 			}
 		}
 
 		if (args[counter].args->name == NULL) {
 			// error in types
+			context->error = bsl_error_invalid_parameter_type; // ERROR ASSIGNMENT
 		}
 
 		if (args[counter].args->type != bsl_variable_None) {
