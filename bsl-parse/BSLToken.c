@@ -10,7 +10,7 @@
 #include "BSLTokenDefinitions.h"
 
 // This is used to take raw text and generate a token from it
-bsl_token *read_token(mem_buff *text)
+bsl_token *bsl_read_token(mem_buff *text)
 {
 	// make sure that we don't over-run the text buffer, return NULL to signal it to stop
 	if (text->offset < text->length) {
@@ -514,7 +514,7 @@ void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_tok
 	}
 }
 
-int check_token_error(bsl_token *token)
+int bsl_token_check_error(bsl_token *token)
 {
 	char message[1024] = {0};
 	switch (token->error) {

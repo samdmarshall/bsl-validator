@@ -75,7 +75,7 @@ bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 	// while the offset in the memory buffer is less than the totall length, to prevent overrun
 	while (script->contents->offset < script->contents->length) {
 		// create token from memory buffer contents
-		bsl_token *token = read_token(script->contents);
+		bsl_token *token = bsl_read_token(script->contents);
 
 		if (token != NULL) { // if the token was created
 
@@ -85,7 +85,7 @@ bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 			token->offset.line = curr_line;
 
 			// checking if there was a parse error in the token
-			bsl_error error = check_token_error(token);
+			bsl_error error = bsl_token_check_error(token);
 			if (error != bsl_error_none) { // if there is an error
 				// break from while loop, there is a problem with syntax
 				break;

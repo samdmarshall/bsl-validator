@@ -12,10 +12,10 @@
 #include "BSLPrivate.h"
 
 // returns a bsl token from the passed text memory buffer, the buffer position is updated internally
-bsl_token *read_token(mem_buff *text);
+bsl_token *bsl_read_token(mem_buff *text);
 
 // returns error type if there was a problem parsing a token
-int check_token_error(bsl_token *token);
+int bsl_token_check_error(bsl_token *token);
 
 void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code);
 void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_token *token, bsl_token_code code);

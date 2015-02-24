@@ -567,7 +567,7 @@ typedef enum bsl_operation_statement_type {
 struct bsl_operation_statement {
 	bsl_operation_statement_type type;
 
-	union {
+	union bsl_operation_statement_union {
 		bsl_operation op;
 		bsl_statement sm;
 	} u;
