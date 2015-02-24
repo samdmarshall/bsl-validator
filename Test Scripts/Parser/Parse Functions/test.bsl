@@ -1,8 +1,8 @@
-function testing
+func testing
 {
-	dmsg "testing function parse";
+
 }
 
-function main() {
-	dmg "testing main";
+func main() {
+	
 }

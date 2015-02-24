@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>BSL Parser Tests.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 		<key>bsl-parse.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,11 @@
 			<true/>
 		</dict>
 		<key>2262FD481A574B3F00C9F47F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>22CBD8391A9CD29300DFFA08</key>
 		<dict>
 			<key>primary</key>
 			<true/>

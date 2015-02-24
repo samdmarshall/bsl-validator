@@ -1,3 +1,3 @@
-function main() {
-	dmg "testing main";
+func main() {
+	
 }

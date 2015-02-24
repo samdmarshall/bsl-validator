@@ -78,6 +78,9 @@ int EvaluateContext(OniScriptContext *context)
 
 		if (bsl_context_check_error(eval_context) != bsl_error_none) {
 			printf("%s\n", "[Failure]");
+
+			result = -1;
+
 			break; // ERROR ASSIGNMENT
 		}
 		else {

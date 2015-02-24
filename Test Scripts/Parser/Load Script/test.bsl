@@ -1,3 +1,3 @@
-function main() {
-	dmsg "hello world"
+func main() {
+
 }

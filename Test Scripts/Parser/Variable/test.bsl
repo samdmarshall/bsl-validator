@@ -1,5 +1,4 @@
-function main() {
-	dmg "testing main";
+func main() {
 	
 	var int a = 0;
 	var float b = 5.f;

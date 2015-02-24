@@ -78,10 +78,20 @@
 		2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1841A5F205A007A2884 /* BSLStatement_Var.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1821A5F205A007A2884 /* BSLStatement_Var.c */; };
 		2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1831A5F205A007A2884 /* BSLStatement_Var.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */; };
+		22CBD8401A9CD29300DFFA08 /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
+		22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 22CBD8791A9CD5C100DFFA08 /* Test Scripts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		2262FD751A5751C300C9F47F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22E3289C1A4F028F00E01700 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2262FD231A51A6AC00C9F47F;
+			remoteInfo = bsl;
+		};
+		22CBD8411A9CD29300DFFA08 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 22E3289C1A4F028F00E01700 /* Project object */;
 			proxyType = 1;
@@ -141,6 +151,11 @@
 		2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Func.h; sourceTree = "<group>"; };
 		2299F1821A5F205A007A2884 /* BSLStatement_Var.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Var.c; sourceTree = "<group>"; };
 		2299F1831A5F205A007A2884 /* BSLStatement_Var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Var.h; sourceTree = "<group>"; };
+		22CBD83A1A9CD29300DFFA08 /* BSL Parser Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BSL Parser Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22CBD83D1A9CD29300DFFA08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSL_Parser_Tests.m; sourceTree = "<group>"; };
+		22CBD8791A9CD5C100DFFA08 /* Test Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Test Scripts"; path = "../Test Scripts"; sourceTree = "<group>"; };
+		22CBD87B1A9CE02B00DFFA08 /* BSL_Test_Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSL_Test_Header.h; sourceTree = "<group>"; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -182,6 +197,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22CBD8371A9CD29300DFFA08 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22CBD8401A9CD29300DFFA08 /* libbsl.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,11 +278,39 @@
 			name = Keywords;
 			sourceTree = "<group>";
 		};
+		22CBD83B1A9CD29300DFFA08 /* BSL Parser Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22CBD8541A9CD2C600DFFA08 /* Test Code */,
+				22CBD8791A9CD5C100DFFA08 /* Test Scripts */,
+				22CBD83C1A9CD29300DFFA08 /* Supporting Files */,
+			);
+			path = "BSL Parser Tests";
+			sourceTree = "<group>";
+		};
+		22CBD83C1A9CD29300DFFA08 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				22CBD83D1A9CD29300DFFA08 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		22CBD8541A9CD2C600DFFA08 /* Test Code */ = {
+			isa = PBXGroup;
+			children = (
+				22CBD87B1A9CE02B00DFFA08 /* BSL_Test_Header.h */,
+				22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */,
+			);
+			name = "Test Code";
+			sourceTree = "<group>";
+		};
 		22E3289B1A4F028F00E01700 = {
 			isa = PBXGroup;
 			children = (
 				2262FD421A574B0D00C9F47F /* stdlib */,
 				22E328A61A4F028F00E01700 /* bsl-parse */,
+				22CBD83B1A9CD29300DFFA08 /* BSL Parser Tests */,
 				22E328A51A4F028F00E01700 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -269,6 +320,7 @@
 			children = (
 				22E328A41A4F028F00E01700 /* bsl-parse */,
 				2262FD241A51A6AC00C9F47F /* libbsl.dylib */,
+				22CBD83A1A9CD29300DFFA08 /* BSL Parser Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -460,6 +512,24 @@
 			productReference = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		22CBD8391A9CD29300DFFA08 /* BSL Parser Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22CBD8451A9CD29300DFFA08 /* Build configuration list for PBXNativeTarget "BSL Parser Tests" */;
+			buildPhases = (
+				22CBD8361A9CD29300DFFA08 /* Sources */,
+				22CBD8371A9CD29300DFFA08 /* Frameworks */,
+				22CBD8381A9CD29300DFFA08 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				22CBD8421A9CD29300DFFA08 /* PBXTargetDependency */,
+			);
+			name = "BSL Parser Tests";
+			productName = "BSL Parser Tests";
+			productReference = 22CBD83A1A9CD29300DFFA08 /* BSL Parser Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		22E328A31A4F028F00E01700 /* bsl-parse */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22E328AB1A4F028F00E01700 /* Build configuration list for PBXNativeTarget "bsl-parse" */;
@@ -490,6 +560,9 @@
 					2262FD231A51A6AC00C9F47F = {
 						CreatedOnToolsVersion = 6.1;
 					};
+					22CBD8391A9CD29300DFFA08 = {
+						CreatedOnToolsVersion = 6.1;
+					};
 					22E328A31A4F028F00E01700 = {
 						CreatedOnToolsVersion = 6.1;
 					};
@@ -509,9 +582,21 @@
 			targets = (
 				22E328A31A4F028F00E01700 /* bsl-parse */,
 				2262FD231A51A6AC00C9F47F /* bsl */,
+				22CBD8391A9CD29300DFFA08 /* BSL Parser Tests */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		22CBD8381A9CD29300DFFA08 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2262FD201A51A6AC00C9F47F /* Sources */ = {
@@ -554,6 +639,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22CBD8361A9CD29300DFFA08 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22E328A01A4F028F00E01700 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -569,6 +662,11 @@
 			isa = PBXTargetDependency;
 			target = 2262FD231A51A6AC00C9F47F /* bsl */;
 			targetProxy = 2262FD751A5751C300C9F47F /* PBXContainerItemProxy */;
+		};
+		22CBD8421A9CD29300DFFA08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2262FD231A51A6AC00C9F47F /* bsl */;
+			targetProxy = 22CBD8411A9CD29300DFFA08 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -614,6 +712,38 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				RUN_CLANG_STATIC_ANALYZER = NO;
+			};
+			name = Release;
+		};
+		22CBD8431A9CD29300DFFA08 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BSL Parser Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		22CBD8441A9CD29300DFFA08 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "BSL Parser Tests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -722,6 +852,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		22CBD8451A9CD29300DFFA08 /* Build configuration list for PBXNativeTarget "BSL Parser Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22CBD8431A9CD29300DFFA08 /* Debug */,
+				22CBD8441A9CD29300DFFA08 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		22E3289F1A4F028F00E01700 /* Build configuration list for PBXProject "bsl-parse" */ = {
 			isa = XCConfigurationList;
