@@ -127,7 +127,6 @@ void bsl_symbol_release(bsl_symbol *symbol)
 
 void bsl_symbol_print_frame(bsl_symbol *symbol)
 {
-
 	bsl_script *script = symbol->script;
 
 	if (script->fd != NULL) {

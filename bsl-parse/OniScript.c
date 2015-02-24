@@ -96,10 +96,9 @@ int EvaluateContext(OniScriptContext *context)
 
 		if (bsl_context_check_error(eval_context) == bsl_error_none) {
 
-			// bsl_scheduler *scheduler =
-			// bsl_scheduler_create(eval_context);
+			//bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
 
-			// bsl_scheduler_run(scheduler);
+			//bsl_scheduler_run(scheduler);
 		}
 		else {
 			// failed to execute without error
@@ -113,10 +112,11 @@ int EvaluateContext(OniScriptContext *context)
 void ScriptContextRelease(OniScriptContext *context)
 {
 	if (context->script_count > 1) {
-		closedir(context->scripts[1].fd->dir);
+		closedir(context->scripts[0].fd->dir);
 	}
 
 	for (uint32_t index = 0; index < context->script_count; index++) {
+
 		mem_buff_release(context->scripts[index].contents);
 		file_ref_release(context->scripts[index].fd);
 	}

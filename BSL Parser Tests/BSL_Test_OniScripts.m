@@ -29,7 +29,7 @@
 
 - (void)test_Airport {
 	char *script_path = OniScriptPath(@"Airport");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -41,7 +41,7 @@
 
 - (void)test_Airport_III {
 	char *script_path = OniScriptPath(@"Airport_III");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -53,7 +53,7 @@
 
 - (void)test_compound {
 	char *script_path = OniScriptPath(@"compound");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -65,7 +65,7 @@
 
 - (void)test_EnvWarehouse {
 	char *script_path = OniScriptPath(@"EnvWarehouse");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -77,7 +77,7 @@
 
 - (void)test_lab {
 	char *script_path = OniScriptPath(@"lab");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -89,7 +89,7 @@
 
 - (void)test_manplant {
 	char *script_path = OniScriptPath(@"manplant");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -101,7 +101,7 @@
 
 - (void)test_neuro {
 	char *script_path = OniScriptPath(@"neuro");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -113,7 +113,7 @@
 
 - (void)test_power {
 	char *script_path = OniScriptPath(@"power");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -125,7 +125,7 @@
 
 - (void)test_power_II {
 	char *script_path = OniScriptPath(@"power_II");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -137,7 +137,7 @@
 
 - (void)test_roof {
 	char *script_path = OniScriptPath(@"roof");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -149,7 +149,7 @@
 
 - (void)test_state {
 	char *script_path = OniScriptPath(@"state");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -161,7 +161,7 @@
 
 - (void)test_tctf {
 	char *script_path = OniScriptPath(@"tctf");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
@@ -173,7 +173,7 @@
 
 - (void)test_tctf_ii {
 	char *script_path = OniScriptPath(@"tctf_ii");
-	// This is an example of a functional test case.
+	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
 	int result = EvaluateContext(new_context);
