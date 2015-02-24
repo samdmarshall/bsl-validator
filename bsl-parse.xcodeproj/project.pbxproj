@@ -78,6 +78,8 @@
 		2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1841A5F205A007A2884 /* BSLStatement_Var.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1821A5F205A007A2884 /* BSLStatement_Var.c */; };
 		2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1831A5F205A007A2884 /* BSLStatement_Var.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22A4A2C91A9CE2A600425014 /* BSL_Test_OniScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */; };
+		22A4A2CC1A9CE2CC00425014 /* GameDataFolder in Resources */ = {isa = PBXBuildFile; fileRef = 22A4A2CA1A9CE2B900425014 /* GameDataFolder */; };
 		22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */; };
 		22CBD8401A9CD29300DFFA08 /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
 		22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 22CBD8791A9CD5C100DFFA08 /* Test Scripts */; };
@@ -151,6 +153,8 @@
 		2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Func.h; sourceTree = "<group>"; };
 		2299F1821A5F205A007A2884 /* BSLStatement_Var.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Var.c; sourceTree = "<group>"; };
 		2299F1831A5F205A007A2884 /* BSLStatement_Var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Var.h; sourceTree = "<group>"; };
+		22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSL_Test_OniScripts.m; sourceTree = "<group>"; };
+		22A4A2CA1A9CE2B900425014 /* GameDataFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = GameDataFolder; sourceTree = SOURCE_ROOT; };
 		22CBD83A1A9CD29300DFFA08 /* BSL Parser Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BSL Parser Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22CBD83D1A9CD29300DFFA08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSL_Parser_Tests.m; sourceTree = "<group>"; };
@@ -278,11 +282,20 @@
 			name = Keywords;
 			sourceTree = "<group>";
 		};
+		22A4A2CB1A9CE2BF00425014 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				22A4A2CA1A9CE2B900425014 /* GameDataFolder */,
+				22CBD8791A9CD5C100DFFA08 /* Test Scripts */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
 		22CBD83B1A9CD29300DFFA08 /* BSL Parser Tests */ = {
 			isa = PBXGroup;
 			children = (
+				22A4A2CB1A9CE2BF00425014 /* Scripts */,
 				22CBD8541A9CD2C600DFFA08 /* Test Code */,
-				22CBD8791A9CD5C100DFFA08 /* Test Scripts */,
 				22CBD83C1A9CD29300DFFA08 /* Supporting Files */,
 			);
 			path = "BSL Parser Tests";
@@ -301,6 +314,7 @@
 			children = (
 				22CBD87B1A9CE02B00DFFA08 /* BSL_Test_Header.h */,
 				22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */,
+				22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */,
 			);
 			name = "Test Code";
 			sourceTree = "<group>";
@@ -593,6 +607,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */,
+				22A4A2CC1A9CE2CC00425014 /* GameDataFolder in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -644,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */,
+				22A4A2C91A9CE2A600425014 /* BSL_Test_OniScripts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -860,6 +876,7 @@
 				22CBD8441A9CD29300DFFA08 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		22E3289F1A4F028F00E01700 /* Build configuration list for PBXProject "bsl-parse" */ = {
 			isa = XCConfigurationList;

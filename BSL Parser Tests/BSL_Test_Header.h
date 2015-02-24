@@ -11,6 +11,8 @@
 
 #include "OniScript.h"
 
-#define ScriptPath(a,b) (char *)[[[[[[[NSBundle bundleForClass:[self class]] resourceURL] URLByAppendingPathComponent:@"Test Scripts" isDirectory:YES] URLByAppendingPathComponent:a isDirectory:YES] URLByAppendingPathComponent:b isDirectory:YES] path] UTF8String]
+#define TestScriptPath(a,b) (char *)[[[[[[[NSBundle bundleForClass:[self class]] resourceURL] URLByAppendingPathComponent:@"Test Scripts" isDirectory:YES] URLByAppendingPathComponent:a isDirectory:YES] URLByAppendingPathComponent:b isDirectory:YES] path] UTF8String]
+
+#define OniScriptPath(a) (char *)[[[[[[[NSBundle bundleForClass:[self class]] resourceURL] URLByAppendingPathComponent:@"GameDataFolder" isDirectory:YES] URLByAppendingPathComponent:@"IGMD" isDirectory:YES] URLByAppendingPathComponent:a isDirectory:YES] path] UTF8String]
 
 #endif

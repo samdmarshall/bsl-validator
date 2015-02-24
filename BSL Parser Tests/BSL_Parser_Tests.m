@@ -28,7 +28,7 @@
 }
 
 - (void)test_LoadScript {
-	char *script_path = ScriptPath(@"Parser", @"Load Script");
+	char *script_path = TestScriptPath(@"Parser", @"Load Script");
     // This is an example of a functional test case.
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
@@ -40,7 +40,7 @@
 }
 
 - (void)test_ParseMain {
-	char *script_path = ScriptPath(@"Parser", @"Parse Main");
+	char *script_path = TestScriptPath(@"Parser", @"Parse Main");
 	// This is an example of a functional test case.
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
@@ -52,7 +52,7 @@
 }
 
 - (void)test_ParseFunctions {
-	char *script_path = ScriptPath(@"Parser", @"Parse Functions");
+	char *script_path = TestScriptPath(@"Parser", @"Parse Functions");
 	// This is an example of a functional test case.
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
@@ -65,7 +65,7 @@
 
 
 - (void)test_ParseFunctionArgs {
-	char *script_path = ScriptPath(@"Parser", @"Parse Function Args");
+	char *script_path = TestScriptPath(@"Parser", @"Parse Function Args");
 	// This is an example of a functional test case.
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
@@ -78,7 +78,7 @@
 
 
 - (void)test_Variable {
-	char *script_path = ScriptPath(@"Parser", @"Variable");
+	char *script_path = TestScriptPath(@"Parser", @"Variable");
 	// This is an example of a functional test case.
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
