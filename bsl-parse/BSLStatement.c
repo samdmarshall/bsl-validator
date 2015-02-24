@@ -54,7 +54,6 @@ int bsl_function_interp_expression_increment(bsl_tkn_ir **token, bsl_interpreted
 
 int bsl_function_interp_expression_decrement(bsl_tkn_ir **token, bsl_interpreted_code interp, uint32_t *index)
 {
-
 	bsl_tkn_ir *curr = *token;
 
 	if (curr->prev == NULL) {
