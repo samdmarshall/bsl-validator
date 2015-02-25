@@ -197,8 +197,14 @@ if_loop:
 					
 					if (result != 0) {
 						// error
-						printf("");
 					}
+					
+					/* 
+					 This does not handle nested if statements.
+					 
+					 For this to properly handle if statements, the expression parsing will have to change.
+					
+					*/
 				}
 				
 				result = bsl_function_interp_expression_increment(&curr, interp, index);

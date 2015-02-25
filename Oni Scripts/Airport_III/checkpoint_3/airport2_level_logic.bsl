@@ -108,7 +108,7 @@ func void func_start(string ai_name)
 		trigvolume_enable hangar2_setup 0
 		door_lock 36
 		particle lock7_locklight01 do stop
-		set_objective_5
+		#set_objective_5
 		ai2_spawn ambush_striker_2
 		ai2_spawn ambush_commguy_2
 		Hangar2a

@@ -73,8 +73,14 @@ func void main {
 		dmsg "world"
 	}
 	
-	if (foobar(1) eq 0) {
+	if (chr_has_lsi() eq 0) 
+	{
 		dmsg "it works!";
+	}
+	
+	if (test eq 10)
+	{
+		dmsg "is this broken?"
 	}
 	
 	sleep 40

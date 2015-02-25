@@ -408,7 +408,9 @@ func void start(string ai_name)
 			objective_set(6,silent)
 			paths			
 		}
+
 	}
+
 }
 
 func void deathfall(void)

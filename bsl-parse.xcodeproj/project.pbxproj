@@ -74,7 +74,10 @@
 		2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F17F1A5F204B007A2884 /* BSLStatement_Func.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1841A5F205A007A2884 /* BSLStatement_Var.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1821A5F205A007A2884 /* BSLStatement_Var.c */; };
 		2299F1851A5F205A007A2884 /* BSLStatement_Var.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1831A5F205A007A2884 /* BSLStatement_Var.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		22A4A2C91A9CE2A600425014 /* BSL_Test_OniScripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */; };
+		22B6FF2F1A9E318300C0FC6D /* Oni Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 22D767111A9E3068002C8AEA /* Oni Scripts */; };
+		22B6FF301A9E318500C0FC6D /* GameDataFolder in Resources */ = {isa = PBXBuildFile; fileRef = 22D767101A9E3060002C8AEA /* GameDataFolder */; };
+		22B6FF321A9E327300C0FC6D /* BSL_Oni_Test_compound.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B6FF311A9E327300C0FC6D /* BSL_Oni_Test_compound.m */; };
+		22B6FF341A9E32AA00C0FC6D /* BSL_Oni_Test_dream_lab.m in Sources */ = {isa = PBXBuildFile; fileRef = 22B6FF331A9E32AA00C0FC6D /* BSL_Oni_Test_dream_lab.m */; };
 		22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */; };
 		22CBD8401A9CD29300DFFA08 /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
 		22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 22CBD8791A9CD5C100DFFA08 /* Test Scripts */; };
@@ -149,6 +152,8 @@
 		2299F1821A5F205A007A2884 /* BSLStatement_Var.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Var.c; sourceTree = "<group>"; };
 		2299F1831A5F205A007A2884 /* BSLStatement_Var.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Var.h; sourceTree = "<group>"; };
 		22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSL_Test_OniScripts.m; sourceTree = "<group>"; };
+		22B6FF311A9E327300C0FC6D /* BSL_Oni_Test_compound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSL_Oni_Test_compound.m; sourceTree = "<group>"; };
+		22B6FF331A9E32AA00C0FC6D /* BSL_Oni_Test_dream_lab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSL_Oni_Test_dream_lab.m; sourceTree = "<group>"; };
 		22CBD83A1A9CD29300DFFA08 /* BSL Parser Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BSL Parser Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22CBD83D1A9CD29300DFFA08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSL_Parser_Tests.m; sourceTree = "<group>"; };
@@ -311,6 +316,8 @@
 				22A4A2C81A9CE2A600425014 /* BSL_Test_OniScripts.m */,
 				22D767001A9E285F002C8AEA /* BSL_Oni_Test_Airport.m */,
 				22D767031A9E2A85002C8AEA /* BSL_Oni_Test_Airport_III.m */,
+				22B6FF311A9E327300C0FC6D /* BSL_Oni_Test_compound.m */,
+				22B6FF331A9E32AA00C0FC6D /* BSL_Oni_Test_dream_lab.m */,
 			);
 			name = "Test Code";
 			sourceTree = "<group>";
@@ -602,6 +609,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */,
+				22B6FF2F1A9E318300C0FC6D /* Oni Scripts in Resources */,
+				22B6FF301A9E318500C0FC6D /* GameDataFolder in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -651,9 +660,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B6FF341A9E32AA00C0FC6D /* BSL_Oni_Test_dream_lab.m in Sources */,
 				22D7670F1A9E2F52002C8AEA /* BSL_Oni_Test_Airport_III.m in Sources */,
 				22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */,
-				22A4A2C91A9CE2A600425014 /* BSL_Test_OniScripts.m in Sources */,
+				22B6FF321A9E327300C0FC6D /* BSL_Oni_Test_compound.m in Sources */,
 				22D7670E1A9E2F4F002C8AEA /* BSL_Oni_Test_Airport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
