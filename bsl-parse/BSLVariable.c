@@ -590,6 +590,48 @@ error_check:
 	return count;
 }
 
+void bsl_func_arg_update(bsl_func_arg *args, uint32_t arg_count, bsl_context **context)
+{
+	for (uint32_t arg_index = 0; arg_index < arg_count; arg_index++) {
+		bsl_variable *log_variable = args[arg_index].args;
+
+		if (log_variable->type == bsl_variable_string && log_variable->u.s != NULL) {
+			bsl_symbol *lookup_symbol = bsl_db_get_state(log_variable->u.s, (*context));
+			;
+
+			if (lookup_symbol != NULL) {
+				if (lookup_symbol->type == bsl_symbol_type_variable) {
+					log_variable = &(lookup_symbol->u.value);
+
+					args[arg_index].args->type = log_variable->type;
+
+					switch (args[arg_index].args->type) {
+						case bsl_variable_int: {
+							args[arg_index].args->u.i = log_variable->u.i;
+							break;
+						}
+						case bsl_variable_bool: {
+							args[arg_index].args->u.b = log_variable->u.b;
+							break;
+						}
+						case bsl_variable_string: {
+							args[arg_index].args->u.s = log_variable->u.s;
+							break;
+						}
+						case bsl_variable_float: {
+							args[arg_index].args->u.f = log_variable->u.f;
+							break;
+						}
+						default: {
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_variable *variable)
 {
 	bsl_variable var = *variable;

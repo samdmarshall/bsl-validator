@@ -9,12 +9,31 @@
 #ifndef bsl_parse_BSLPrivate_h
 #define bsl_parse_BSLPrivate_h
 
+#pragma mark -
+#pragma mark Includes
+
 #include "FileAccess.h"
 #include "cmap.h"
 #include "TimeUtil.h"
 
 #include <ctype.h>
 #include <math.h>
+
+#pragma mark -
+#pragma mark Defines
+
+#define ATR(a) __attribute__((a))
+
+#if DEBUG
+#define debug_printf(fmt, ...) printf(fmt, __VA_ARGS__)
+#else
+#define debug_printf(fmt, ...)
+#endif
+
+#define kBSLStackFrameMaximum 64
+
+#pragma mark -
+#pragma mark TypeDef Definitions
 
 typedef struct bsl_script bsl_script;
 
@@ -48,10 +67,6 @@ typedef struct bsl_context bsl_context;
 
 typedef struct bsl_statement bsl_statement;
 
-typedef struct bsl_scheduler bsl_scheduler;
-
-typedef struct bsl_schedule_item bsl_schedule_item;
-
 typedef struct bsl_statement_schedule bsl_statement_schedule;
 
 typedef struct bsl_statement_fork bsl_statement_fork;
@@ -71,12 +86,6 @@ typedef struct bsl_statement_iterate bsl_statement_iterate;
 typedef struct bsl_statement_func bsl_statement_func;
 
 typedef struct bsl_statement_var bsl_statement_var;
-
-#if DEBUG
-#define debug_printf(fmt, ...) printf(fmt, __VA_ARGS__)
-#else
-#define debug_printf(fmt, ...)
-#endif
 
 #pragma mark -
 #pragma mark BSLScript
@@ -194,6 +203,7 @@ typedef enum bsl_error {
 	bsl_error_missing_identifier,  // missing expected token identifier in sequence
 	bsl_error_missing_initializer, // missing "main" function
 	bsl_error_invalid_sleep_use,   // cannot use "sleep" in a function that has a return type
+	bsl_error_sleep_failure,	   // sleep timer failed to execute
 
 	bsl_error_registered_symbol, // symbol is already registered, duplicate
 
@@ -286,7 +296,7 @@ struct bsl_variable {
 struct bsl_func_arg {
 	bsl_variable *args;
 	uint8_t arg_type_count;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_func_rtype
 
@@ -324,13 +334,13 @@ typedef uint8_t (*FPCallback)(void *context, struct time_interval interval);
 struct bsl_interpreted_code {
 	bsl_expression *expression;
 	uint32_t expression_count;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_function_interpreted
 
 struct bsl_function_interpreted {
 	bsl_interpreted_code code;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_function_compiled
 
@@ -363,7 +373,7 @@ struct bsl_function {
 
 struct bsl_database {
 	cmap_str symtab;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_db_register_type
 
@@ -388,14 +398,14 @@ struct bsl_register_func_item {
 
 	FunctionPointer parse;
 	FunctionPointer call;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_register_var_item
 
 struct bsl_register_var_item {
 	char *name;
 	bsl_db_register_type type;
-};
+} __attribute__((packed));
 
 #pragma mark -
 #pragma mark BSLStatement
@@ -421,34 +431,34 @@ typedef enum bsl_statement_type {
 
 struct bsl_statement_func {
 	bsl_function function;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_var
 
 struct bsl_statement_var {
 	bsl_stack_scope *scope;
 	bsl_variable variable;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_fork
 
 struct bsl_statement_fork {
 	bsl_statement_func function;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_sleep
 
 struct bsl_statement_sleep {
 	struct timeval total;
 	struct timeval current;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_schedule
 
 struct bsl_statement_schedule {
 	bsl_statement_sleep sleep;
 	bsl_statement_fork fork;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_conditional_type
 
@@ -468,7 +478,7 @@ struct bsl_conditional {
 
 	bsl_operation *op;
 	uint8_t op_count;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_conditional_case
 
@@ -476,20 +486,20 @@ struct bsl_statement_conditional_case {
 	bsl_conditional *cond;
 
 	bsl_interpreted_code code;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_conditional
 
 struct bsl_statement_conditional {
 	bsl_statement_conditional_case *cond_case;
 	uint8_t case_count;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_return
 
 struct bsl_statement_return {
 	bsl_variable *variable;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement_iterate
 
@@ -499,7 +509,7 @@ struct bsl_statement_iterate {
 	bsl_symbol *collection;
 
 	bsl_interpreted_code code;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_statement
 
@@ -549,7 +559,7 @@ struct bsl_operation {
 	bsl_operation_action action;
 
 	bsl_operation_statement *left_side;
-};
+} __attribute__((packed));
 
 #pragma mark bsl_operation_statement_type
 
@@ -617,12 +627,11 @@ struct bsl_stack {
 	// position tracking here
 	bsl_symbol *statements;
 	uint32_t statement_count;
-};
+} __attribute__((packed));
 
 #pragma mark -
 #pragma mark BSLContext
 
-#define kBSLStackFrameMaximum 64
 
 #pragma mark bsl_context
 
@@ -637,49 +646,6 @@ struct bsl_context {
 
 	bsl_error error;
 	uint8_t active_err;
-};
-
-#pragma mark -
-#pragma mark BSLScheduleItem
-
-#pragma mark bsl_schedule_item
-
-struct bsl_schedule_item {
-	uint32_t item_count;
-
-	bsl_schedule_item *items;
-
-	// something to evaluate
-	bsl_statement *statement;
-
-	bsl_schedule_item *parent;
-};
-
-#pragma mark -
-#pragma mark BSLScheduler
-
-#pragma mark bsl_runtime_error
-
-typedef enum bsl_runtime_error {
-	bsl_runtime_error_invalid,
-
-	bsl_runtime_error_invalid_sleep,
-
-	bsl_runtime_error_count
-} bsl_runtime_error;
-
-#pragma mark bsl_scheduler
-
-struct bsl_scheduler {
-	uint32_t current_tick;
-
-	uint32_t stack_depth;
-
-	bsl_schedule_item *stack;
-
-	bsl_schedule_item *current;
-
-	bsl_runtime_error error;
-};
+} __attribute__((packed));
 
 #endif

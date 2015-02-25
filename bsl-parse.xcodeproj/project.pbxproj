@@ -35,7 +35,6 @@
 		2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328CC1A4F3A6D00E01700 /* OniScript.c */; };
 		2262FD501A574C1B00C9F47F /* BSLStack.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD381A51AF9500C9F47F /* BSLStack.c */; };
 		2262FD511A574C1B00C9F47F /* BSLStatement.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3B1A51F2C700C9F47F /* BSLStatement.c */; };
-		2262FD521A574C1B00C9F47F /* BSLScheduler.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */; };
 		2262FD561A574C4200C9F47F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 22E328A71A4F028F00E01700 /* main.c */; };
 		2262FD601A5750A900C9F47F /* OniScript.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328CD1A4F3A6D00E01700 /* OniScript.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD611A5750A900C9F47F /* cmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328B81A4F096100E01700 /* cmap.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -53,15 +52,12 @@
 		2262FD6D1A5750AA00C9F47F /* BSLStatement.h in Headers */ = {isa = PBXBuildFile; fileRef = 2262FD3C1A51F2C700C9F47F /* BSLStatement.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD6E1A5750AA00C9F47F /* BSLSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328D71A4F7E1D00E01700 /* BSLSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD6F1A5750AA00C9F47F /* BSLExpression.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328C41A4F0D7A00E01700 /* BSLExpression.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2262FD701A5750AA00C9F47F /* BSLScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 2262FD401A571ECA00C9F47F /* BSLScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD711A5750AA00C9F47F /* BSLExecute.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328E51A508C7C00E01700 /* BSLExecute.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD721A5750AA00C9F47F /* BSLGlobals.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328ED1A50A78100E01700 /* BSLGlobals.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD731A5750AA00C9F47F /* BSLScript.h in Headers */ = {isa = PBXBuildFile; fileRef = 22E328D01A4F3F1200E01700 /* BSLScript.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2262FD741A57513500C9F47F /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
 		2262FD771A57524700C9F47F /* BSL_stdlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 2262FD431A574B2200C9F47F /* BSL_stdlib.c */; };
 		2262FD781A57524E00C9F47F /* BSL_stdlib.h in Headers */ = {isa = PBXBuildFile; fileRef = 2262FD441A574B2200C9F47F /* BSL_stdlib.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		22662AD81A5AE2B30005DD03 /* BSLCoreTimer.c in Sources */ = {isa = PBXBuildFile; fileRef = 22662AD51A5AE2A20005DD03 /* BSLCoreTimer.c */; };
-		22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */ = {isa = PBXBuildFile; fileRef = 22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F1671A5F1ACC007A2884 /* BSLStatement_Conditional.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */; };
 		2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */ = {isa = PBXBuildFile; fileRef = 2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2299F16B1A5F1AEF007A2884 /* BSLStatement_Fork.c in Sources */ = {isa = PBXBuildFile; fileRef = 2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */; };
@@ -83,6 +79,8 @@
 		22CBD83F1A9CD29300DFFA08 /* BSL_Parser_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */; };
 		22CBD8401A9CD29300DFFA08 /* libbsl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2262FD241A51A6AC00C9F47F /* libbsl.dylib */; };
 		22CBD87A1A9CD5C600DFFA08 /* Test Scripts in Resources */ = {isa = PBXBuildFile; fileRef = 22CBD8791A9CD5C100DFFA08 /* Test Scripts */; };
+		22D766FD1A9D5C40002C8AEA /* BSL_stdlib_strlen.c in Sources */ = {isa = PBXBuildFile; fileRef = 22D766FB1A9D5C40002C8AEA /* BSL_stdlib_strlen.c */; };
+		22D766FE1A9D5C40002C8AEA /* BSL_stdlib_strlen.h in Headers */ = {isa = PBXBuildFile; fileRef = 22D766FC1A9D5C40002C8AEA /* BSL_stdlib_strlen.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -131,12 +129,8 @@
 		2262FD391A51AF9500C9F47F /* BSLStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStack.h; sourceTree = "<group>"; };
 		2262FD3B1A51F2C700C9F47F /* BSLStatement.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement.c; sourceTree = "<group>"; };
 		2262FD3C1A51F2C700C9F47F /* BSLStatement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement.h; sourceTree = "<group>"; };
-		2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLScheduler.c; sourceTree = "<group>"; };
-		2262FD401A571ECA00C9F47F /* BSLScheduler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLScheduler.h; sourceTree = "<group>"; };
 		2262FD431A574B2200C9F47F /* BSL_stdlib.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = BSL_stdlib.c; path = stdlib/BSL_stdlib.c; sourceTree = "<group>"; };
 		2262FD441A574B2200C9F47F /* BSL_stdlib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BSL_stdlib.h; path = stdlib/BSL_stdlib.h; sourceTree = "<group>"; };
-		22662AD51A5AE2A20005DD03 /* BSLCoreTimer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLCoreTimer.c; sourceTree = "<group>"; };
-		22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLCoreTimer.h; sourceTree = "<group>"; };
 		2299F1641A5F1ABB007A2884 /* BSLStatement_Conditional.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Conditional.c; sourceTree = "<group>"; };
 		2299F1651A5F1ABB007A2884 /* BSLStatement_Conditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSLStatement_Conditional.h; sourceTree = "<group>"; };
 		2299F1691A5F1AEF007A2884 /* BSLStatement_Fork.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLStatement_Fork.c; sourceTree = "<group>"; };
@@ -160,6 +154,9 @@
 		22CBD83E1A9CD29300DFFA08 /* BSL_Parser_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BSL_Parser_Tests.m; sourceTree = "<group>"; };
 		22CBD8791A9CD5C100DFFA08 /* Test Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Test Scripts"; path = "../Test Scripts"; sourceTree = "<group>"; };
 		22CBD87B1A9CE02B00DFFA08 /* BSL_Test_Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BSL_Test_Header.h; sourceTree = "<group>"; };
+		22D766FA1A9D5B64002C8AEA /* stdlib Scripts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "stdlib Scripts"; sourceTree = SOURCE_ROOT; };
+		22D766FB1A9D5C40002C8AEA /* BSL_stdlib_strlen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BSL_stdlib_strlen.c; path = stdlib/BSL_stdlib_strlen.c; sourceTree = "<group>"; };
+		22D766FC1A9D5C40002C8AEA /* BSL_stdlib_strlen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSL_stdlib_strlen.h; path = stdlib/BSL_stdlib_strlen.h; sourceTree = "<group>"; };
 		22E328A41A4F028F00E01700 /* bsl-parse */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "bsl-parse"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22E328A71A4F028F00E01700 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		22E328AE1A4F02AA00E01700 /* BSLToken.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = BSLToken.c; sourceTree = "<group>"; };
@@ -232,17 +229,6 @@
 			name = Stack;
 			sourceTree = "<group>";
 		};
-		2262FD3E1A571EBB00C9F47F /* Scheduler */ = {
-			isa = PBXGroup;
-			children = (
-				2262FD401A571ECA00C9F47F /* BSLScheduler.h */,
-				2262FD3F1A571ECA00C9F47F /* BSLScheduler.c */,
-				22662AD61A5AE2A20005DD03 /* BSLCoreTimer.h */,
-				22662AD51A5AE2A20005DD03 /* BSLCoreTimer.c */,
-			);
-			name = Scheduler;
-			sourceTree = "<group>";
-		};
 		2262FD421A574B0D00C9F47F /* stdlib */ = {
 			isa = PBXGroup;
 			children = (
@@ -255,6 +241,8 @@
 				2227EF5D1A7EA0DA00CF6BBD /* BSL_stdlib_div.c */,
 				2227EF621A7EA14B00CF6BBD /* BSL_stdlib_print.h */,
 				2227EF611A7EA14B00CF6BBD /* BSL_stdlib_print.c */,
+				22D766FC1A9D5C40002C8AEA /* BSL_stdlib_strlen.h */,
+				22D766FB1A9D5C40002C8AEA /* BSL_stdlib_strlen.c */,
 			);
 			name = stdlib;
 			sourceTree = SOURCE_ROOT;
@@ -285,16 +273,17 @@
 		22A4A2CB1A9CE2BF00425014 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				22D766FA1A9D5B64002C8AEA /* stdlib Scripts */,
 				22A4A2CA1A9CE2B900425014 /* GameDataFolder */,
 				22CBD8791A9CD5C100DFFA08 /* Test Scripts */,
 			);
 			name = Scripts;
+			path = "BSL Parser Tests";
 			sourceTree = "<group>";
 		};
 		22CBD83B1A9CD29300DFFA08 /* BSL Parser Tests */ = {
 			isa = PBXGroup;
 			children = (
-				22A4A2CB1A9CE2BF00425014 /* Scripts */,
 				22CBD8541A9CD2C600DFFA08 /* Test Code */,
 				22CBD83C1A9CD29300DFFA08 /* Supporting Files */,
 			);
@@ -324,6 +313,7 @@
 			children = (
 				2262FD421A574B0D00C9F47F /* stdlib */,
 				22E328A61A4F028F00E01700 /* bsl-parse */,
+				22A4A2CB1A9CE2BF00425014 /* Scripts */,
 				22CBD83B1A9CD29300DFFA08 /* BSL Parser Tests */,
 				22E328A51A4F028F00E01700 /* Products */,
 			);
@@ -443,7 +433,6 @@
 		22E328EB1A508D0400E01700 /* Execute */ = {
 			isa = PBXGroup;
 			children = (
-				2262FD3E1A571EBB00C9F47F /* Scheduler */,
 				22E328E51A508C7C00E01700 /* BSLExecute.h */,
 				22E328E41A508C7C00E01700 /* BSLExecute.c */,
 			);
@@ -485,7 +474,6 @@
 				2262FD6D1A5750AA00C9F47F /* BSLStatement.h in Headers */,
 				2262FD6E1A5750AA00C9F47F /* BSLSymbol.h in Headers */,
 				2262FD6F1A5750AA00C9F47F /* BSLExpression.h in Headers */,
-				2262FD701A5750AA00C9F47F /* BSLScheduler.h in Headers */,
 				2299F16C1A5F1AEF007A2884 /* BSLStatement_Fork.h in Headers */,
 				2299F1741A5F1B14007A2884 /* BSLStatement_Return.h in Headers */,
 				2299F1811A5F204B007A2884 /* BSLStatement_Func.h in Headers */,
@@ -497,11 +485,11 @@
 				2262FD721A5750AA00C9F47F /* BSLGlobals.h in Headers */,
 				2262FD731A5750AA00C9F47F /* BSLScript.h in Headers */,
 				2262FD781A57524E00C9F47F /* BSL_stdlib.h in Headers */,
+				22D766FE1A9D5C40002C8AEA /* BSL_stdlib_strlen.h in Headers */,
 				22235E731A632FCC000D5DE2 /* TimeUtil.h in Headers */,
 				2299F1681A5F1AD3007A2884 /* BSLStatement_Conditional.h in Headers */,
 				2227EF581A7EA05500CF6BBD /* BSL_stdlib_priv.h in Headers */,
 				22235E771A66D85E000D5DE2 /* BSLOperation.h in Headers */,
-				22662AD91A5AE2B90005DD03 /* BSLCoreTimer.h in Headers */,
 				2227EF5C1A7EA08700CF6BBD /* BSL_stdlib_mul.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -619,7 +607,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2299F1671A5F1ACC007A2884 /* BSLStatement_Conditional.c in Sources */,
-				22662AD81A5AE2B30005DD03 /* BSLCoreTimer.c in Sources */,
 				2262FD771A57524700C9F47F /* BSL_stdlib.c in Sources */,
 				2299F1781A5F1B32007A2884 /* BSLStatement_Schedule.c in Sources */,
 				2262FD501A574C1B00C9F47F /* BSLStack.c in Sources */,
@@ -627,7 +614,6 @@
 				2227EF631A7EA14B00CF6BBD /* BSL_stdlib_print.c in Sources */,
 				2299F16F1A5F1B04007A2884 /* BSLStatement_Sleep.c in Sources */,
 				2262FD511A574C1B00C9F47F /* BSLStatement.c in Sources */,
-				2262FD521A574C1B00C9F47F /* BSLScheduler.c in Sources */,
 				2262FD361A51A6CD00C9F47F /* OniScript.c in Sources */,
 				2262FD281A51A6C400C9F47F /* cmap.cpp in Sources */,
 				2262FD291A51A6C400C9F47F /* FileAccess.c in Sources */,
@@ -649,6 +635,7 @@
 				2262FD321A51A6C400C9F47F /* BSLSymbol.c in Sources */,
 				2262FD331A51A6C400C9F47F /* BSLExpression.c in Sources */,
 				2299F16B1A5F1AEF007A2884 /* BSLStatement_Fork.c in Sources */,
+				22D766FD1A9D5C40002C8AEA /* BSL_stdlib_strlen.c in Sources */,
 				2262FD341A51A6C400C9F47F /* BSLExecute.c in Sources */,
 				2262FD351A51A6C400C9F47F /* BSLScript.c in Sources */,
 			);
@@ -704,6 +691,11 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				LD_GENERATE_MAP_FILE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+					"$(SDKROOT)/usr/lib/system/introspection",
+				);
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
@@ -724,6 +716,11 @@
 				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_PARAMETER = YES;
 				LD_GENERATE_MAP_FILE = YES;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/system",
+					"$(SDKROOT)/usr/lib/system/introspection",
+				);
 				PRIVATE_HEADERS_FOLDER_PATH = /usr/local/include/bsl;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PUBLIC_HEADERS_FOLDER_PATH = /usr/local/include/bsl;

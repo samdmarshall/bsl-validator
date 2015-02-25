@@ -12,7 +12,6 @@
 #include "BSLEvaluate.h"
 #include "BSLParse.h"
 #include "BSLExecute.h"
-#include "BSLScheduler.h"
 
 OniScriptContext *LoadScriptsFromLevelPath(char *path)
 {
@@ -94,13 +93,7 @@ int EvaluateContext(OniScriptContext *context)
 		// eval `main`
 		result = bsl_symbol_execute("main", eval_context);
 
-		if (bsl_context_check_error(eval_context) == bsl_error_none) {
-
-			//bsl_scheduler *scheduler = bsl_scheduler_create(eval_context);
-
-			//bsl_scheduler_run(scheduler);
-		}
-		else {
+		if (bsl_context_check_error(eval_context) != bsl_error_none) {
 			// failed to execute without error
 			result = -1;
 		}

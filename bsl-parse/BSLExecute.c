@@ -21,6 +21,8 @@
 #include "BSLStatement_Sleep.h"
 #include "BSLStatement_Iterate.h"
 
+#include <dispatch/dispatch.h>
+
 int bsl_symbol_execute(char *name, bsl_context *context)
 {
 	int result = 0;
@@ -37,7 +39,6 @@ int bsl_symbol_execute(char *name, bsl_context *context)
 		}
 		else {
 			// "main" has to be a function
-
 			context->error = bsl_error_missing_initializer;
 
 			result = -1;
@@ -272,6 +273,8 @@ bsl_variable *bsl_symbol_make_call(bsl_context **context, bsl_symbol *symbol)
 bsl_variable *bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count)
 {
 	bsl_variable *result = NULL;
+
+	bsl_func_arg_update(args, arg_count, context);
 
 	bsl_stack_increment(*context, symbol);
 

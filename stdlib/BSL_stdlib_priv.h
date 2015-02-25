@@ -15,14 +15,18 @@
 
 #if USE_STD_LIB
 #define STDLIB_FUNC_DEC
+
 #define STDLIB_FUNC_IMP
+
 #define STDLIB_FUNC_ARG
 #else
 #define STDLIB_FUNC_DEC static
+
 #define STDLIB_FUNC_IMP \
 	{                   \
 		return NULL;    \
 	}
+
 #define STDLIB_FUNC_ARG __attribute__((unused))
 #endif
 

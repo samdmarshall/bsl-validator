@@ -60,11 +60,15 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-i $(SRCROOT)/GameDataFolder/IGMD/neuro/ -s"
-            isEnabled = "YES">
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-i $(SRCROOT)/stdlib\ Scripts/ -s"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-i $(SRCROOT)/GameDataFolder/IGMD/test/ -s"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>

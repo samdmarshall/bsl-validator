@@ -12,6 +12,7 @@
 #include "BSL_stdlib_mul.h"
 #include "BSL_stdlib_div.h"
 #include "BSL_stdlib_print.h"
+#include "BSL_stdlib_strlen.h"
 
 #if USE_STD_LIB
 
@@ -27,6 +28,10 @@ static bsl_register_func_item STDLIB_FUNCTIONS[] = {
 	
 	{"print", bsl_db_register_type_void, "(string a)", stdlib_print, stdlib_parse},
 	{"println", bsl_db_register_type_void, "(string a)", stdlib_println, stdlib_parse},
+	{"log", bsl_db_register_type_void, "([a:string | b:int | c:float | d:bool])", stdlib_log, stdlib_parse},
+
+	{"strlen", bsl_db_register_type_int, "(string a)", stdlib_strlen, stdlib_parse},
+
 	NULL
 };
 

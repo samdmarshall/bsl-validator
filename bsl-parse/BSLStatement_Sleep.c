@@ -8,7 +8,10 @@
 
 #include "BSLStatement_Sleep.h"
 #include "BSLVariable.h"
-#include "BSLCoreTimer.h"
+
+#include <signal.h>
+#include <time.h>
+#include <errno.h>
 
 bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *context)
 {
@@ -20,8 +23,6 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 
 	// advance to sleep value
 	curr = curr->next;
-
-	// remove this code and give to scheduler to run instead.
 
 	// add error checking here
 	if (curr != NULL) {
@@ -79,8 +80,26 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 
 void bsl_statement_sleep_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
 {
-	__attribute__((unused)) bsl_context *local_context = *context;
-	__attribute__((unused)) bsl_statement *local_statement = statement;
-	__attribute__((unused)) bsl_script_offset local_offset = offset;
-	printf("");
+	ATR(unused) bsl_context *local_context = *context;
+	ATR(unused) bsl_script_offset local_offset = offset;
+
+	int result = -1;
+	int select_errno = 0;
+	uint8_t active = 1;
+
+	do {
+		result = select(0, NULL, NULL, NULL, &(statement->u.sleep.total));
+
+		if (result < 0) {
+			select_errno = errno;
+		}
+		else {
+			active = 0;
+		}
+
+	} while (active == 1);
+
+	if (result < 0) {
+		(*context)->error = bsl_error_sleep_failure; // ERROR ASSIGNMENT
+	}
 }

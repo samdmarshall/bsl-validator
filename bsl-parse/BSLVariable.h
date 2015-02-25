@@ -30,6 +30,8 @@ bsl_variable *bsl_variable_func_arg_parse(bsl_tkn_ir **item, bsl_context *contex
 
 uint32_t bsl_func_arg_parse(bsl_tkn_ir **item, bsl_context *context, bsl_func_arg **f_args);
 
+void bsl_func_arg_update(bsl_func_arg *args, uint32_t arg_count, bsl_context **context);
+
 void bsl_variable_parse_assign(bsl_tkn_ir **item, bsl_context *context, bsl_variable *variable);
 
 bsl_variable bsl_variable_parse(bsl_tkn_ir **item, bsl_context *context);
