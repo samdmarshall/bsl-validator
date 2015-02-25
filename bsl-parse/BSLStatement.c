@@ -158,7 +158,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				}
 			}
 			else {
-				context->error = bsl_error_invalid_identifier; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_invalid_identifier); // ERROR ASSIGNMENT
 			}
 		}
 		else {
@@ -264,7 +264,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 					// check the current symbol
 					if (current_func->u.func.rtype != bsl_func_rtype_void) {
 						// BSL will not allow sleep statements in functions that have a return type
-						context->error = bsl_error_invalid_sleep_use; // ERROR ASSIGNMENT
+						bsl_context_assign_error(context, bsl_error_invalid_sleep_use); // ERROR ASSIGNMENT
 					}
 				}
 
@@ -293,7 +293,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				if (context->error == bsl_error_none) {
 					debug_printf("%s", "unknown: ");
 
-					context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+					bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 				}
 
 				break;

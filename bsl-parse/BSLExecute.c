@@ -21,8 +21,6 @@
 #include "BSLStatement_Sleep.h"
 #include "BSLStatement_Iterate.h"
 
-#include <dispatch/dispatch.h>
-
 int bsl_symbol_execute(char *name, bsl_context *context)
 {
 	int result = 0;
@@ -113,7 +111,7 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 		switch (matched_type) {
 			case 0: {
 				// not matched!
-				(*context)->error = bsl_error_invalid_parameter_type; // ERROR ASSIGNMENT
+				bsl_context_assign_error((*context), bsl_error_invalid_parameter_type); // ERROR ASSIGNMENT
 				mismatch_arg++;
 				break;
 			}
@@ -145,6 +143,7 @@ int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, 
 						}
 						default: {
 							// error
+							bsl_context_assign_error(*context, bsl_error_invalid_parameter_type);
 							break;
 						}
 					}

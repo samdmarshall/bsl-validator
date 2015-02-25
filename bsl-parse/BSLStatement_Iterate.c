@@ -27,59 +27,59 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	// checking if valid token advance
 	if (result != 0) {
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	// 'over' identifier
 	if (curr->token->code != BSLTokenCode_id_over) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	// checking if valid token advance
 	if (result != 0) {
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	// variable identifier
 	if (curr->token->code != BSLTokenCode_id_generic) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	// checking if valid token advance
 	if (result != 0) {
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	// 'using' identifier
 	if (curr->token->code != BSLTokenCode_id_using) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	// checking if valid token advance
 	if (result != 0) {
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	// variable identifier
 	if (curr->token->code != BSLTokenCode_id_generic) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
 	result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 	// checking if valid token advance
 	if (result != 0) {
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 	bsl_context_check_error(context);
 
@@ -97,7 +97,7 @@ bsl_statement_iterate bsl_statement_iterate_create(bsl_tkn_ir **token, bsl_conte
 		result = bsl_function_interp_expression_increment_token(&curr, interp, index);
 		// checking if valid token advance
 		if (result != 0 || curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 			return iterate;
 		}
 

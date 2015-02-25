@@ -21,7 +21,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 	func.type = (curr->token->offset.script->fd == NULL ? bsl_func_type_comp : bsl_func_type_interp);
 
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 		return func;
 	}
 	
@@ -68,7 +68,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		curr = curr->next;
 
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 			return func;
 		}
 	}
@@ -77,7 +77,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 	}
 
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 		return func;
 	}
 	
@@ -96,7 +96,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 	}
 
 	if (curr == NULL || curr->token == NULL) {
-		context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 		return func;
 	}
 	
@@ -118,13 +118,13 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		}
 
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 			return func;
 		}
 
 		while (curr->token->code != BSLTokenCode_ctl_rparen) {
 			if (curr == NULL || curr->token == NULL) {
-				context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 				return func;
 			}
 
@@ -150,7 +150,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		curr = curr->next;
 
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 			return func;
 		}
 	}
@@ -165,7 +165,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 		curr = curr->next;
 
 		if (curr == NULL || curr->token == NULL) {
-			context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 			return func;
 		}
 

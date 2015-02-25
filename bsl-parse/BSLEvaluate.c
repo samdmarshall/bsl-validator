@@ -41,7 +41,7 @@ bsl_context *bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context)
 					}
 					else {
 						// error, already registered symbol
-						context->error = bsl_error_registered_symbol; // ERROR ASSIGNMENT
+						bsl_context_assign_error(context, bsl_error_registered_symbol); // ERROR ASSIGNMENT
 						bsl_symbol_duplicate_description(var_symbol, symbol_test);
 					}
 				}
@@ -58,7 +58,7 @@ bsl_context *bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context)
 					}
 					else {
 						// error, already registered symbol
-						context->error = bsl_error_registered_symbol; // ERROR ASSIGNMENT
+						bsl_context_assign_error(context, bsl_error_registered_symbol); // ERROR ASSIGNMENT
 						bsl_symbol_duplicate_description(func_symbol, symbol_test);
 					}
 				}
@@ -79,18 +79,18 @@ bsl_context *bsl_evaluate_ir(bsl_tkn_ir *token_ir, bsl_context *context)
 					else {
 						if (item_token->offset.length > 0) {
 							// error in script
-							context->error = bsl_error_invalid_identifier; // ERROR ASSIGNMENT
+							bsl_context_assign_error(context, bsl_error_invalid_identifier); // ERROR ASSIGNMENT
 						}
 					}
 				}
 				break;
 			}
 			case BSLScope_func: {
-				context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_invalid_scope); // ERROR ASSIGNMENT
 				break;
 			}
 			case BSLScope_cond: {
-				context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_invalid_scope); // ERROR ASSIGNMENT
 				break;
 			}
 			default: {

@@ -67,7 +67,7 @@ bsl_statement_schedule bsl_statement_schedule_create(bsl_tkn_ir **token, bsl_con
 	}
 	else {
 		// error, could not find keyword
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 
 	bsl_context_check_error(context);

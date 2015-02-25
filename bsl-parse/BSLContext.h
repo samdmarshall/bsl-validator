@@ -24,4 +24,6 @@ void bsl_context_reset_error_state(bsl_context *context);
 
 void bsl_context_release(bsl_context *context);
 
+void bsl_context_assign_error(bsl_context *context, bsl_error error);
+
 #endif /* defined(__bsl_parse__BSLContext__) */

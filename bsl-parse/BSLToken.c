@@ -8,6 +8,7 @@
 
 #include "BSLToken.h"
 #include "BSLTokenDefinitions.h"
+#include "BSLContext.h"
 
 // This is used to take raw text and generate a token from it
 bsl_token *bsl_read_token(mem_buff *text)
@@ -486,7 +487,7 @@ void bsl_token_check_scope_increase(bsl_context *context, int8_t *scope, bsl_tok
 		case BSLTokenCode_ctl_lparen: {
 			if ((*scope) > 4) {
 				// expression too complex
-				context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_invalid_scope); // ERROR ASSIGNMENT
 			}
 			break;
 		}
@@ -510,7 +511,7 @@ void bsl_token_check_scope_decrease(bsl_context *context, int8_t *scope, bsl_tok
 
 	if ((*scope) < 0) {
 		// error
-		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_invalid_scope); // ERROR ASSIGNMENT
 	}
 }
 

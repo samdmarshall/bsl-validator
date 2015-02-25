@@ -100,6 +100,10 @@ int bsl_context_check_error(bsl_context *context)
 			sprintf(message, "Cannot use 'sleep' in functions that return a value");
 			break;
 		}
+		case bsl_error_sleep_failure: {
+			sprintf(message, "Failed to sleep, error with select()");
+			break;
+		}
 		case bsl_error_func_param_count_max: {
 			sprintf(message, "Using more than 8 parameters in function signature");
 			break;
@@ -114,6 +118,10 @@ int bsl_context_check_error(bsl_context *context)
 		}
 		case bsl_error_unsafe_evaluation: {
 			sprintf(message, "Unsafe evaluation!");
+			break;
+		}
+		case bsl_error_overflow_error: {
+			sprintf(message, "Multiple errors have occured!");
 			break;
 		}
 		default: {
@@ -133,6 +141,10 @@ int bsl_context_check_error(bsl_context *context)
 		bsl_context_print_stack(context);
 	}
 
+	if (context->active_err == 1) {
+		bsl_context_assign_error(context, bsl_error_overflow_error);
+	}
+
 	return context->error;
 }
 
@@ -143,7 +155,7 @@ bsl_context *bsl_context_update(bsl_context *context, bsl_token *item_token)
 
 	if (context->scope_depth < 0) {
 		// throw error
-		context->error = bsl_error_invalid_scope; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_invalid_scope); // ERROR ASSIGNMENT
 	}
 	else {
 		switch (context->scope_depth) {
@@ -240,4 +252,9 @@ void bsl_context_release(bsl_context *context)
 
 		free(context);
 	}
+}
+
+void bsl_context_assign_error(bsl_context *context, bsl_error error)
+{
+	context->error = error;
 }

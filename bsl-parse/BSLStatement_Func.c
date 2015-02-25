@@ -100,7 +100,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 
 		if (args[counter].args->name == NULL) {
 			// error in types
-			context->error = bsl_error_invalid_parameter_type; // ERROR ASSIGNMENT
+			bsl_context_assign_error(context, bsl_error_invalid_parameter_type); // ERROR ASSIGNMENT
 		}
 
 		if (args[counter].args->type != bsl_variable_None) {
@@ -126,7 +126,7 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 
 			if (code != BSLTokenCode_ctl_rparen && bsl_expression_check_end(code) == 0) {
 
-				context->error = bsl_error_func_param_count_overload; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_func_param_count_overload); // ERROR ASSIGNMENT
 			}
 		}
 	}

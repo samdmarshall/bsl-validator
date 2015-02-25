@@ -211,7 +211,11 @@ typedef enum bsl_error {
 
 	bsl_error_unsafe_evaluation, // all errors that would cause a crash
 
-	bsl_error_func_param_count_overload,
+	bsl_error_func_param_count_overload, // more than 8 arguments in a function
+
+	bsl_error_null_string, // string is null
+
+	bsl_error_overflow_error, // multiple errors have occured :(
 
 	bsl_error_count
 } bsl_error;

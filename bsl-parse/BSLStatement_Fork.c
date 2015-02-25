@@ -9,6 +9,7 @@
 #include "BSLStatement_Fork.h"
 
 #include "BSLStatement_Func.h"
+#include "BSLContext.h"
 
 bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *context)
 {
@@ -26,7 +27,7 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 	}
 	else {
 		// error
-		context->error = bsl_error_missing_identifier;
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 
 	// move current position

@@ -123,12 +123,12 @@ bsl_operation *bsl_operation_create(bsl_context *context, bsl_tkn_ir *cond_ir)
 			}
 
 			if (curr == NULL) {
-				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 				return op;
 			}
 
 			if (curr->token == NULL) {
-				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 				return op;
 			}
 
@@ -201,13 +201,13 @@ int8_t bsl_operation_resolve_value(bsl_statement *statement, bsl_context **conte
 	}
 	else {
 		// error
-		(*context)->error = bsl_error_invalid_statement_in_conditional; // ERROR ASSIGNMENT
+		bsl_context_assign_error((*context), bsl_error_invalid_statement_in_conditional); // ERROR ASSIGNMENT
 		return result;
 	}
 
 	if (left_side_var->type != bsl_variable_bool && left_side_var->type != bsl_variable_int) {
 		// error
-		(*context)->error = bsl_error_invalid_variable_type_in_conditional; // ERROR ASSIGNMENT
+		bsl_context_assign_error((*context), bsl_error_invalid_variable_type_in_conditional); // ERROR ASSIGNMENT
 		return result;
 	}
 
@@ -264,7 +264,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op)
 
 		result = bsl_operation_resolve_value(left_side_statement, context, &left_value);
 
-		if ((*context)->error != bsl_error_none) {
+		if (bsl_context_check_error(*context) != bsl_error_none) {
 			return result;
 		}
 
@@ -276,7 +276,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op)
 
 		result = bsl_operation_resolve_value(right_side_statement, context, &right_value);
 
-		if ((*context)->error != bsl_error_none) {
+		if (bsl_context_check_error(*context) != bsl_error_none) {
 			return result;
 		}
 
@@ -362,7 +362,7 @@ int8_t bsl_operation_evaluation(bsl_context **context, bsl_operation *op)
 	}
 	else {
 		// error
-		(*context)->error = bsl_error_invalid_conditional; // ERROR ASSIGNMENT
+		bsl_context_assign_error((*context), bsl_error_invalid_conditional); // ERROR ASSIGNMENT
 	}
 
 	return result;

@@ -57,7 +57,7 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 	}
 	else {
 		// error, already registered symbol
-		context->error = bsl_error_registered_symbol; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_registered_symbol); // ERROR ASSIGNMENT
 		bsl_symbol_duplicate_description(var_symbol, symbol_test);
 		bsl_context_check_error(context);
 	}

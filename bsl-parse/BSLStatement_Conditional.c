@@ -12,6 +12,7 @@
 #include "BSLOperation.h"
 #include "BSLParse.h"
 #include "BSLExecute.h"
+#include "BSLContext.h"
 
 bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, bsl_context *context, bsl_interpreted_code interp, uint32_t *index)
 {
@@ -44,7 +45,7 @@ if_loop:
 			}
 			else {
 				// error
-				context->error = bsl_error_token_invalid_syntax; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_token_invalid_syntax); // ERROR ASSIGNMENT
 			}
 		}
 		
@@ -232,7 +233,7 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context)
 		}
 		default: {
 			// error
-			(*context)->error = bsl_error_invalid_conditional; // ERROR ASSIGNMENT
+			bsl_context_assign_error((*context), bsl_error_invalid_conditional); // ERROR ASSIGNMENT
 			break;
 		}
 	}

@@ -63,13 +63,13 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 			}
 			else {
 				// there is an error in parsing
-				context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+				bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 			}
 		}
 	}
 	else {
 		// invalid syntax of `sleep`
-		context->error = bsl_error_missing_identifier; // ERROR ASSIGNMENT
+		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
 
 	// move current position
@@ -100,6 +100,6 @@ void bsl_statement_sleep_action(bsl_context **context, bsl_statement *statement,
 	} while (active == 1);
 
 	if (result < 0) {
-		(*context)->error = bsl_error_sleep_failure; // ERROR ASSIGNMENT
+		bsl_context_assign_error((*context), bsl_error_sleep_failure); // ERROR ASSIGNMENT
 	}
 }

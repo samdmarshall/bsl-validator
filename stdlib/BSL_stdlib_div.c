@@ -36,7 +36,7 @@ bsl_variable *stdlib_divide_int(bsl_context **context, bsl_symbol *symbol, bsl_f
 		variable->u.i = a / b;
 	}
 	else {
-		(*context)->error = bsl_error_unsafe_evaluation;
+		bsl_context_assign_error((*context), bsl_error_unsafe_evaluation);
 	}
 
 	return variable;
@@ -62,7 +62,7 @@ bsl_variable *stdlib_divide_float(bsl_context **context, bsl_symbol *symbol, bsl
 		variable->u.f = a / b;
 	}
 	else {
-		(*context)->error = bsl_error_unsafe_evaluation;
+		bsl_context_assign_error((*context), bsl_error_unsafe_evaluation);
 	}
 
 	return variable;
