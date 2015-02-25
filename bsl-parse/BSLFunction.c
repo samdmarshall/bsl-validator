@@ -198,7 +198,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 	return func;
 }
 
-bsl_variable *oni_call_noop(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count)
+bsl_variable *oni_call_non_op(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count)
 {
 	bsl_variable *var = bsl_variable_create_type(bsl_variable_type_from_func_rtype(rtype));
 
