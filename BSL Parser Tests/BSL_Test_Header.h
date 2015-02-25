@@ -15,4 +15,7 @@
 
 #define OniScriptPath(a) (char *)[[[[[[[NSBundle bundleForClass:[self class]] resourceURL] URLByAppendingPathComponent:@"GameDataFolder" isDirectory:YES] URLByAppendingPathComponent:@"IGMD" isDirectory:YES] URLByAppendingPathComponent:a isDirectory:YES] path] UTF8String]
 
+#define OniFullTestScriptPath(a,b) (char *)[[[[[[[NSBundle bundleForClass:[self class]] resourceURL] URLByAppendingPathComponent:@"Oni Scripts" isDirectory:YES] URLByAppendingPathComponent:a isDirectory:YES] URLByAppendingPathComponent:b isDirectory:YES] path] UTF8String]
+
+
 #endif

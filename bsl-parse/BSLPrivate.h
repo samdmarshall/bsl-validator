@@ -59,8 +59,6 @@ typedef struct bsl_function bsl_function;
 
 typedef struct bsl_symbol bsl_symbol;
 
-typedef struct bsl_stack_scope bsl_stack_scope;
-
 typedef struct bsl_stack bsl_stack;
 
 typedef struct bsl_context bsl_context;
@@ -198,7 +196,7 @@ typedef enum bsl_error {
 	bsl_error_invalid_parameter_type, // parameter type mismatch
 	bsl_error_invalid_conditional,	// conditional type error
 	bsl_error_invalid_statement_in_conditional,
-	bsl_error_invalid_variable_type_in_conditional,
+	bsl_error_invalid_variable_type,
 
 	bsl_error_missing_identifier,  // missing expected token identifier in sequence
 	bsl_error_missing_initializer, // missing "main" function
@@ -440,7 +438,6 @@ struct bsl_statement_func {
 #pragma mark bsl_statement_var
 
 struct bsl_statement_var {
-	bsl_stack_scope *scope;
 	bsl_variable variable;
 } __attribute__((packed));
 
@@ -462,6 +459,7 @@ struct bsl_statement_sleep {
 struct bsl_statement_schedule {
 	bsl_statement_sleep sleep;
 	bsl_statement_fork fork;
+	int8_t repeats;
 } __attribute__((packed));
 
 #pragma mark bsl_conditional_type
@@ -508,9 +506,8 @@ struct bsl_statement_return {
 #pragma mark bsl_statement_iterate
 
 struct bsl_statement_iterate {
-	bsl_symbol *iter;
-
-	bsl_symbol *collection;
+	bsl_symbol *passed_var;
+	bsl_symbol *local_var;
 
 	bsl_interpreted_code code;
 } __attribute__((packed));

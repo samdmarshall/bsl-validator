@@ -38,6 +38,7 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 
 void bsl_statement_fork_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
 {
+	// this needs to snapshot the stack or this is going to execute synchronously
 	bsl_statement *func_statement = calloc(1, sizeof(bsl_statement));
 	func_statement->type = bsl_statement_type_func;
 	func_statement->u.func = statement->u.fork.function;

@@ -80,8 +80,7 @@ bsl_statement_sleep bsl_statement_sleep_create(bsl_tkn_ir **token, bsl_context *
 
 void bsl_statement_sleep_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
 {
-	ATR(unused) bsl_context *local_context = *context;
-	ATR(unused) bsl_script_offset local_offset = offset;
+	__attribute__((unused)) bsl_script_offset local_offset = offset;
 
 	int result = -1;
 	int select_errno = 0;

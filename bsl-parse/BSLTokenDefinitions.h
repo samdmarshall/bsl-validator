@@ -24,6 +24,8 @@
  
  schedule FUNCTION_CALL at TIME_INT
  
+ schedule FUNCTION_CALL repeat every TIME_INT
+ 
  iterate over IDENTIFIER using IDENTIFIER {
  
  }
@@ -32,7 +34,6 @@
  
  fork FUNCTION_CALL
  
- ? repeat FUNCTION_CALL every TIME_INT
  
  */
 

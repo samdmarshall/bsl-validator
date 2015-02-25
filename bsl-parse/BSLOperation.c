@@ -207,7 +207,7 @@ int8_t bsl_operation_resolve_value(bsl_statement *statement, bsl_context **conte
 
 	if (left_side_var->type != bsl_variable_bool && left_side_var->type != bsl_variable_int) {
 		// error
-		bsl_context_assign_error((*context), bsl_error_invalid_variable_type_in_conditional); // ERROR ASSIGNMENT
+		bsl_context_assign_error((*context), bsl_error_invalid_variable_type); // ERROR ASSIGNMENT
 		return result;
 	}
 
@@ -373,5 +373,13 @@ void bsl_operation_release(bsl_operation *op)
 	if (op != NULL) {
 
 		free(op);
+	}
+}
+
+void bsl_operation_statement_release(bsl_operation_statement *statement)
+{
+	if (statement != NULL) {
+
+		free(statement);
 	}
 }

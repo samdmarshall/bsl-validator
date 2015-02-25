@@ -63,6 +63,18 @@
 	XCTAssertEqual(result, 0);
 }
 
+- (void)test_dream_lab {
+	char *script_path = OniScriptPath(@"dream_lab");
+	
+	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
+	
+	int result = EvaluateContext(new_context);
+	
+	ScriptContextRelease(new_context);
+	
+	XCTAssertEqual(result, 0);
+}
+
 - (void)test_EnvWarehouse {
 	char *script_path = OniScriptPath(@"EnvWarehouse");
 	

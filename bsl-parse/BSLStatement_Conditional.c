@@ -197,6 +197,7 @@ if_loop:
 					
 					if (result != 0) {
 						// error
+						printf("");
 					}
 				}
 				
@@ -243,7 +244,8 @@ int8_t bsl_conditional_evaluation(bsl_conditional *cond, bsl_context **context)
 
 void bsl_statement_conditional_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
 {
-	ATR(unused) bsl_script_offset local_offset = offset;
+	__attribute__((unused)) bsl_script_offset local_offset = offset;
+
 	debug_printf("%s", "\t{\n");
 
 	int8_t *case_eval = calloc(statement->u.conditional.case_count, sizeof(int8_t));

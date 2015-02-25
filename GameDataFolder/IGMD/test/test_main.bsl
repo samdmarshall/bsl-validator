@@ -81,7 +81,7 @@ func void main {
 	
 	fork testing 6
 	
-	iterate over a using b {
+	iterate over test using b {
 		dmsg "hi";
 	}
 	
@@ -89,7 +89,8 @@ func void main {
 	
 	main2
 	
-	schedule error_test(5) at 5000
-	
-	#div 10 0
+	schedule error_test(5) at 500
+
+	#schedule error_test(8) repeat every 100
+
 }

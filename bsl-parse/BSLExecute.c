@@ -232,6 +232,10 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 					bsl_statement_sleep_action(context, current_statement, offset);
 					break;
 				}
+				case bsl_statement_type_iterate: {
+					bsl_statement_iterate_action(context, current_statement, offset);
+					break;
+				}
 				default: {
 					break;
 				}
