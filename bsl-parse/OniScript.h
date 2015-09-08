@@ -20,7 +20,9 @@ struct OniScriptContext {
 
 OniScriptContext *LoadScriptsFromLevelPath(char *path);
 
-int EvaluateContext(OniScriptContext *context);
+int EvaluateContextSyntax(OniScriptContext *context, bsl_context **script_context);
+
+int EvaluateContextExec(bsl_context *script_context);
 
 void ScriptContextRelease(OniScriptContext *context);
 

@@ -60,7 +60,7 @@ OniScriptContext *LoadScriptsFromLevelPath(char *path)
 	return context;
 }
 
-int EvaluateContext(OniScriptContext *context)
+int EvaluateContextSyntax(OniScriptContext *context, bsl_context **script_context)
 {
 	int result = 0;
 
@@ -88,17 +88,36 @@ int EvaluateContext(OniScriptContext *context)
 	}
 	printf("%s\n", "===================");
 
-	// evaluate for parsing errors first
-	if (bsl_context_check_error(eval_context) == bsl_error_none) {
-		// eval `main`
-		result = bsl_symbol_execute("main", eval_context);
-
-		if (bsl_context_check_error(eval_context) != bsl_error_none) {
-			// failed to execute without error
-			result = -1;
-		}
+	if (script_context != NULL) {
+		*script_context = eval_context;
 	}
+	else {
+		printf("Passed NULL to context evaluation!\n");
+	}
+	
+	return result;
+}
 
+int EvaluateContextExec(bsl_context *script_context)
+{
+	int result = 0;
+	
+	if (script_context != NULL) {
+		
+		// evaluate for parsing errors first
+		if (bsl_context_check_error(script_context) == bsl_error_none) {
+			// eval `main`
+			result = bsl_symbol_execute("main", script_context);
+			
+			if (bsl_context_check_error(script_context) != bsl_error_none) {
+				// failed to execute without error
+				result = -1;
+			}
+		}
+		
+		bsl_context_release(script_context);
+	}
+	
 	return result;
 }
 

@@ -254,7 +254,7 @@
 				22D766FB1A9D5C40002C8AEA /* BSL_stdlib_strlen.c */,
 			);
 			name = stdlib;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		2299F1631A5F1AA1007A2884 /* Keywords */ = {
 			isa = PBXGroup;
@@ -322,9 +322,18 @@
 			name = "Test Code";
 			sourceTree = "<group>";
 		};
+		22D9287F1AA4C506009C9530 /* test-type */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "test-type";
+			path = "/Users/sam/Projects/bsl-validator/stdlib Scripts";
+			sourceTree = "<absolute>";
+		};
 		22E3289B1A4F028F00E01700 = {
 			isa = PBXGroup;
 			children = (
+				22D9287F1AA4C506009C9530 /* test-type */,
 				2262FD421A574B0D00C9F47F /* stdlib */,
 				22E328A61A4F028F00E01700 /* bsl-parse */,
 				22A4A2CB1A9CE2BF00425014 /* Scripts */,

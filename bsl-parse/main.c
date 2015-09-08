@@ -27,8 +27,8 @@ enum BSLParseOptions {
 static struct option long_options[OptionsCount] = {
 	{"help", no_argument, 0, 'h'},
 	{"input", required_argument, 0, 'i'},
-	{"check_exec_arg_def-syntax", no_argument, 0, 's'},
-	{"arch", no_argument, 0, 'e'},
+	{"check-syntax", no_argument, 0, 's'},
+	{"check-exec", no_argument, 0, 'e'},
 };
 
 static uint8_t options_enabled[OptionsCount] = {0};
@@ -89,13 +89,25 @@ int main(int argc, const char *argv[])
 	}
 	else if (input_path != NULL) {
 
-		OniScriptContext *new_context = LoadScriptsFromLevelPath(input_path);
-
-		int result = EvaluateContext(new_context);
-
-		printf("Code: %i\n", result);
-
-		ScriptContextRelease(new_context);
+		if (options_enabled[OptionsCheckSyntax] || options_enabled[OptionsCheckExec]) {
+			
+			OniScriptContext *new_context = LoadScriptsFromLevelPath(input_path);
+			
+			bsl_context *eval_context = NULL;
+			
+			int result = EvaluateContextSyntax(new_context, &eval_context);
+			
+			printf("Code: %i\n", result);
+			
+			if (options_enabled[OptionsCheckExec]) {
+				
+				result = EvaluateContextExec(eval_context);
+				
+				printf("Code: %i\n", result);
+			}
+			
+			ScriptContextRelease(new_context);
+		}
 	}
 
 	return 0;
