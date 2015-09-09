@@ -2,8 +2,8 @@
 //  main.c
 //  bsl-parse
 //
-//  Created by Sam Marshall on 12/27/14.
-//  Copyright (c) 2014 Sam Marshall. All rights reserved.
+//  Created by Samantha Marshall on 12/27/14.
+//  Copyright (c) 2014 Samantha Marshall. All rights reserved.
 //
 
 #include <stdio.h>
@@ -97,14 +97,12 @@ int main(int argc, const char *argv[])
 			
 			int result = EvaluateContextSyntax(new_context, &eval_context);
 			
-			printf("Code: %i\n", result);
-			
 			if (options_enabled[OptionsCheckExec]) {
 				
 				result = EvaluateContextExec(eval_context);
-				
-				printf("Code: %i\n", result);
 			}
+			
+			printf("Code: %i\n", result);
 			
 			ScriptContextRelease(new_context);
 		}

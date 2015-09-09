@@ -2,8 +2,8 @@
 //  BSL_stdlib_print.c
 //  bsl-parse
 //
-//  Created by Sam Marshall on 2/1/15.
-//  Copyright (c) 2015 Sam Marshall. All rights reserved.
+//  Created by Samantha Marshall on 2/1/15.
+//  Copyright (c) 2015 Samantha Marshall. All rights reserved.
 //
 
 #include "BSL_stdlib_print.h"

@@ -2,8 +2,8 @@
 //  BSLGlobals.h
 //  bsl-parse
 //
-//  Created by Sam Marshall on 12/28/14.
-//  Copyright (c) 2014 Sam Marshall. All rights reserved.
+//  Created by Samantha Marshall on 12/28/14.
+//  Copyright (c) 2014 Samantha Marshall. All rights reserved.
 //
 
 #ifndef bsl_parse_BSLGlobals_h

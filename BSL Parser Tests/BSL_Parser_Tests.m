@@ -2,8 +2,8 @@
 //  BSL_Parser_Tests.m
 //  BSL Parser Tests
 //
-//  Created by Sam Marshall on 2/24/15.
-//  Copyright (c) 2015 Sam Marshall. All rights reserved.
+//  Created by Samantha Marshall on 2/24/15.
+//  Copyright (c) 2015 Samantha Marshall. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>

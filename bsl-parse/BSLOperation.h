@@ -2,8 +2,8 @@
 //  BSLOperation.h
 //  bsl-parse
 //
-//  Created by Sam Marshall on 1/14/15.
-//  Copyright (c) 2015 Sam Marshall. All rights reserved.
+//  Created by Samantha Marshall on 1/14/15.
+//  Copyright (c) 2015 Samantha Marshall. All rights reserved.
 //
 
 #ifndef __bsl_parse__BSLOperation__
