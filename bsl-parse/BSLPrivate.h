@@ -59,7 +59,8 @@ typedef struct bsl_function bsl_function;
 
 typedef struct bsl_symbol bsl_symbol;
 
-typedef struct bsl_stack bsl_stack;
+typedef struct bsl_stack_op bsl_stack_op;
+typedef struct bsl_frame bsl_frame;
 
 typedef struct bsl_context bsl_context;
 
@@ -620,14 +621,25 @@ struct bsl_symbol {
 
 #pragma mark bsl_stack
 
-struct bsl_stack {
-	bsl_symbol *symbol;
-
-	cmap_str symtab;
+struct bsl_stack_op {
 
 	// position tracking here
 	bsl_symbol *statements;
 	uint32_t statement_count;
+} __attribute__((packed));
+
+#pragma mark bsl_frame
+
+struct bsl_frame {
+	bsl_stack_op *ops;
+	uint32_t ops_count;
+	
+	uint32_t exec_op;
+	
+	bsl_symbol *symbol;
+	
+	cmap_str symtab;
+	
 } __attribute__((packed));
 
 #pragma mark -
@@ -642,8 +654,11 @@ struct bsl_context {
 
 	bsl_database *global;
 
-	bsl_stack stack[kBSLStackFrameMaximum];
+	bsl_frame stack[kBSLStackFrameMaximum];
 	int8_t stack_pos;
+	
+	bsl_stack_op *tasks;
+	uint32_t task_count;
 
 	bsl_error error;
 	uint8_t active_err;

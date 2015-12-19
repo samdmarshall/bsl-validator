@@ -21,8 +21,8 @@ bsl_context *bsl_context_create()
 
 		// register defaults
 		for (uint8_t index = 0; index < kBSLStackFrameMaximum; index++) {
-			bsl_stack *stack = &(context->stack[index]);
-			bsl_stack_init(stack);
+			bsl_frame *stack = &(context->stack[index]);
+			bsl_frame_init(stack);
 		}
 
 		context->stack_pos = -1;
@@ -211,8 +211,9 @@ void bsl_context_print_stack(bsl_context *context)
 					char *name_space = calloc(1 + name_length, sizeof(char));
 					memset(name_space, ' ', sizeof(char[name_length]));
 
-					bsl_stack *current_stack = &(context->stack[counter]);
-					int calling_line = current_stack->statements[(current_stack->statement_count - 1)].line;
+					bsl_frame *current_stack = &(context->stack[counter]);
+					bsl_stack_op *exec_op = &(current_stack->ops[current_stack->exec_op]);
+					int calling_line = exec_op->statements[(exec_op->statement_count - 1)].line;
 
 					printf("%s:%i\n", name_space, calling_line);
 
@@ -224,9 +225,12 @@ void bsl_context_print_stack(bsl_context *context)
 
 			if (counter == context->stack_pos) {
 
-				if (context->stack[counter].statement_count > 0) {
+				bsl_frame *current_stack = &(context->stack[counter]);
+				bsl_stack_op *exec_op = &(current_stack->ops[current_stack->exec_op]);
+				
+				if (exec_op->statement_count > 0) {
 
-					symbol = &(context->stack[counter].statements[context->stack[counter].statement_count - 1]);
+					symbol = &(exec_op->statements[exec_op->statement_count - 1]);
 				}
 
 				bsl_symbol_print_frame(symbol);
@@ -257,4 +261,14 @@ void bsl_context_release(bsl_context *context)
 void bsl_context_assign_error(bsl_context *context, bsl_error error)
 {
 	context->error = error;
+}
+
+void bsl_context_add_task(bsl_context **context, bsl_symbol *task)
+{
+	
+}
+
+void bsl_context_update_tasks(bsl_context **context)
+{
+	
 }

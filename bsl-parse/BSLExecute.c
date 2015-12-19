@@ -194,16 +194,19 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
 			expr_statement->u.expr = statement;
 			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
+			
+			bsl_frame *current = &(tmp->stack[tmp->stack_pos]);
+			bsl_stack_op *exec_op = &(current->ops[current->exec_op]);
 
-			tmp->stack[tmp->stack_pos].statements = realloc(tmp->stack[tmp->stack_pos].statements, sizeof(bsl_symbol) * (tmp->stack[tmp->stack_pos].statement_count + 1));
-			memcpy(&(tmp->stack[tmp->stack_pos].statements[tmp->stack[tmp->stack_pos].statement_count]), expr_statement, sizeof(bsl_symbol));
-			tmp->stack[tmp->stack_pos].statement_count += 1;
+			exec_op->statements = realloc(exec_op->statements, sizeof(bsl_symbol) * (exec_op->statement_count + 1));
+			memcpy(&(exec_op->statements[exec_op->statement_count]), expr_statement, sizeof(bsl_symbol));
+			exec_op->statement_count += 1;
 
 			if (bsl_context_check_error(*context) != bsl_error_none) {
 				break;
 			}
 
-			bsl_statement *current_statement = &(tmp->stack[tmp->stack_pos].statements[tmp->stack[tmp->stack_pos].statement_count - 1].u.expr);
+			bsl_statement *current_statement = &(exec_op->statements[exec_op->statement_count - 1].u.expr);
 
 			if (current_statement->type == bsl_statement_type_return) {
 				break;
@@ -244,6 +247,8 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 		else {
 			index++;
 		}
+		
+		bsl_context_update_tasks(context);
 	}
 }
 
@@ -279,7 +284,7 @@ bsl_variable *bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *sy
 
 	bsl_func_arg_update(args, arg_count, context);
 
-	bsl_stack_increment(*context, symbol);
+	bsl_frame_increment(*context, symbol);
 
 	int mismatch_arg = bsl_symbol_parse_evaluate_symbol(context, symbol, rtype, args, arg_count);
 
@@ -306,7 +311,7 @@ bsl_variable *bsl_symbol_parse_call_symbol(bsl_context **context, bsl_symbol *sy
 		bsl_context_check_error(*context);
 	}
 
-	bsl_stack_decrement(*context);
+	bsl_frame_decrement(*context);
 
 	return result;
 }

@@ -146,7 +146,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 			char *name = calloc(curr->token->offset.length + 1, sizeof(char));
 			strncpy(name, curr->token->contents, curr->token->offset.length);
 
-			result = bsl_stack_search_scope(name, context);
+			result = bsl_frame_search_scope(name, context);
 			if (result != NULL) {
 
 				if (result->type == bsl_symbol_type_function) {

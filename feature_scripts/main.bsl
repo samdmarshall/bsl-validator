@@ -1,4 +1,12 @@
+func void async() {
+	sleep 5
+	dmsg "hello"
+}
+
 func main() {
+	fork async
+	dmsg "world!"
+	
 	var int counter = 0
 	var int a = 1
 	var int b = 2

@@ -51,7 +51,7 @@ bsl_statement_var bsl_statement_var_create(bsl_tkn_ir **token, bsl_context *cont
 
 	var_symbol->u.value = var.variable;
 
-	bsl_symbol *symbol_test = bsl_stack_search_scope(var_symbol->u.value.name, context);
+	bsl_symbol *symbol_test = bsl_frame_search_scope(var_symbol->u.value.name, context);
 	if (symbol_test == NULL) {
 		bsl_db_register_state(var_symbol->u.value.name, var_symbol, context);
 	}
@@ -85,7 +85,7 @@ bsl_statement_var bsl_statement_var_assign(bsl_tkn_ir **token, bsl_context *cont
 	char *name = calloc(curr->token->offset.length + 1, sizeof(char));
 	strncpy(name, curr->token->contents, sizeof(char) * curr->token->offset.length);
 
-	bsl_symbol *var_symbol = bsl_stack_search_scope(name, context);
+	bsl_symbol *var_symbol = bsl_frame_search_scope(name, context);
 
 	if (var_symbol->type == bsl_symbol_type_variable) {
 
