@@ -176,7 +176,7 @@ bsl_function bsl_function_parse(bsl_tkn_ir **item, bsl_context *context)
 			if (expression != NULL) {
 				func.u.interp.code.expression = realloc(func.u.interp.code.expression, sizeof(bsl_expression) * (func.u.interp.code.expression_count + 1));
 				memcpy(&(func.u.interp.code.expression[func.u.interp.code.expression_count]), expression, sizeof(bsl_expression));
-				func.u.interp.code.expression_count++;
+				func.u.interp.code.expression_count += 1;
 			}
 			else {
 				debug_printf("%s", "error\n");

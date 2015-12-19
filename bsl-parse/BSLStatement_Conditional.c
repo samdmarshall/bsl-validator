@@ -106,14 +106,11 @@ if_loop:
 		}
 		
 		cond_case->code.expression = calloc(1, sizeof(bsl_expression));
-		cond_case->code.expression_count = 1;
+		cond_case->code.expression_count = 0;
 		
 		int8_t found_else = 0;
 		
 		while (((found_brace == 0) || (found_brace == 1 && brace_scope != 0)) && result == 0) {
-			bsl_expression *case_expr = &(cond_case->code.expression[cond_case->code.expression_count - 1]);
-			case_expr->scope_type = BSLScope_cond;
-			case_expr->scope_level = brace_scope;
 			
 			if (curr->token != NULL) {
 				// store expression
@@ -175,6 +172,12 @@ if_loop:
 						}
 					}
 					else {
+						
+						if (result != 0 && curr->token != NULL) {
+							// this case is to avoid a parse error on a trailing brace that is the last expression
+							(*index)++;
+						}
+						
 						break;
 					}
 					
@@ -185,29 +188,38 @@ if_loop:
 				
 				// in here the expressions need to be parsed out
 				
+				int8_t control_character = 0;
+				int8_t next_expression = 0;
+				
 				cond_case->code.expression = realloc(cond_case->code.expression, sizeof(bsl_expression) * (cond_case->code.expression_count + 1));
 				cond_case->code.expression_count += 1;
 
-				cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = 0; // FIXME
-				cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_invalid; // FIXME
+				cond_case->code.expression[cond_case->code.expression_count - 1].scope_level = brace_scope; // FIXME
+				cond_case->code.expression[cond_case->code.expression_count - 1].scope_type = BSLScope_cond; // FIXME
 				cond_case->code.expression[cond_case->code.expression_count - 1].tokens = curr;
+				uint32_t current_index = *index;
 				
 				while (curr->token != NULL) {
+					
 					result = bsl_function_interp_expression_increment(&curr, interp, index);
+					
+					next_expression = (*index != current_index);
 					
 					if (result != 0) {
 						// error
 					}
 					
-					/* 
-					 This does not handle nested if statements.
-					 
-					 For this to properly handle if statements, the expression parsing will have to change.
-					
-					*/
+					if (curr->token != NULL) {
+						control_character = (curr->token->code == BSLTokenCode_ctl_lbrace || curr->token->code == BSLTokenCode_ctl_rbrace);
+						if (control_character == 1 || next_expression == 1) {
+							break;
+						}
+					}
 				}
 				
-				result = bsl_function_interp_expression_increment(&curr, interp, index);
+				if (control_character != 1 && next_expression != 1) {
+					result = bsl_function_interp_expression_increment(&curr, interp, index);
+				}
 			}
 			
 		}

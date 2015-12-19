@@ -283,7 +283,7 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 				expr.type = bsl_statement_type_conditional;
 
 				expr.u.conditional = bsl_statement_conditional_create(&curr, context, interp, index);
-
+				
 				break;
 			}
 			default: {
