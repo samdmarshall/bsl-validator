@@ -180,6 +180,9 @@ int EvaluateContextExec(bsl_context *script_context)
 					result = -1;
 				}
 				
+				if (usleep(16666.666666666668) != 0) {
+					break;
+				}
 				
 				if (bsl_context_finished_tasks(script_context) == 1) {
 					break;

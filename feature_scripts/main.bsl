@@ -44,4 +44,5 @@ func main() {
 		dmsg "fail"
 	}
 	
+	a = 10
 }

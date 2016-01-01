@@ -22,7 +22,7 @@ bsl_statement_conditional bsl_statement_conditional_create(bsl_tkn_ir **token, b
 
 	bsl_tkn_ir *curr = *token;
 
-	debug_printf("%s", "conditional evaluation:\n");
+//	debug_printf("%s", "conditional evaluation:\n");
 
 // clang-format off
 if_loop:
@@ -264,8 +264,6 @@ void bsl_statement_conditional_action(bsl_context **context, bsl_statement *stat
 {
 	__attribute__((unused)) bsl_script_offset local_offset = offset;
 
-	debug_printf("%s", "\t{\n");
-
 	int8_t *case_eval = calloc(statement->u.conditional.case_count, sizeof(int8_t));
 	for (int8_t eval_index = 0; eval_index < statement->u.conditional.case_count; eval_index++) {
 		bsl_statement_conditional_case cond_case = statement->u.conditional.cond_case[eval_index];
@@ -285,5 +283,4 @@ void bsl_statement_conditional_action(bsl_context **context, bsl_statement *stat
 
 	free(case_eval);
 
-	debug_printf("%s", "\t}\n");
 }
