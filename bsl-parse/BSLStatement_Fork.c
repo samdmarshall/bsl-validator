@@ -30,6 +30,8 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 		// error
 		bsl_context_assign_error(context, bsl_error_missing_identifier); // ERROR ASSIGNMENT
 	}
+	
+	debug_printf("%s", fork.function.function.name);
 
 	// move current position
 	*token = curr;
@@ -39,14 +41,6 @@ bsl_statement_fork bsl_statement_fork_create(bsl_tkn_ir **token, bsl_context *co
 
 void bsl_statement_fork_action(bsl_context **context, bsl_statement *statement, bsl_script_offset offset)
 {
-	
-	bsl_frame *current_frame = &((*context)->stack[(*context)->stack_pos]);
-	current_frame->ops_count += 1;
-	bsl_stack_op *ops = current_frame->ops;
-	ops = realloc(ops, sizeof(bsl_stack_op) * (current_frame->ops_count));
-	bsl_stack_op *fork_op = &(ops[current_frame->ops_count - 1]);
-	fork_op->statement_count = 1;
-	
 	bsl_symbol *call_symbol = bsl_symbol_create(bsl_symbol_type_function);
 	call_symbol->u.func = statement->u.fork.function.function;
 	bsl_symbol_update_info(call_symbol, offset);
@@ -62,7 +56,5 @@ void bsl_statement_fork_action(bsl_context **context, bsl_statement *statement, 
 		}
 	}
 	
-	fork_op->statements = call_symbol;
-	
-	current_frame->ops = ops;
+	bsl_context_add_task(context, call_symbol);
 }

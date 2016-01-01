@@ -86,6 +86,8 @@ typedef struct bsl_statement_func bsl_statement_func;
 
 typedef struct bsl_statement_var bsl_statement_var;
 
+typedef struct bsl_task bsl_task;
+
 #pragma mark -
 #pragma mark BSLScript
 
@@ -657,11 +659,24 @@ struct bsl_context {
 	bsl_frame stack[kBSLStackFrameMaximum];
 	int8_t stack_pos;
 	
-	bsl_stack_op *tasks;
+	bsl_task *tasks;
 	uint32_t task_count;
+	uint32_t task_pos;
 
 	bsl_error error;
 	uint8_t active_err;
+} __attribute__((packed));
+
+
+#pragma mark -
+#pragma mark BSLTask
+
+#pragma mark bsl_task
+
+struct bsl_task {
+	bsl_symbol *statements;
+	uint32_t statement_count;
+	uint32_t current_statement_index;
 } __attribute__((packed));
 
 #endif

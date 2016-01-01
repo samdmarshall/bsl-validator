@@ -13,6 +13,8 @@
 
 int bsl_symbol_execute(char *name, bsl_context *context);
 
+bsl_task * bsl_generate_statements_from_interpreted_code(bsl_interpreted_code code, bsl_context **context);
+
 void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context);
 
 int bsl_symbol_parse_evaluate_symbol(bsl_context **context, bsl_symbol *symbol, bsl_func_rtype rtype, bsl_func_arg *args, uint32_t arg_count);

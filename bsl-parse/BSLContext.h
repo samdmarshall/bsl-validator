@@ -26,6 +26,10 @@ void bsl_context_release(bsl_context *context);
 
 void bsl_context_assign_error(bsl_context *context, bsl_error error);
 
+void bsl_context_add_task(bsl_context **context, bsl_symbol *task);
+
 void bsl_context_update_tasks(bsl_context **context);
+
+int8_t bsl_context_finished_tasks(bsl_context *context);
 
 #endif /* defined(__bsl_parse__BSLContext__) */

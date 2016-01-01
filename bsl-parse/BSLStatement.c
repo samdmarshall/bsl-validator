@@ -127,14 +127,6 @@ bsl_statement bsl_statement_parse(bsl_tkn_ir **item, bsl_context *context, bsl_i
 
 	bsl_tkn_ir *curr = (*item);
 
-	debug_printf("%s", "evaluate expression: ");
-
-#if DEBUG
-	char *str = bsl_token_ir_copy_string(curr);
-	debug_printf(" < %s > \n\t", str);
-	free(str);
-#endif
-
 	if (curr->token != NULL) {
 
 		bsl_token_code code = bsl_token_resolve_identifier(curr->token);

@@ -12,6 +12,15 @@
 #include "BSLEvaluate.h"
 #include "BSLParse.h"
 #include "BSLExecute.h"
+#include "BSLStack.h"
+
+#include "BSLSymbol.h"
+#include "BSLStatement_Conditional.h"
+#include "BSLStatement_Func.h"
+#include "BSLStatement_Schedule.h"
+#include "BSLStatement_Fork.h"
+#include "BSLStatement_Sleep.h"
+#include "BSLStatement_Iterate.h"
 
 OniScriptContext *LoadScriptsFromLevelPath(char *path)
 {
@@ -107,12 +116,77 @@ int EvaluateContextExec(bsl_context *script_context)
 		// evaluate for parsing errors first
 		if (bsl_context_check_error(script_context) == bsl_error_none) {
 			// eval `main`
-			result = bsl_symbol_execute("main", script_context);
+			bsl_symbol *main_symbol = bsl_db_get_global("main", script_context);
 			
-			if (bsl_context_check_error(script_context) != bsl_error_none) {
-				// failed to execute without error
-				result = -1;
+			bsl_frame_increment(script_context, main_symbol);
+			
+			bsl_context_add_task(&script_context, main_symbol);
+			
+			while (script_context->task_count != 0 && result == 0) {
+				
+				for (uint32_t index = 0; index < script_context->task_count; index++) {
+					script_context->task_pos = index;
+					
+					bsl_task *task = &(script_context->tasks[index]);
+					if (task->current_statement_index < task->statement_count) {
+						
+						bsl_symbol *current_symbol = &(task->statements[task->current_statement_index]);
+						bsl_statement *current_statement = &(current_symbol->u.expr);
+						
+						task->current_statement_index += 1;
+						
+						if (current_statement->type == bsl_statement_type_return) {
+							break;
+						}
+						
+						bsl_script_offset offset = bsl_script_offset_from_symbol(current_symbol);
+						
+						switch (current_statement->type) {
+							case bsl_statement_type_conditional: {
+								bsl_statement_conditional_action(&script_context, current_statement, offset);
+								break;
+							}
+							case bsl_statement_type_func: {
+								bsl_statement_func_action(&script_context, current_statement, offset);
+								break;
+							}
+							case bsl_statement_type_schedule: {
+								bsl_statement_schedule_action(&script_context, current_statement, offset);
+								break;
+							}
+							case bsl_statement_type_fork: {
+								bsl_statement_fork_action(&script_context, current_statement, offset);
+								break;
+							}
+							case bsl_statement_type_sleep: {
+								bsl_statement_sleep_action(&script_context, current_statement, offset);
+								break;
+							}
+							case bsl_statement_type_iterate: {
+								bsl_statement_iterate_action(&script_context, current_statement, offset);
+								break;
+							}
+							default: {
+								break;
+							}
+						}
+						
+					}
+					
+				}
+				
+				if (bsl_context_check_error(script_context) != bsl_error_none) {
+					// failed to execute without error
+					result = -1;
+				}
+				
+				
+				if (bsl_context_finished_tasks(script_context) == 1) {
+					break;
+				}
+				
 			}
+			
 		}
 		
 		bsl_context_release(script_context);

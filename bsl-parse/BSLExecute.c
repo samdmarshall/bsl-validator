@@ -175,6 +175,48 @@ int bsl_symbol_parse_evaluate(bsl_context **context, bsl_func_rtype rtype, bsl_f
 	return bsl_symbol_parse_evaluate_symbol(context, (*context)->stack[(*context)->stack_pos].symbol, rtype, args, arg_count);
 }
 
+bsl_task * bsl_generate_statements_from_interpreted_code(bsl_interpreted_code code, bsl_context **context)
+{
+	bsl_task *task = calloc(1, sizeof(bsl_task));
+	task->statements = calloc(1, sizeof(bsl_symbol));
+	
+	bsl_context *tmp = (*context);
+	
+	uint32_t index = 0;
+	
+	while (index < code.expression_count) {
+		bsl_expression expr = code.expression[index];
+		
+		bsl_tkn_ir *curr = expr.tokens;
+		
+		if (curr != NULL && curr->token != NULL) {
+			
+			bsl_statement statement = bsl_statement_parse(&curr, tmp, code, &index);
+			
+			bsl_symbol *expr_statement = bsl_symbol_create(bsl_symbol_type_statement);
+			expr_statement->u.expr = statement;
+			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
+			
+			
+			task->statements = realloc(task->statements, sizeof(bsl_symbol) * (task->statement_count + 1));
+			memcpy(&(task->statements[task->statement_count]), expr_statement, sizeof(bsl_symbol));
+			task->statement_count += 1;
+			
+			if (bsl_context_check_error(*context) != bsl_error_none) {
+				break;
+			}
+			
+		}
+		else {
+			index++;
+		}
+		
+	}
+	
+	return task;
+}
+
+
 void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **context)
 {
 
@@ -195,54 +237,53 @@ void bsl_execute_interpreted_code(bsl_interpreted_code code, bsl_context **conte
 			expr_statement->u.expr = statement;
 			bsl_symbol_update_info(expr_statement, expr.tokens->token->offset);
 			
-			bsl_frame *current = &(tmp->stack[tmp->stack_pos]);
-			bsl_stack_op *exec_op = &(current->ops[current->exec_op]);
+			bsl_task *current = &(tmp->tasks[tmp->task_pos]);
 
-			exec_op->statements = realloc(exec_op->statements, sizeof(bsl_symbol) * (exec_op->statement_count + 1));
-			memcpy(&(exec_op->statements[exec_op->statement_count]), expr_statement, sizeof(bsl_symbol));
-			exec_op->statement_count += 1;
+			current->statements = realloc(current->statements, sizeof(bsl_symbol) * (current->statement_count + 1));
+			memcpy(&(current->statements[current->statement_count]), expr_statement, sizeof(bsl_symbol));
+			current->statement_count += 1;
 
 			if (bsl_context_check_error(*context) != bsl_error_none) {
 				break;
 			}
 
-			bsl_statement *current_statement = &(exec_op->statements[exec_op->statement_count - 1].u.expr);
-
-			if (current_statement->type == bsl_statement_type_return) {
-				break;
-			}
-
-			bsl_script_offset offset = bsl_script_offset_from_symbol(expr_statement);
-
-			switch (current_statement->type) {
-				case bsl_statement_type_conditional: {
-					bsl_statement_conditional_action(context, current_statement, offset);
-					break;
-				}
-				case bsl_statement_type_func: {
-					bsl_statement_func_action(context, current_statement, offset);
-					break;
-				}
-				case bsl_statement_type_schedule: {
-					bsl_statement_schedule_action(context, current_statement, offset);
-					break;
-				}
-				case bsl_statement_type_fork: {
-					bsl_statement_fork_action(context, current_statement, offset);
-					break;
-				}
-				case bsl_statement_type_sleep: {
-					bsl_statement_sleep_action(context, current_statement, offset);
-					break;
-				}
-				case bsl_statement_type_iterate: {
-					bsl_statement_iterate_action(context, current_statement, offset);
-					break;
-				}
-				default: {
-					break;
-				}
-			}
+//			bsl_statement *current_statement = &(current->statements[current->statement_count - 1].u.expr);
+//
+//			if (current_statement->type == bsl_statement_type_return) {
+//				break;
+//			}
+//
+//			bsl_script_offset offset = bsl_script_offset_from_symbol(expr_statement);
+//
+//			switch (current_statement->type) {
+//				case bsl_statement_type_conditional: {
+//					bsl_statement_conditional_action(context, current_statement, offset);
+//					break;
+//				}
+//				case bsl_statement_type_func: {
+//					bsl_statement_func_action(context, current_statement, offset);
+//					break;
+//				}
+//				case bsl_statement_type_schedule: {
+//					bsl_statement_schedule_action(context, current_statement, offset);
+//					break;
+//				}
+//				case bsl_statement_type_fork: {
+//					bsl_statement_fork_action(context, current_statement, offset);
+//					break;
+//				}
+//				case bsl_statement_type_sleep: {
+//					bsl_statement_sleep_action(context, current_statement, offset);
+//					break;
+//				}
+//				case bsl_statement_type_iterate: {
+//					bsl_statement_iterate_action(context, current_statement, offset);
+//					break;
+//				}
+//				default: {
+//					break;
+//				}
+//			}
 		}
 		else {
 			index++;

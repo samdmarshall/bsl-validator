@@ -20,8 +20,6 @@ bsl_statement_func bsl_statement_func_create(bsl_tkn_ir **token, bsl_context *co
 
 	bsl_tkn_ir *curr = *token;
 
-	debug_printf("%s", "function call: ");
-
 	bsl_func_arg *args = NULL;
 	uint32_t arg_count = 0;
 
