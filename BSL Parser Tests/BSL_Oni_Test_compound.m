@@ -32,7 +32,9 @@
 	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
-	int result = EvaluateContext(new_context);
+	bsl_context *eval_context = NULL;
+	
+	int result = EvaluateContextSyntax(new_context, &eval_context);
 	
 	ScriptContextRelease(new_context);
 	
@@ -44,7 +46,9 @@
 	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
-	int result = EvaluateContext(new_context);
+	bsl_context *eval_context = NULL;
+	
+	int result = EvaluateContextSyntax(new_context, &eval_context);
 	
 	ScriptContextRelease(new_context);
 	
@@ -56,7 +60,9 @@
 	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
-	int result = EvaluateContext(new_context);
+	bsl_context *eval_context = NULL;
+	
+	int result = EvaluateContextSyntax(new_context, &eval_context);
 	
 	ScriptContextRelease(new_context);
 	
@@ -68,7 +74,9 @@
 	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
-	int result = EvaluateContext(new_context);
+	bsl_context *eval_context = NULL;
+	
+	int result = EvaluateContextSyntax(new_context, &eval_context);
 	
 	ScriptContextRelease(new_context);
 	
@@ -80,7 +88,9 @@
 	
 	OniScriptContext *new_context = LoadScriptsFromLevelPath(script_path);
 	
-	int result = EvaluateContext(new_context);
+	bsl_context *eval_context = NULL;
+	
+	int result = EvaluateContextSyntax(new_context, &eval_context);
 	
 	ScriptContextRelease(new_context);
 	
