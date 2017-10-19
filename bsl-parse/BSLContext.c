@@ -15,7 +15,7 @@
 
 bsl_context *bsl_context_create()
 {
-	bsl_context *context = calloc(1, sizeof(bsl_context));
+	bsl_context *context = (bsl_context *)calloc(1, sizeof(bsl_context));
 
 	if (context != NULL) {
 		context->global = bsl_db_create();
@@ -28,7 +28,7 @@ bsl_context *bsl_context_create()
 
 		context->stack_pos = -1;
 		
-		context->tasks = calloc(1, sizeof(bsl_task));
+		context->tasks = (bsl_task *)calloc(1, sizeof(bsl_task));
 		context->task_count = 0;
 	}
 
@@ -64,7 +64,7 @@ int bsl_context_check_error(bsl_context *context)
 		name = symbol->u.func.name;
 	}
 
-	char *script_name = symbol->script->fd != NULL ? symbol->script->fd->name : "global";
+	char *script_name = (char *)(symbol->script->fd != NULL ? symbol->script->fd->name : "global");
 
 	switch (context->error) {
 		case bsl_error_none: {
@@ -212,7 +212,7 @@ void bsl_context_print_stack(bsl_context *context)
 					printf("%s:%i func %s\n", script->fd->name, symbol->line, name);
 
 					unsigned long name_length = strlen(script->fd->name);
-					char *name_space = calloc(1 + name_length, sizeof(char));
+					char *name_space = (char *)calloc(1 + name_length, sizeof(char));
 					memset(name_space, ' ', sizeof(char[name_length]));
 
 					bsl_frame *current_stack = &(context->stack[counter]);
@@ -272,14 +272,14 @@ void bsl_context_add_task(bsl_context **context, bsl_symbol *task)
 	bsl_context *tmp = (*context);
 	
 	tmp->task_count += 1;
-	tmp->tasks = realloc(tmp->tasks, sizeof(bsl_task) * (tmp->task_count));
+	tmp->tasks = (bsl_task *)realloc(tmp->tasks, sizeof(bsl_task) * (tmp->task_count));
 	
 	bsl_task *ctx_task = &(tmp->tasks[tmp->task_count - 1]);
 	ctx_task->current_statement_index = 0;
 	
 	switch (task->type) {
 		case bsl_symbol_type_variable: {
-			ctx_task->statements = calloc(1, sizeof(bsl_symbol));
+			ctx_task->statements = (bsl_symbol *)calloc(1, sizeof(bsl_symbol));
 			ctx_task->statement_count = 1;
 			break;
 		}
@@ -290,13 +290,13 @@ void bsl_context_add_task(bsl_context **context, bsl_symbol *task)
 				free(new_task);
 			}
 			else {
-				ctx_task->statements = calloc(1, sizeof(bsl_symbol));
+				ctx_task->statements = (bsl_symbol *)calloc(1, sizeof(bsl_symbol));
 				ctx_task->statement_count = 1;
 			}
 			break;
 		}
 		case bsl_symbol_type_statement: {
-			ctx_task->statements = calloc(1, sizeof(bsl_symbol));
+			ctx_task->statements = (bsl_symbol *)calloc(1, sizeof(bsl_symbol));
 			ctx_task->statement_count = 1;
 			break;
 		}

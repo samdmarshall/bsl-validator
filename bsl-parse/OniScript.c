@@ -42,10 +42,12 @@ OniScriptContext *LoadScriptsFromLevelPath(char *path)
 			// get file name for currently listed item
 			char *file_name = ent->d_name;
 
+			int name_length = strlen(file_name);
+			
 			// check if file name is longer than 4 characters
-			if (ent->d_namlen > 4) {
+			if (name_length > 4) {
 				// get the offset of where the extention would be
-				char *file_extension = &(file_name[ent->d_namlen - 4]);
+				char *file_extension = &(file_name[name_length - 4]);
 
 				// compare the extension ".bsl" to the end of the file name for a match
 				if (strncmp(file_extension, ".bsl", sizeof(char[4])) == 0) {

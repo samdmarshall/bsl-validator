@@ -1,3 +1,4 @@
+
 //
 //  BSLPrivate.h
 //  bsl-parse
@@ -16,8 +17,10 @@
 #include "cmap.h"
 #include "TimeUtil.h"
 
+#include <stdint.h>
 #include <ctype.h>
 #include <math.h>
+#include <strings.h>
 
 #pragma mark -
 #pragma mark Defines

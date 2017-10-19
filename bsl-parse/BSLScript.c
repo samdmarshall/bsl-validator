@@ -72,7 +72,7 @@ void OpenScriptFromFileInDir(char *dir_path, struct dirent *ent, DIR *dir, bsl_s
 {
 	script->fd = file_ref_create(ent, dir);
 
-	size_t path_length = strlen(dir_path) + 1 + ent->d_namlen + 1;
+	size_t path_length = strlen(dir_path) + 1 + strlen(ent->d_name) + 1;
 	char *full_path = calloc(path_length, sizeof(char));
 	snprintf(full_path, path_length, "%s/%s", dir_path, ent->d_name);
 

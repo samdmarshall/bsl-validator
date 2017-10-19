@@ -34,7 +34,7 @@ char *bsl_token_ir_copy_string(bsl_tkn_ir *token_ir)
 	curr = token_ir;
 
 	// allocate memory for string based on computed length
-	char *string = calloc(string_length, sizeof(char));
+	char *string = (char *)calloc(string_length, sizeof(char));
 
 	while (curr != NULL) {		   // checks we haven't reached the end of ir sequence
 		if (curr->token != NULL) { // if the current ir item has a token value
@@ -63,7 +63,7 @@ char *bsl_token_ir_copy_string(bsl_tkn_ir *token_ir)
 bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 {
 	// allocating token ir sequence
-	bsl_tkn_ir *token_ir = calloc(1, sizeof(bsl_tkn_ir));
+	bsl_tkn_ir *token_ir = (bsl_tkn_ir *)calloc(1, sizeof(bsl_tkn_ir));
 
 	// setting up the tracking of previous and current ir items
 	bsl_tkn_ir *prev = NULL;
@@ -85,7 +85,7 @@ bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 			token->offset.line = curr_line;
 
 			// checking if there was a parse error in the token
-			bsl_error error = bsl_token_check_error(token);
+			bsl_error error = (bsl_error)bsl_token_check_error(token);
 			if (error != bsl_error_none) { // if there is an error
 				// break from while loop, there is a problem with syntax
 				break;
@@ -100,7 +100,7 @@ bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 			// if the current ir item is null
 			if (curr == NULL) {
 				// make sure it isn't because it will cause derefs further down
-				curr = calloc(1, sizeof(bsl_tkn_ir));
+				curr = (bsl_tkn_ir *)calloc(1, sizeof(bsl_tkn_ir));
 			}
 
 			// if the previous ir item pointer isn't null
@@ -133,7 +133,7 @@ bsl_tkn_ir *bsl_token_ir_generate_from_script(bsl_script *script)
 bsl_tkn_ir *bsl_token_ir_copy(bsl_tkn_ir *token_ir)
 {
 	// allocate new ir token sequence
-	bsl_tkn_ir *new_ir = calloc(1, sizeof(bsl_tkn_ir));
+	bsl_tkn_ir *new_ir = (bsl_tkn_ir *)calloc(1, sizeof(bsl_tkn_ir));
 
 	// check that the new token sequence is non-null and the item to copy is non-null
 	if (new_ir != NULL && token_ir != NULL) {
@@ -144,7 +144,7 @@ bsl_tkn_ir *bsl_token_ir_copy(bsl_tkn_ir *token_ir)
 		// check to make sure the sequence item to copy has a token
 		if (token_ir->token != NULL) {
 			// allocate the new token object
-			new_ir->token = calloc(1, sizeof(bsl_token));
+			new_ir->token = (bsl_token *)calloc(1, sizeof(bsl_token));
 			// copy the existing token
 			memcpy(new_ir->token, token_ir->token, sizeof(bsl_token));
 		}

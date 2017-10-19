@@ -13,6 +13,7 @@
 #include "BSLParse.h"
 #include "BSLScript.h"
 #include "BSLStack.h"
+#include "cmap.h"
 
 #include "BSL_stdlib.h"
 
@@ -55,10 +56,10 @@ void bsl_db_register_function(bsl_register_func_item function, bsl_database *db)
 	}
 
 	// parse args
-	func_symbol->u.func.args = calloc(1, sizeof(bsl_func_arg));
+	func_symbol->u.func.args = (bsl_func_arg *)calloc(1, sizeof(bsl_func_arg));
 	func_symbol->u.func.arg_count = 0;
 
-	func_symbol->u.func.name = calloc(strlen(function.name) + 1, sizeof(char));
+	func_symbol->u.func.name = (char *)calloc(strlen(function.name) + 1, sizeof(char));
 	strncpy(func_symbol->u.func.name, function.name, strlen(function.name));
 
 	func_symbol->script = bsl_script_create_with_string(function.args);
@@ -76,7 +77,7 @@ void bsl_db_register_function(bsl_register_func_item function, bsl_database *db)
 			curr = curr->next;
 		}
 		else {
-			func_symbol->u.func.args = realloc(func_symbol->u.func.args, sizeof(bsl_func_arg) * (func_symbol->u.func.arg_count + 1));
+			func_symbol->u.func.args = (bsl_func_arg *)realloc(func_symbol->u.func.args, sizeof(bsl_func_arg) * (func_symbol->u.func.arg_count + 1));
 			bsl_tkn_ir *variable = curr->prev;
 			func_symbol->u.func.arg_count = bsl_func_arg_parse(&variable, NULL, &(func_symbol->u.func.args));
 			curr = variable;
@@ -93,7 +94,7 @@ void bsl_db_register_variable(bsl_register_var_item variable, bsl_database *db)
 {
 	bsl_symbol *var_symbol = bsl_symbol_create(bsl_symbol_type_variable);
 
-	var_symbol->u.value.name = calloc(strlen(variable.name) + 1, sizeof(char));
+	var_symbol->u.value.name = (char *)calloc(strlen(variable.name) + 1, sizeof(char));
 	strncpy(var_symbol->u.value.name, variable.name, strlen(variable.name));
 
 	switch (variable.type) {
@@ -126,7 +127,7 @@ void bsl_db_register_variable(bsl_register_var_item variable, bsl_database *db)
 
 bsl_database *bsl_db_create()
 {
-	bsl_database *db = calloc(1, sizeof(bsl_database));
+	bsl_database *db = (bsl_database *)calloc(1, sizeof(bsl_database));
 
 	if (db != NULL) {
 		db->symtab = cmap_str_new();

@@ -10,6 +10,7 @@
 #define loader_cmap_h
 
 #include <sys/types.h>
+#include <stdlib.h>
 
 typedef void *cmap;
 typedef void *cmap_str;
@@ -18,17 +19,17 @@ typedef void *cmap_str;
 extern "C" {
 #endif
 
-extern cmap cmap_new(void);
-extern void cmap_free(cmap *amap);
-extern void *cmap_objectForKey(cmap *amap, void *key);
-extern void cmap_setObjectForKey(cmap *amap, void *key, void *value);
-extern size_t cmap_count(cmap *amap);
+	extern __attribute__((visibility("default"))) cmap cmap_new(void);
+	extern __attribute__((visibility("default"))) void cmap_free(cmap *amap);
+	extern __attribute__((visibility("default"))) void *cmap_objectForKey(cmap *amap, void *key);
+	extern __attribute__((visibility("default"))) void cmap_setObjectForKey(cmap *amap, void *key, void *value);
+	extern __attribute__((visibility("default")))size_t cmap_count(cmap *amap);
 
-extern cmap_str cmap_str_new(void);
-extern void cmap_str_free(cmap_str *amap);
-extern void *cmap_str_objectForKey(cmap_str *amap, const char *key);
-extern void cmap_str_setObjectForKey(cmap_str *amap, const char *key, void *value);
-extern size_t cmap_str_count(cmap_str *amap);
+	extern __attribute__((visibility("default"))) cmap_str cmap_str_new(void);
+	extern __attribute__((visibility("default"))) void cmap_str_free(cmap_str *amap);
+	extern __attribute__((visibility("default"))) void *cmap_str_objectForKey(cmap_str *amap, const char *key);
+	extern __attribute__((visibility("default"))) void cmap_str_setObjectForKey(cmap_str *amap, const char *key, void *value);
+	extern __attribute__((visibility("default"))) size_t cmap_str_count(cmap_str *amap);
 
 #if __cplusplus
 };

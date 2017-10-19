@@ -14,8 +14,8 @@ file_ref *file_ref_create(struct dirent *ent, DIR *dir)
 
 	if (fd != NULL) {
 
-		fd->name = calloc(1, sizeof(char[ent->d_namlen + 1]));
-		memcpy(fd->name, ent->d_name, sizeof(char[ent->d_namlen]));
+		fd->name = calloc(1, sizeof(char[strlen(ent->d_name) + 1]));
+		memcpy(fd->name, ent->d_name, sizeof(char[strlen(ent->d_name)]));
 
 		fd->dir = dir;
 	}

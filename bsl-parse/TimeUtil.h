@@ -10,6 +10,10 @@
 #define __bsl_parse__TimeUtil__
 
 #include <unistd.h>
+#include <stdint.h>
+#if __linux__
+#include <sys/time.h>
+#endif
 
 #define kMicroseconds 1000000
 #define kMicrosecondsPerFrame 16666

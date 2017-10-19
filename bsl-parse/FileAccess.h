@@ -10,6 +10,7 @@
 #define __bsl_parse__FileAccess__
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <dirent.h>
 #include <stdio.h>
 #include <string.h>
